@@ -1,0 +1,8 @@
+.DS_Store
+target
+mateo.log*
+*.jasper
+/src/main/resources/rebel.xml
+/nb-configuration.xml
+/nbactions.xml
+pom.xml
