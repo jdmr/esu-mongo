@@ -3,10 +3,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
        xmlns:context="http://www.springframework.org/schema/context" 
        xmlns:tx="http://www.springframework.org/schema/tx" 
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd 
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd 
+       http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
        ">
 
     <context:property-placeholder location="classpath*:ambiente/esu.properties,file:${user.home}/esu*.properties"/>
@@ -66,5 +68,13 @@
     </bean>
     
     <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" />
+    
+    <!-- Default bean name is 'mongo' -->
+    <mongo:db-factory host="localhost" port="27017" dbname="esu" />
+ 
+    <bean id="mongoTemplate" 
+              class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+    </bean>
     
 </beans>
