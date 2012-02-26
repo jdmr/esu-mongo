@@ -1,0 +1,14 @@
+Proyecto de Escuela Sabática Universitaria
+
+En lugar de seguir utilizando Liferay para administrar la página http://escuelasabaticauniversitaria.org 
+vamos a probar desarrollando una aplicación basada MongoDB con Spring MVC
+
+Vamos a integrar tecnologías como Spring Social para permitir que los usuarios
+liguen sus cuentas de facebook, twitter, linkedin y demás al sitio y hagan 
+posts sociales. En esto es donde liferay no me está ayudando y además está 
+muy lento para lo que estoy buscando, por lo tanto vamos a evaluar esta opción
+y esperemos nos de resultado.
+
+David Mendoza
+Escuela Sabática Universitaria
+http://escuelasabaticauniversitaria.org
