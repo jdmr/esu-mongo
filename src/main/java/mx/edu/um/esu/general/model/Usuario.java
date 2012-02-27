@@ -25,9 +25,11 @@ package mx.edu.um.esu.general.model;
 
 import java.io.Serializable;
 import java.util.*;
-import javax.persistence.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -35,41 +37,24 @@ import org.springframework.security.core.userdetails.UserDetails;
  *
  * @author jdmr
  */
-@Entity
-@Table(name = "usuarios")
+@Document
 public class Usuario implements Serializable, UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Version
-    private Integer version;
     @Email
     @NotEmpty
-    @Column(unique = true, nullable = false, length = 128)
     private String username;
-    @Column(nullable = false)
     private String password;
-    @Column(nullable = true, name = "open_id")
     private String openId;
-    @Column(nullable = false)
     private Boolean enabled = true;
-    @Column(nullable = false, name = "account_expired")
     private Boolean accountExpired = false;
-    @Column(nullable = false, name = "account_locked")
     private Boolean accountLocked = false;
-    @Column(nullable = false, name = "credentials_expired")
     private Boolean credentialsExpired = false;
     @NotEmpty
-    @Column(nullable = false, length = 128)
     private String nombre;
     @NotEmpty
-    @Column(nullable = false, length = 128)
     private String apellido;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "usuarios_roles", joinColumns = {
-        @JoinColumn(name = "usuario_id")}, inverseJoinColumns =
-    @JoinColumn(name = "rol_id"))
+    @DBRef
     private Set<Rol> roles = new HashSet<>();
 
     public Usuario() {
@@ -80,34 +65,6 @@ public class Usuario implements Serializable, UserDetails {
         this.password = password;
         this.nombre = nombre;
         this.apellido = apellido;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * @return the version
-     */
-    public Integer getVersion() {
-        return version;
-    }
-
-    /**
-     * @param version the version to set
-     */
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     /**
@@ -198,8 +155,8 @@ public class Usuario implements Serializable, UserDetails {
 
     /**
      * Agrega un rol a la lista de roles
-     * 
-     * @param rol 
+     *
+     * @param rol
      */
     public void addRol(Rol rol) {
         this.getRoles().add(rol);
@@ -264,8 +221,6 @@ public class Usuario implements Serializable, UserDetails {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.version);
         hash = 97 * hash + Objects.hashCode(this.username);
         return hash;
     }

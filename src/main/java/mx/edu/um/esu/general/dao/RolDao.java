@@ -24,45 +24,38 @@
 package mx.edu.um.esu.general.dao;
 
 import mx.edu.um.esu.general.model.Rol;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author J. David Mendoza <jdmendoza@um.edu.mx>
  */
 @Repository
-@Transactional
 public class RolDao {
 
     private static final Logger log = LoggerFactory.getLogger(RolDao.class);
     @Autowired
-    private SessionFactory sessionFactory;
+    private MongoTemplate mongoTemplate;
 
-    private Session currentSession() {
-        return sessionFactory.getCurrentSession();
+    public void reiniciaColeccion() {
+        if (mongoTemplate.collectionExists(Rol.class)) {
+            mongoTemplate.dropCollection(Rol.class);
+        }
     }
-    
-    public Rol obtiene(Long id) {
-        Rol rol = (Rol) currentSession().get(Rol.class, id);
+
+    public Rol obtiene(String authority) {
+        log.debug("Buscando {}", authority);
+        Rol rol = mongoTemplate.findById(authority, Rol.class);
         return rol;
     }
-    
-    public Rol obtiene(String nombre) {
-        Query query = currentSession().createQuery("select r from Rol r where authority = ?");
-        Rol rol = (Rol) query.uniqueResult();
-        return rol;
-    }
-    
+
     public Rol crea(Rol rol) {
-        currentSession().save(rol);
+        log.debug("Creando {}", rol);
+        mongoTemplate.insert(rol);
         return rol;
     }
-    
 }

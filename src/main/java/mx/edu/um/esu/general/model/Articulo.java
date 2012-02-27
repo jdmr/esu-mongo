@@ -23,9 +23,14 @@
  */
 package mx.edu.um.esu.general.model;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  *
@@ -36,8 +41,20 @@ public class Articulo {
 
     @Id
     private String articuloId;
+    @Indexed
     private String nombre;
     private String descripcion;
+    private String contenido;
+    @Indexed
+    @Field("fechap")
+    private Date fechaPublicacion;
+    private List<String> referencias = new ArrayList<>();
+    private List<String> etiquetas = new ArrayList<>();
+    private String estado;
+    
+    //Autor
+    //Editor
+    
 
     public Articulo() {
     }

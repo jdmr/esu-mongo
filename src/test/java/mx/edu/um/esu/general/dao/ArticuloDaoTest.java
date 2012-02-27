@@ -33,22 +33,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author J. David Mendoza <jdmendoza@um.edu.mx>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:esu.xml", "classpath:security.xml"})
-@Transactional
+@ContextConfiguration(locations = {"classpath:esu.xml"})
 public class ArticuloDaoTest {
-    
+
     private static final Logger log = LoggerFactory.getLogger(ArticuloDaoTest.class);
-    
     @Autowired
     private ArticuloDao instance;
-    
+
     public ArticuloDaoTest() {
     }
 
@@ -59,32 +56,32 @@ public class ArticuloDaoTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
     public void setUp() {
         instance.reiniciaColeccion();
     }
-    
+
     @After
     public void tearDown() {
+        instance.reiniciaColeccion();
     }
 
-    /**
-     * Test of logTodosLosArticulos method, of class ArticuloDao.
-     */
     @Test
     public void debieraObtenerListaDeArticulos() {
-        for(int i = 1; i <= 20; i++) {
-            Articulo articulo = new Articulo("TEST"+i,"TEST"+i);
+        for (int i = 1; i <= 20; i++) {
+            Articulo articulo = new Articulo("TEST" + i, "TEST" + i);
             instance.crea(articulo);
         }
-        
+
         log.debug("Lista de articulos");
         List<Articulo> articulos = instance.lista();
         log.info("Total de articulos {}", articulos.size());
         for (Articulo articulo : articulos) {
             log.info("{}", articulo);
         }
+        assertNotNull(articulos);
+        assertEquals(20, articulos.size());
     }
 
     /**
@@ -92,19 +89,21 @@ public class ArticuloDaoTest {
      */
     @Test
     public void testCrea() {
-        Articulo articulo = new Articulo("TEST1","TEST1");
+        log.debug("Creando articulo");
+        Articulo articulo = new Articulo("TEST1", "TEST1");
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
         assertNotNull(articulo.getArticuloId());
     }
-    
+
     @Test
     public void obtieneArticulo() {
-        Articulo articulo = new Articulo("TEST1","TEST1");
+        log.debug("Obtiene articulo por id");
+        Articulo articulo = new Articulo("TEST1", "TEST1");
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
         assertNotNull(articulo.getArticuloId());
-        
+
         Articulo prueba = instance.obtiene(articulo.getArticuloId());
         assertNotNull(prueba);
         assertEquals(articulo.getArticuloId(), prueba.getArticuloId());
@@ -115,11 +114,12 @@ public class ArticuloDaoTest {
      */
     @Test
     public void testElimina() {
-        Articulo articulo = new Articulo("TEST1","TEST1");
+        log.debug("Elimina articulo por id");
+        Articulo articulo = new Articulo("TEST1", "TEST1");
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
         assertNotNull(articulo.getArticuloId());
-        
+
         instance.elimina(articulo.getArticuloId());
     }
 }

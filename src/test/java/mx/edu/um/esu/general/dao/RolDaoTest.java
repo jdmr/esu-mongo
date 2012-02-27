@@ -23,53 +23,49 @@
  */
 package mx.edu.um.esu.general.dao;
 
-import java.util.List;
-import java.util.UUID;
-import mx.edu.um.esu.general.model.Articulo;
+import mx.edu.um.esu.general.model.Rol;
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  *
  * @author J. David Mendoza <jdmendoza@um.edu.mx>
  */
-@Repository
-public class ArticuloDao {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:esu.xml"})
+public class RolDaoTest {
 
-    private static final Logger log = LoggerFactory.getLogger(ArticuloDao.class);
+    private static final Logger log = LoggerFactory.getLogger(RolDaoTest.class);
     @Autowired
-    private MongoTemplate mongoTemplate;
-    
-    public List<Articulo> lista() {
-        log.debug("Lista de articulos");
-        List<Articulo> articulos = mongoTemplate.findAll(Articulo.class);
-        return articulos;
+    private RolDao instance;
+
+    @Before
+    public void setUp() {
+        instance.reiniciaColeccion();
     }
-    
-    public void reiniciaColeccion() {
-        if (mongoTemplate.collectionExists(Articulo.class)) {
-            mongoTemplate.dropCollection(Articulo.class);
-        }
+
+    @After
+    public void tearDown() {
+        instance.reiniciaColeccion();
     }
-    
-    public Articulo crea(Articulo articulo) {
-        articulo.setArticuloId(UUID.randomUUID().toString());
-        mongoTemplate.insert(articulo);
-        return articulo;
-    }
-    
-    public Articulo obtiene(String id) {
-        Articulo articulo = mongoTemplate.findById(id, Articulo.class);
-        return articulo;
-    }
-    
-    public void elimina(String id) {
-        Query query = new Query(Criteria.where("articuloId").is(id));
-        mongoTemplate.remove(query, Articulo.class);
+
+    @Test
+    public void debieraCrearRol() {
+        String authority = "ROLE_TEST";
+        Rol rol = new Rol(authority);
+        instance.crea(rol);
+
+        Rol prueba = instance.obtiene(authority);
+        assertNotNull(prueba);
+        assertEquals(authority, prueba.getAuthority());
     }
 }

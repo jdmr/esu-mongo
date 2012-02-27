@@ -24,69 +24,18 @@
 package mx.edu.um.esu.general.model;
 
 import java.io.Serializable;
-import java.util.Objects;
-import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
 
 /**
  *
  * @author J. David Mendoza <jdmendoza@um.edu.mx>
  */
 @Document
-public class Rol implements Serializable, GrantedAuthority {
-
+public class Comentario implements Serializable {
     @Id
-    @NotNull
-    private String authority;
-
-    public Rol() {
-    }
-
-    public Rol(String authority) {
-        this.authority = authority;
-    }
-
-    /**
-     * @return the authority
-     */
-    @Override
-    public String getAuthority() {
-        return authority;
-    }
-
-    /**
-     * @param authority the authority to set
-     */
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Rol other = (Rol) obj;
-        if (!Objects.equals(this.authority, other.authority)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 11 * hash + Objects.hashCode(this.authority);
-        return hash;
-    }
-
-    @Override
-    public String toString() {
-        return "Rol{" + "authority=" + authority + '}';
-    }
+    private String id;
+    private String texto;
+    // Autor
+    
 }
