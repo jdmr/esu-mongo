@@ -24,7 +24,11 @@
 package mx.edu.um.esu.general.model;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -33,9 +37,120 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document
 public class Comentario implements Serializable {
+
     @Id
     private String id;
     private String texto;
-    // Autor
-    
+    @Indexed
+    private Date fecha;
+    @Indexed
+    @DBRef
+    private Usuario autor;
+    @DBRef
+    private Comentario comentario;
+
+    public Comentario() {
+    }
+
+    public Comentario(String texto, Usuario autor) {
+        this.texto = texto;
+        this.autor = autor;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the texto
+     */
+    public String getTexto() {
+        return texto;
+    }
+
+    /**
+     * @param texto the texto to set
+     */
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    /**
+     * @return the fecha
+     */
+    public Date getFecha() {
+        return fecha;
+    }
+
+    /**
+     * @param fecha the fecha to set
+     */
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    /**
+     * @return the autor
+     */
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    /**
+     * @param autor the autor to set
+     */
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
+    }
+
+    /**
+     * @return the comentario
+     */
+    public Comentario getComentario() {
+        return comentario;
+    }
+
+    /**
+     * @param comentario the comentario to set
+     */
+    public void setComentario(Comentario comentario) {
+        this.comentario = comentario;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Comentario other = (Comentario) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "Comentario{" + "id=" + id + ", texto=" + texto + ", fecha=" + fecha + ", autor=" + autor + '}';
+    }
 }

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -48,13 +49,23 @@ public class Articulo {
     @Indexed
     @Field("fechap")
     private Date fechaPublicacion;
-    private List<String> referencias = new ArrayList<>();
-    private List<String> etiquetas = new ArrayList<>();
-    private String estado;
-    
-    //Autor
-    //Editor
-    
+    @Indexed
+    @DBRef
+    private List<Carpeta> ubicaciones = new ArrayList<>();
+    @Indexed
+    @DBRef
+    private List<Etiqueta> etiquetas = new ArrayList<>();
+    @Indexed
+    @DBRef
+    private Estatus estatus;
+    @Indexed
+    @DBRef
+    private Usuario autor;
+    @Indexed
+    @DBRef
+    private Usuario editor;
+    @DBRef
+    private List<Comentario> comentarios = new ArrayList<>();
 
     public Articulo() {
     }
@@ -106,6 +117,118 @@ public class Articulo {
         this.descripcion = descripcion;
     }
 
+    /**
+     * @return the contenido
+     */
+    public String getContenido() {
+        return contenido;
+    }
+
+    /**
+     * @param contenido the contenido to set
+     */
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+
+    /**
+     * @return the fechaPublicacion
+     */
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    /**
+     * @param fechaPublicacion the fechaPublicacion to set
+     */
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
+
+    /**
+     * @return the ubicaciones
+     */
+    public List<Carpeta> getUbicaciones() {
+        return ubicaciones;
+    }
+
+    /**
+     * @param ubicaciones the ubicaciones to set
+     */
+    public void setUbicaciones(List<Carpeta> ubicaciones) {
+        this.ubicaciones = ubicaciones;
+    }
+
+    /**
+     * @return the etiquetas
+     */
+    public List<Etiqueta> getEtiquetas() {
+        return etiquetas;
+    }
+
+    /**
+     * @param etiquetas the etiquetas to set
+     */
+    public void setEtiquetas(List<Etiqueta> etiquetas) {
+        this.etiquetas = etiquetas;
+    }
+
+    /**
+     * @return the estatus
+     */
+    public Estatus getEstatus() {
+        return estatus;
+    }
+
+    /**
+     * @param estatus the estatus to set
+     */
+    public void setEstatus(Estatus estatus) {
+        this.estatus = estatus;
+    }
+
+    /**
+     * @return the autor
+     */
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    /**
+     * @param autor the autor to set
+     */
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
+    }
+
+    /**
+     * @return the editor
+     */
+    public Usuario getEditor() {
+        return editor;
+    }
+
+    /**
+     * @param editor the editor to set
+     */
+    public void setEditor(Usuario editor) {
+        this.editor = editor;
+    }
+
+    /**
+     * @return the comentarios
+     */
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    /**
+     * @param comentarios the comentarios to set
+     */
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -124,13 +247,13 @@ public class Articulo {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.articuloId);
-        hash = 43 * hash + Objects.hashCode(this.nombre);
+        hash = 43 * hash + Objects.hashCode(this.getArticuloId());
+        hash = 43 * hash + Objects.hashCode(this.getNombre());
         return hash;
     }
 
     @Override
     public String toString() {
-        return "Articulo{" + "articuloId=" + articuloId + ", nombre=" + nombre + ", descripcion=" + descripcion + '}';
+        return "Articulo{" + "articuloId=" + getArticuloId() + ", nombre=" + getNombre() + ", descripcion=" + getDescripcion() + '}';
     }
 }
