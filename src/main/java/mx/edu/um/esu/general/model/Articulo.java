@@ -70,9 +70,12 @@ public class Articulo {
     public Articulo() {
     }
 
-    public Articulo(String nombre, String descripcion) {
+    public Articulo(String nombre, String descripcion, String contenido, Estatus estatus, Usuario autor) {
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.contenido = contenido;
+        this.estatus = estatus;
+        this.autor = autor;
     }
 
     /**

@@ -24,13 +24,18 @@
 package mx.edu.um.esu.general.dao;
 
 import java.util.List;
+import mx.edu.um.esu.general.Constantes;
 import mx.edu.um.esu.general.model.Articulo;
+import mx.edu.um.esu.general.model.Estatus;
+import mx.edu.um.esu.general.model.Rol;
+import mx.edu.um.esu.general.model.Usuario;
 import static org.junit.Assert.*;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -45,6 +50,8 @@ public class ArticuloDaoTest {
     private static final Logger log = LoggerFactory.getLogger(ArticuloDaoTest.class);
     @Autowired
     private ArticuloDao instance;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public ArticuloDaoTest() {
     }
@@ -69,8 +76,15 @@ public class ArticuloDaoTest {
 
     @Test
     public void debieraObtenerListaDeArticulos() {
+        Estatus estatus = new Estatus(Constantes.PUBLICADO);
+        mongoTemplate.insert(estatus);
+        Rol rol = new Rol(Constantes.ROL_ADMIN);
+        mongoTemplate.insert(rol);
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        autor.addRol(rol);
+        mongoTemplate.insert(autor);
         for (int i = 1; i <= 20; i++) {
-            Articulo articulo = new Articulo("TEST" + i, "TEST" + i);
+            Articulo articulo = new Articulo("TEST" + i, "TEST" + i, "TEST" + i, estatus, autor);
             instance.crea(articulo);
         }
 
@@ -90,7 +104,14 @@ public class ArticuloDaoTest {
     @Test
     public void testCrea() {
         log.debug("Creando articulo");
-        Articulo articulo = new Articulo("TEST1", "TEST1");
+        Estatus estatus = new Estatus(Constantes.PUBLICADO);
+        mongoTemplate.insert(estatus);
+        Rol rol = new Rol(Constantes.ROL_ADMIN);
+        mongoTemplate.insert(rol);
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        autor.addRol(rol);
+        mongoTemplate.insert(autor);
+        Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
         assertNotNull(articulo.getArticuloId());
@@ -99,7 +120,14 @@ public class ArticuloDaoTest {
     @Test
     public void obtieneArticulo() {
         log.debug("Obtiene articulo por id");
-        Articulo articulo = new Articulo("TEST1", "TEST1");
+        Estatus estatus = new Estatus(Constantes.PUBLICADO);
+        mongoTemplate.insert(estatus);
+        Rol rol = new Rol(Constantes.ROL_ADMIN);
+        mongoTemplate.insert(rol);
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        autor.addRol(rol);
+        mongoTemplate.insert(autor);
+        Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
         assertNotNull(articulo.getArticuloId());
@@ -109,13 +137,47 @@ public class ArticuloDaoTest {
         assertEquals(articulo.getArticuloId(), prueba.getArticuloId());
     }
 
+    @Test
+    public void debieraModificarArticulo() {
+        log.debug("Obtiene articulo por id");
+        Estatus estatus = new Estatus(Constantes.PUBLICADO);
+        mongoTemplate.insert(estatus);
+        Rol rol = new Rol(Constantes.ROL_ADMIN);
+        mongoTemplate.insert(rol);
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        autor.addRol(rol);
+        mongoTemplate.insert(autor);
+        Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
+        articulo = instance.crea(articulo);
+        assertNotNull(articulo);
+        assertNotNull(articulo.getArticuloId());
+
+        Articulo prueba = instance.obtiene(articulo.getArticuloId());
+        assertNotNull(prueba);
+        assertEquals(articulo.getArticuloId(), prueba.getArticuloId());
+
+        prueba.setDescripcion("TEST");
+        instance.actualiza(prueba);
+
+        Articulo test = instance.obtiene(articulo.getArticuloId());
+        assertNotNull(test);
+        assertEquals("TEST", test.getDescripcion());
+    }
+
     /**
      * Test of elimina method, of class ArticuloDao.
      */
     @Test
     public void testElimina() {
         log.debug("Elimina articulo por id");
-        Articulo articulo = new Articulo("TEST1", "TEST1");
+        Estatus estatus = new Estatus(Constantes.PUBLICADO);
+        mongoTemplate.insert(estatus);
+        Rol rol = new Rol(Constantes.ROL_ADMIN);
+        mongoTemplate.insert(rol);
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        autor.addRol(rol);
+        mongoTemplate.insert(autor);
+        Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
         assertNotNull(articulo.getArticuloId());

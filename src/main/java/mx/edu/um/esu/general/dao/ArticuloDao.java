@@ -66,6 +66,11 @@ public class ArticuloDao {
         return articulo;
     }
     
+    public Articulo actualiza(Articulo articulo) {
+        mongoTemplate.save(articulo);
+        return articulo;
+    }
+    
     public Articulo obtiene(String id) {
         Articulo articulo = mongoTemplate.findById(id, Articulo.class);
         return articulo;

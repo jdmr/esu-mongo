@@ -32,14 +32,13 @@
         <sitemesh:write property='head'/>
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container">
             <sitemesh:write property='body'/>
+            <footer>
+                <hr />
+                <p class="pull-right">&copy; 2012 Universidad de Montemorelos</p>
+            </footer>
         </div>
-
-        <footer>
-            <hr />
-            <p>&copy; 2012 Universidad de Montemorelos</p>
-        </footer>
 
         <!-- JavaScript at the bottom for fast page loading -->
 

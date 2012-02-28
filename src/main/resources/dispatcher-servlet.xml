@@ -23,17 +23,6 @@
     <mvc:resources mapping="/img/**" location="/img/" />
     <mvc:resources mapping="/js/**" location="/js/" />
     
-    <mvc:interceptors>
-        <ref bean="openSessionInViewInterceptor"/>
-    </mvc:interceptors>
-    
-    <bean id="openSessionInViewInterceptor"
-          class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor">
-        <property name="sessionFactory">
-            <ref local="sessionFactory"/>
-        </property>
-    </bean>
-    
     <!-- Default View Resolver -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
         <property name="cache" value="false" /> 
