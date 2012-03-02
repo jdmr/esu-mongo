@@ -8,12 +8,26 @@
 <%@taglib prefix="s"    uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="c"    uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
         <title><s:message code="login.title" /></title>
     </head>
     <body>
+        <nav>
+            <ul class="nav">
+                <li class="active"><a href="<c:url value='/inicio' />"><s:message code="inicio.label" /></a></li>
+                <li><a href="<c:url value='/estudia' />"><s:message code="estudia.label" /></a></li>
+                <li><a href="<s:url value='/profundiza'/>" ><s:message code="profundiza.label" /></a></li>
+                <li><a href="<s:url value='/comparte'/>" ><s:message code="comparte.label" /></a></li>
+                <li><a href="<s:url value='/foros'/>" ><s:message code="foros.label" /></a></li>
+                <li><a href="<s:url value='/conocenos'/>" ><s:message code="conocenos.label" /></a></li>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <li><a href="<s:url value='/admin'/>" ><s:message code="admin.label" /></a></li>
+                </sec:authorize>
+            </ul>
+        </nav>
         <h2><s:message code="login.title" /></h2>
         <c:if test="${not empty param.error}">
             <p style="color:red;padding: 0 10px 10px;">
