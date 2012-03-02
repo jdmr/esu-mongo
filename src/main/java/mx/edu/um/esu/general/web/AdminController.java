@@ -21,17 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.edu.um.esu.general;
+package mx.edu.um.esu.general.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
  * @author J. David Mendoza <jdmendoza@um.edu.mx>
  */
-public class Constantes {
+@Controller
+@RequestMapping("/admin")
+public class AdminController {
 
-    public static final String PUBLICADO = "PUBLICADO";
-    public static final String ROL_ADMIN = "ROLE_ADMIN";
-    public static final String ROL_EDITOR = "ROLE_EDITOR";
-    public static final String ROL_AUTOR = "ROLE_AUTOR";
-    public static final String ROL_USUARIO = "ROLE_USUARIO";
+    @RequestMapping
+    public String index() {
+        return "/admin/index";
+    }
+    
 }

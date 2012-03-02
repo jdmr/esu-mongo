@@ -33,10 +33,44 @@
     </head>
     <body>
         <div class="container">
+            <header>
+                <div class="row">
+                    <div class="span8">
+                        <a href="<c:url value='/inicio' />"><img src="<c:url value='/images/logo.jpg'/>" /></a>
+                    </div>
+                    <div class="span4">
+                        <p class="pull-right" style="margin-top: 50px;"><a href="<c:url value='/login'/>">Acceder</a></p>
+                    </div>
+                </div>
+            </header>
+            <nav class="navbar">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="i-bar"></span>
+                            <span class="i-bar"></span>
+                            <span class="i-bar"></span>
+                        </a>
+                        <div class="nav-collapse">
+                            <ul class="nav">
+                                <li class="active"><a href="<c:url value='/inicio' />"><s:message code="inicio.label" /></a></li>
+                                <li><a href="<c:url value='/estudia' />"><s:message code="estudia.label" /></a></li>
+                                <li><a href="<s:url value='/profundiza'/>" ><s:message code="profundiza.label" /></a></li>
+                                <li><a href="<s:url value='/comparte'/>" ><s:message code="comparte.label" /></a></li>
+                                <li><a href="<s:url value='/foros'/>" ><s:message code="foros.label" /></a></li>
+                                <li><a href="<s:url value='/conocenos'/>" ><s:message code="conocenos.label" /></a></li>
+                                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                    <li><a href="<s:url value='/admin'/>" ><s:message code="admin.label" /></a></li>
+                                </sec:authorize>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
             <sitemesh:write property='body'/>
             <footer>
                 <hr />
-                <p class="pull-right">&copy; 2012 Universidad de Montemorelos</p>
+                <p class="pull-right">&copy; <s:message code="proyecto.copyright.year.label" /> Powered by <a href="http://www.um.edu.mx"><s:message code="proyecto.empresa.label" /></a></p>
             </footer>
         </div>
 

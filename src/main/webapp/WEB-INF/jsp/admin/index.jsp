@@ -4,11 +4,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><s:message code="inicio.label" /></title>
+        <title><s:message code="admin.label" /></title>
     </head>
     <body>
         <div class="row">
-            <div class="span8"><img src="<c:url value='/images/home.jpg' />" /></div>
+            <div class="span8"><s:message code="admin.label" /></div>
             <div class="span4">
                 <h1><a href='<c:url value="/estudia" />'>Daniel 2 y la Providencia Divina en la historia</a></h1>
                 <h3>Martes 28/02/2012</h3>
