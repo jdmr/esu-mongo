@@ -32,6 +32,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -41,12 +42,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Articulo {
 
     @Id
-    private String articuloId;
+    private String id;
     @Indexed
     private String nombre;
     private String descripcion;
     private String contenido;
     @Indexed
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Field("fechap")
     private Date fechaPublicacion;
     @Indexed
@@ -79,17 +81,17 @@ public class Articulo {
     }
 
     /**
-     * @return the articuloId
+     * @return the id
      */
-    public String getArticuloId() {
-        return articuloId;
+    public String getId() {
+        return id;
     }
 
     /**
-     * @param articuloId the articuloId to set
+     * @param id the id to set
      */
-    public void setArticuloId(String articuloId) {
-        this.articuloId = articuloId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -250,13 +252,13 @@ public class Articulo {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.getArticuloId());
+        hash = 43 * hash + Objects.hashCode(this.getId());
         hash = 43 * hash + Objects.hashCode(this.getNombre());
         return hash;
     }
 
     @Override
     public String toString() {
-        return "Articulo{" + "articuloId=" + getArticuloId() + ", nombre=" + getNombre() + ", descripcion=" + getDescripcion() + '}';
+        return "Articulo{" + "id=" + getId() + ", nombre=" + getNombre() + ", descripcion=" + getDescripcion() + '}';
     }
 }

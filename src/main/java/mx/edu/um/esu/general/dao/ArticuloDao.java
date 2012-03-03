@@ -59,7 +59,7 @@ public class ArticuloDao {
     }
     
     public Articulo crea(Articulo articulo) {
-        articulo.setArticuloId(UUID.randomUUID().toString());
+        articulo.setId(UUID.randomUUID().toString());
         articulo.setFechaPublicacion(new Date());
         mongoTemplate.insert(articulo);
         return articulo;

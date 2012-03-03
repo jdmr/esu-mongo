@@ -114,7 +114,7 @@ public class ArticuloDaoTest {
         Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
-        assertNotNull(articulo.getArticuloId());
+        assertNotNull(articulo.getId());
     }
 
     @Test
@@ -130,11 +130,11 @@ public class ArticuloDaoTest {
         Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
-        assertNotNull(articulo.getArticuloId());
+        assertNotNull(articulo.getId());
 
-        Articulo prueba = instance.obtiene(articulo.getArticuloId());
+        Articulo prueba = instance.obtiene(articulo.getId());
         assertNotNull(prueba);
-        assertEquals(articulo.getArticuloId(), prueba.getArticuloId());
+        assertEquals(articulo.getId(), prueba.getId());
     }
 
     @Test
@@ -150,16 +150,16 @@ public class ArticuloDaoTest {
         Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
-        assertNotNull(articulo.getArticuloId());
+        assertNotNull(articulo.getId());
 
-        Articulo prueba = instance.obtiene(articulo.getArticuloId());
+        Articulo prueba = instance.obtiene(articulo.getId());
         assertNotNull(prueba);
-        assertEquals(articulo.getArticuloId(), prueba.getArticuloId());
+        assertEquals(articulo.getId(), prueba.getId());
 
         prueba.setDescripcion("TEST");
         instance.actualiza(prueba);
 
-        Articulo test = instance.obtiene(articulo.getArticuloId());
+        Articulo test = instance.obtiene(articulo.getId());
         assertNotNull(test);
         assertEquals("TEST", test.getDescripcion());
     }
@@ -180,8 +180,8 @@ public class ArticuloDaoTest {
         Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
         articulo = instance.crea(articulo);
         assertNotNull(articulo);
-        assertNotNull(articulo.getArticuloId());
+        assertNotNull(articulo.getId());
 
-        instance.elimina(articulo.getArticuloId());
+        instance.elimina(articulo.getId());
     }
 }
