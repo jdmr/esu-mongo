@@ -133,7 +133,7 @@ public class ArticuloController {
 
     @RequestMapping("/edita/{id}")
     public String edita(@PathVariable String id, Model modelo) {
-        log.debug("Edita usuario {}", id);
+        log.debug("Edita articulo {}", id);
         Articulo articulo = articuloDao.obtiene(id);
         modelo.addAttribute("articulo", articulo);
         List<Estatus> estados = estatusDao.lista();
@@ -144,6 +144,7 @@ public class ArticuloController {
     @Transactional
     @RequestMapping(value = "/actualiza", method = RequestMethod.POST)
     public String actualiza(HttpServletRequest request, @Valid Articulo articulo, BindingResult bindingResult, Errors errors, Model modelo, RedirectAttributes redirectAttributes) {
+        log.debug("Actualizando articulo");
         if (bindingResult.hasErrors()) {
             log.error("Hubo algun error en la forma, regresando");
             List<Estatus> estados = estatusDao.lista();
