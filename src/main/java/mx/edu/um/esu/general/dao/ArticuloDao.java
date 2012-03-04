@@ -87,7 +87,7 @@ public class ArticuloDao {
     }
 
     public void elimina(String id) {
-        Query query = new Query(Criteria.where("articuloId").is(id));
+        Query query = new Query(Criteria.where("id").is(id));
         mongoTemplate.remove(query, Articulo.class);
     }
 }
