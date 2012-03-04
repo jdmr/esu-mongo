@@ -21,67 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.edu.um.esu.general.model;
+package mx.edu.um.esu.general.dao;
 
-import java.io.Serializable;
-import java.util.Objects;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import mx.edu.um.esu.general.model.Carpeta;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author J. David Mendoza <jdmendoza@um.edu.mx>
  */
-@Document
-public class Carpeta implements Serializable {
-    @Id
-    private String nombre;
+@Repository
+public class CarpetaDao {
 
-    public Carpeta() {
-    }
+    private static final Logger log = LoggerFactory.getLogger(CarpetaDao.class);
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-    public Carpeta(String nombre) {
-        this.nombre = nombre;
-    }
-
-    /**
-     * @return the nombre
-     */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /**
-     * @param nombre the nombre to set
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Carpeta other = (Carpeta) obj;
-        if (!Objects.equals(this.nombre, other.nombre)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.nombre);
-        return hash;
-    }
-
-    @Override
-    public String toString() {
-        return nombre;
+    public Carpeta crea(Carpeta carpeta) {
+        log.debug("Creando carpeta {}", carpeta);
+        mongoTemplate.insert(carpeta);
+        return carpeta;
     }
 }

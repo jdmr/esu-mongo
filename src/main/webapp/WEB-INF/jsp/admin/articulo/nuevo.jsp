@@ -12,6 +12,7 @@
 <html>
     <head>
         <title><s:message code="articulo.nuevo.label" /></title>
+        <link rel="stylesheet" href="<c:url value='/css/tagit-simple-blue.css' />" type="text/css">
     </head>
     <body>
         <nav>
@@ -35,64 +36,84 @@
             </form:errors>
 
             <fieldset>
-                <s:bind path="articulo.nombre">
-                    <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
-                        <label for="nombre">
-                            <s:message code="nombre.label" />
-                            <span class="required-indicator">*</span>
-                        </label>
-                        <form:input path="nombre" required="true" />
-                        <form:errors path="nombre" cssClass="alert alert-error" />
+                <div class="row-fluid">
+                    <div class="span6">
+                        <s:bind path="articulo.nombre">
+                            <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
+                                <label for="nombre">
+                                    <s:message code="nombre.label" />
+                                    <span class="required-indicator">*</span>
+                                </label>
+                                <form:input path="nombre" required="true" class="span6" />
+                                <form:errors path="nombre" cssClass="alert alert-error" />
+                            </div>
+                        </s:bind>
                     </div>
-                </s:bind>
-                <s:bind path="articulo.descripcion">
-                    <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
-                        <label for="descripcion">
-                            <s:message code="descripcion.label" />
-                            <span class="required-indicator">*</span>
-                        </label>
-                        <form:textarea path="descripcion" required="true" />
-                        <form:errors path="descripcion" cssClass="alert alert-error" />
+                    <div class="span6">
+                        <s:bind path="articulo.descripcion">
+                            <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
+                                <label for="descripcion">
+                                    <s:message code="descripcion.label" />
+                                    <span class="required-indicator">*</span>
+                                </label>
+                                <form:textarea path="descripcion" required="true" class="span6" />
+                                <form:errors path="descripcion" cssClass="alert alert-error" />
+                            </div>
+                        </s:bind>
                     </div>
-                </s:bind>
-                <s:bind path="articulo.contenido">
-                    <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
-                        <label for="contenido">
-                            <s:message code="contenido.label" />
-                            <span class="required-indicator">*</span>
-                        </label>
-                        <form:textarea path="contenido" required="true" />
-                        <form:errors path="contenido" cssClass="alert alert-error" />
+                </div>
+                <div class="row-fluid">
+                    <div class="span6">
+                        <s:bind path="articulo.fechaPublicacion">
+                            <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
+                                <label for="fechaPublicacion">
+                                    <s:message code="fechaPublicacion.label" />
+                                    <span class="required-indicator">*</span>
+                                </label>
+                                <form:input path="fechaPublicacion" required="true" />
+                                <form:errors path="nombre" cssClass="alert alert-error" />
+                            </div>
+                        </s:bind>
                     </div>
-                </s:bind>
-                <s:bind path="articulo.fechaPublicacion">
-                    <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
-                        <label for="fechaPublicacion">
-                            <s:message code="fechaPublicacion.label" />
-                            <span class="required-indicator">*</span>
-                        </label>
-                        <form:input path="fechaPublicacion" required="true" />
-                        <form:errors path="nombre" cssClass="alert alert-error" />
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <s:bind path="articulo.contenido">
+                            <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
+                                <label for="contenido">
+                                    <s:message code="contenido.label" />
+                                    <span class="required-indicator">*</span>
+                                </label>
+                                <form:textarea path="contenido" required="true" class="span12" />
+                                <form:errors path="contenido" cssClass="alert alert-error" />
+                            </div>
+                        </s:bind>
                     </div>
-                </s:bind>
-                <s:bind path="articulo.ubicaciones">
-                    <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
-                        <label for="ubicaciones">
-                            <s:message code="ubicaciones.label" />
-                        </label>
-                        <form:input path="ubicaciones" />
-                        <form:errors path="ubicaciones" cssClass="alert alert-error" />
+                </div>
+                <div class="row-fluid">
+                    <div class="span6">
+                        <s:bind path="articulo.ubicaciones">
+                            <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
+                                <label for="ubicaciones">
+                                    <s:message code="ubicaciones.label" />
+                                </label>
+                                <ul id="ubicacionesTags" name="ubicaciones"></ul>
+                                <form:errors path="ubicaciones" cssClass="alert alert-error" />
+                            </div>
+                        </s:bind>
                     </div>
-                </s:bind>
-                <s:bind path="articulo.etiquetas">
-                    <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
-                        <label for="etiquetas">
-                            <s:message code="etiquetas.label" />
-                        </label>
-                        <form:input path="etiquetas" />
-                        <form:errors path="etiquetas" cssClass="alert alert-error" />
+                    <div class="span6">
+                        <s:bind path="articulo.etiquetas">
+                            <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
+                                <label for="etiquetas">
+                                    <s:message code="etiquetas.label" />
+                                </label>
+                                <ul id="etiquetasTags" name="etiquetas"></ul>
+                                <form:errors path="etiquetas" cssClass="alert alert-error" />
+                            </div>
+                        </s:bind>
                     </div>
-                </s:bind>
+                </div>
             </fieldset>
 
             <p class="well" style="margin-top: 10px;">
@@ -101,8 +122,12 @@
             </p>
         </form:form>
         <content>
+            <script src="<c:url value='/js/tagit.js' />"></script>
             <script>
                 $(document).ready(function() {
+                    $('#ubicacionesTags').tagit({select:true});
+                    $('#etiquetasTags').tagit({select:true});
+                    
                     $('input#nombre').focus();
                 });
             </script>                    

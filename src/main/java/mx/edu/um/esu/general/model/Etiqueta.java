@@ -25,13 +25,17 @@ package mx.edu.um.esu.general.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  *
  * @author J. David Mendoza <jdmendoza@um.edu.mx>
  */
+@Document
 public class Etiqueta implements Serializable {
 
+    @Id
     private String nombre;
 
     public Etiqueta() {
@@ -79,6 +83,6 @@ public class Etiqueta implements Serializable {
 
     @Override
     public String toString() {
-        return "Etiqueta{" + "nombre=" + nombre + '}';
+        return nombre;
     }
 }

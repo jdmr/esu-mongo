@@ -63,11 +63,15 @@
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span4">
                     <h4><s:message code="ubicaciones.label" /></h4>
-                    <h3>${articulo.ubicaciones}</h3>
+                    <c:forEach items="${articulo.ubicaciones}" var="carpeta">
+                        <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${carpeta.nombre}</label>
+                    </c:forEach>
                 </div>
                 <div class="span4">
                     <h4><s:message code="etiquetas.label" /></h4>
-                    <h3>${articulo.etiquetas}</h3>
+                    <c:forEach items="${articulo.etiquetas}" var="etiqueta">
+                        <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${etiqueta.nombre}</label>
+                    </c:forEach>
                 </div>
             </div>
 

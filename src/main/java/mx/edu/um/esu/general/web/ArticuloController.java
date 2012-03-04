@@ -29,7 +29,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import mx.edu.um.esu.general.dao.ArticuloDao;
+import mx.edu.um.esu.general.dao.CarpetaDao;
+import mx.edu.um.esu.general.dao.EtiquetaDao;
 import mx.edu.um.esu.general.model.Articulo;
+import mx.edu.um.esu.general.model.Carpeta;
+import mx.edu.um.esu.general.model.Etiqueta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +57,10 @@ public class ArticuloController {
     private static final Logger log = LoggerFactory.getLogger(ArticuloController.class);
     @Autowired
     private ArticuloDao articuloDao;
+    @Autowired
+    private CarpetaDao carpetaDao;
+    @Autowired
+    private EtiquetaDao etiquetaDao;
 
     @RequestMapping
     public String lista(HttpServletRequest request, HttpServletResponse response,
@@ -96,8 +104,13 @@ public class ArticuloController {
             return "admin/articulo/nuevo";
         }
 
-        String password = null;
         try {
+            for(Carpeta carpeta : articulo.getUbicaciones()) {
+                carpetaDao.crea(carpeta);
+            }
+            for(Etiqueta etiqueta : articulo.getEtiquetas()) {
+                etiquetaDao.crea(etiqueta);
+            }
             articulo = articuloDao.crea(articulo);
         } catch (Exception e) {
             log.error("No se pudo crear al articulo", e);
