@@ -39,35 +39,35 @@
         <form:form commandName="articulo" action="${eliminaUrl}" >
             <form:errors path="*" cssClass="alert alert-error" element="ul" />
             <div class="row-fluid" style="padding-bottom: 10px;">
-                <div class="span4">
+                <div class="span6">
                     <h4><s:message code="nombre.label" /></h4>
                     <h3>${articulo.nombre}</h3>
                 </div>
-                <div class="span4">
+                <div class="span6">
                     <h4><s:message code="descripcion.label" /></h4>
                     <h3>${articulo.descripcion}</h3>
                 </div>
             </div>
 
             <div class="row-fluid" style="padding-bottom: 10px;">
-                <div class="span4">
+                <div class="span6">
                     <h4><s:message code="fechaPublicacion.label" /></h4>
                     <h3>${articulo.fechaPublicacion}</h3>
                 </div>
-                <div class="span4">
+                <div class="span6">
                     <h4><s:message code="estatus.label" /></h4>
                     <h3>${articulo.estatus}</h3>
                 </div>
             </div>
 
             <div class="row-fluid" style="padding-bottom: 10px;">
-                <div class="span4">
+                <div class="span6">
                     <h4><s:message code="ubicaciones.label" /></h4>
                     <c:forEach items="${articulo.ubicaciones}" var="carpeta">
                         <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${carpeta.nombre}</label>
                     </c:forEach>
                 </div>
-                <div class="span4">
+                <div class="span6">
                     <h4><s:message code="etiquetas.label" /></h4>
                     <c:forEach items="${articulo.etiquetas}" var="etiqueta">
                         <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${etiqueta.nombre}</label>
@@ -76,11 +76,11 @@
             </div>
 
             <div class="row-fluid" style="padding-bottom: 10px;">
-                <div class="span4">
+                <div class="span6">
                     <h4><s:message code="autor.label" /></h4>
                     <h3>${articulo.autor}</h3>
                 </div>
-                <div class="span4">
+                <div class="span6">
                     <h4><s:message code="editor.label" /></h4>
                     <h3>${articulo.editor}</h3>
                 </div>

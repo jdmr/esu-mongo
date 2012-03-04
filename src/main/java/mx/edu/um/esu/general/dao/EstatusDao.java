@@ -21,18 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.edu.um.esu.general;
+package mx.edu.um.esu.general.dao;
+
+import java.util.List;
+import mx.edu.um.esu.general.model.Estatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author J. David Mendoza <jdmendoza@um.edu.mx>
  */
-public class Constantes {
+@Repository
+public class EstatusDao {
 
-    public static final String PUBLICADO = "PUBLICADO";
-    public static final String PENDIENTE = "PENDIENTE";
-    public static final String ROL_ADMIN = "ROLE_ADMIN";
-    public static final String ROL_EDITOR = "ROLE_EDITOR";
-    public static final String ROL_AUTOR = "ROLE_AUTOR";
-    public static final String ROL_USUARIO = "ROLE_USUARIO";
+    private static final Logger log = LoggerFactory.getLogger(EstatusDao.class);
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    public List<Estatus> lista() {
+        log.debug("Lista de estatus");
+        List<Estatus> estados = mongoTemplate.findAll(Estatus.class);
+        return estados;
+    }
+
+    public Estatus crea(Estatus estatus) {
+        log.debug("Creando estatus {}", estatus);
+        mongoTemplate.insert(estatus);
+        return estatus;
+    }
+    
 }

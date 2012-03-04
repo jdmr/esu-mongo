@@ -75,6 +75,18 @@
                             </div>
                         </s:bind>
                     </div>
+                    <div class="span6">
+                        <s:bind path="articulo.estatus">
+                            <div class="control-group <c:if test='${not empty status.errorMessage}'>error</c:if>">
+                                <label for="estatus">
+                                    <s:message code="estatus.label" />
+                                    <span class="required-indicator">*</span>
+                                </label>
+                                <form:select items="${estados}" path="estatus" itemLabel="nombre" itemValue="nombre" />
+                                <form:errors path="estatus" cssClass="alert alert-error" />
+                            </div> 
+                        </s:bind>
+                    </div>
                 </div>
                 <div class="row-fluid">
                     <div class="span12">

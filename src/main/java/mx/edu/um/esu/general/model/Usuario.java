@@ -227,6 +227,6 @@ public class Usuario implements Serializable, UserDetails {
 
     @Override
     public String toString() {
-        return "Usuario{" + "username=" + username + ", nombre=" + nombre + ", apellido=" + apellido + '}';
+        return apellido + ", "+ nombre;
     }
 }

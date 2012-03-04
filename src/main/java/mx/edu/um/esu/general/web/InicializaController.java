@@ -24,8 +24,10 @@
 package mx.edu.um.esu.general.web;
 
 import mx.edu.um.esu.general.Constantes;
+import mx.edu.um.esu.general.dao.EstatusDao;
 import mx.edu.um.esu.general.dao.RolDao;
 import mx.edu.um.esu.general.dao.UsuarioDao;
+import mx.edu.um.esu.general.model.Estatus;
 import mx.edu.um.esu.general.model.Rol;
 import mx.edu.um.esu.general.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,8 @@ public class InicializaController {
     private RolDao rolDao;
     @Autowired
     private UsuarioDao usuarioDao;
+    @Autowired
+    private EstatusDao estatusDao;
 
     @RequestMapping
     public String inicia() {
@@ -64,6 +68,11 @@ public class InicializaController {
         rolDao.crea(rolAutor);
         Rol rolUsuario = new Rol(Constantes.ROL_USUARIO);
         rolDao.crea(rolUsuario);
+        
+        Estatus pendiente = new Estatus(Constantes.PENDIENTE);
+        estatusDao.crea(pendiente);
+        Estatus publicado = new Estatus(Constantes.PUBLICADO);
+        estatusDao.crea(publicado);
 
         Usuario usuario = new Usuario(username, password, "Usuario", "Administrador");
         usuarioDao.crea(usuario, new String[]{Constantes.ROL_ADMIN});

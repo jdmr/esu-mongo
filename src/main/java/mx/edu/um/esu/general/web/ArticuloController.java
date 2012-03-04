@@ -23,20 +23,22 @@
  */
 package mx.edu.um.esu.general.web;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import mx.edu.um.esu.general.dao.ArticuloDao;
-import mx.edu.um.esu.general.dao.CarpetaDao;
-import mx.edu.um.esu.general.dao.EtiquetaDao;
+import mx.edu.um.esu.general.dao.EstatusDao;
+import mx.edu.um.esu.general.dao.UsuarioDao;
 import mx.edu.um.esu.general.model.Articulo;
-import mx.edu.um.esu.general.model.Carpeta;
-import mx.edu.um.esu.general.model.Etiqueta;
+import mx.edu.um.esu.general.model.Estatus;
+import mx.edu.um.esu.general.model.Usuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -58,9 +60,9 @@ public class ArticuloController {
     @Autowired
     private ArticuloDao articuloDao;
     @Autowired
-    private CarpetaDao carpetaDao;
+    private EstatusDao estatusDao;
     @Autowired
-    private EtiquetaDao etiquetaDao;
+    private UsuarioDao usuarioDao;
 
     @RequestMapping
     public String lista(HttpServletRequest request, HttpServletResponse response,
@@ -90,6 +92,8 @@ public class ArticuloController {
         Articulo articulo = new Articulo();
         articulo.setFechaPublicacion(new Date());
         modelo.addAttribute("articulo", articulo);
+        List<Estatus> estados = estatusDao.lista();
+        modelo.addAttribute("estados", estados);
         return "admin/articulo/nuevo";
     }
 
@@ -101,19 +105,20 @@ public class ArticuloController {
         }
         if (bindingResult.hasErrors()) {
             log.debug("Hubo algun error en la forma, regresando");
+            List<Estatus> estados = estatusDao.lista();
+            modelo.addAttribute("estados", estados);
             return "admin/articulo/nuevo";
         }
 
         try {
-            for(Carpeta carpeta : articulo.getUbicaciones()) {
-                carpetaDao.crea(carpeta);
-            }
-            for(Etiqueta etiqueta : articulo.getEtiquetas()) {
-                etiquetaDao.crea(etiqueta);
-            }
+            Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            articulo.setAutor(usuario);
+            articulo.setEditor(usuario);
             articulo = articuloDao.crea(articulo);
         } catch (Exception e) {
             log.error("No se pudo crear al articulo", e);
+            List<Estatus> estados = estatusDao.lista();
+            modelo.addAttribute("estados", estados);
             modelo.addAttribute("message", "articulo.no.creado.message");
             modelo.addAttribute("messageStyle", "alert-error");
             modelo.addAttribute("messageAttrs", new String[]{articulo.getNombre()});
@@ -131,6 +136,8 @@ public class ArticuloController {
         log.debug("Edita usuario {}", id);
         Articulo articulo = articuloDao.obtiene(id);
         modelo.addAttribute("articulo", articulo);
+        List<Estatus> estados = estatusDao.lista();
+        modelo.addAttribute("estados", estados);
         return "admin/articulo/edita";
     }
 
@@ -139,6 +146,8 @@ public class ArticuloController {
     public String actualiza(HttpServletRequest request, @Valid Articulo articulo, BindingResult bindingResult, Errors errors, Model modelo, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             log.error("Hubo algun error en la forma, regresando");
+            List<Estatus> estados = estatusDao.lista();
+            modelo.addAttribute("estados", estados);
             return "admin/articulo/edita";
         }
 
@@ -146,10 +155,12 @@ public class ArticuloController {
             articulo = articuloDao.actualiza(articulo);
         } catch (Exception e) {
             log.error("No se pudo actualizar al articulo", e);
+            List<Estatus> estados = estatusDao.lista();
+            modelo.addAttribute("estados", estados);
             modelo.addAttribute("message", "articulo.no.actualizado.message");
             modelo.addAttribute("messageStyle", "alert-error");
             modelo.addAttribute("messageAttrs", new String[]{articulo.getNombre()});
-            return "admin/articulo/nuevo";
+            return "admin/articulo/edita";
         }
 
         redirectAttributes.addFlashAttribute("message", "articulo.actualizado.message");

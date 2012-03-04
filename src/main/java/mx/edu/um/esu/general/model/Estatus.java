@@ -83,6 +83,6 @@ public class Estatus implements Serializable {
 
     @Override
     public String toString() {
-        return "Estatus{" + "nombre=" + nombre + '}';
+        return nombre;
     }
 }

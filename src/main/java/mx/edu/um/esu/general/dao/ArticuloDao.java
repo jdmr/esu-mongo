@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import mx.edu.um.esu.general.model.Articulo;
+import mx.edu.um.esu.general.model.Carpeta;
+import mx.edu.um.esu.general.model.Etiqueta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,36 +47,45 @@ public class ArticuloDao {
     private static final Logger log = LoggerFactory.getLogger(ArticuloDao.class);
     @Autowired
     private MongoTemplate mongoTemplate;
-    
+    @Autowired
+    private CarpetaDao carpetaDao;
+    @Autowired
+    private EtiquetaDao etiquetaDao;
+
     public List<Articulo> lista() {
         log.debug("Lista de articulos");
         List<Articulo> articulos = mongoTemplate.findAll(Articulo.class);
         return articulos;
     }
-    
+
     public void reiniciaColeccion() {
         if (mongoTemplate.collectionExists(Articulo.class)) {
             mongoTemplate.dropCollection(Articulo.class);
         }
     }
-    
+
     public Articulo crea(Articulo articulo) {
+        for (Carpeta carpeta : articulo.getUbicaciones()) {
+            carpetaDao.crea(carpeta);
+        }
+        for (Etiqueta etiqueta : articulo.getEtiquetas()) {
+            etiquetaDao.crea(etiqueta);
+        }
         articulo.setId(UUID.randomUUID().toString());
-        articulo.setFechaPublicacion(new Date());
         mongoTemplate.insert(articulo);
         return articulo;
     }
-    
+
     public Articulo actualiza(Articulo articulo) {
         mongoTemplate.save(articulo);
         return articulo;
     }
-    
+
     public Articulo obtiene(String id) {
         Articulo articulo = mongoTemplate.findById(id, Articulo.class);
         return articulo;
     }
-    
+
     public void elimina(String id) {
         Query query = new Query(Criteria.where("articuloId").is(id));
         mongoTemplate.remove(query, Articulo.class);

@@ -65,8 +65,16 @@
                             <td>${articulo.autor}</td>
                             <td>${articulo.editor}</td>
                             <td>${articulo.estatus}</td>
-                            <td>${articulo.ubicaciones}</td>
-                            <td>${articulo.etiquetas}</td>
+                            <td>
+                                <c:forEach items="${articulo.ubicaciones}" var="carpeta">
+                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${carpeta.nombre}</label>
+                                </c:forEach>
+                            </td>
+                            <td>
+                                <c:forEach items="${articulo.etiquetas}" var="etiqueta">
+                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${etiqueta.nombre}</label>
+                                </c:forEach>
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>
