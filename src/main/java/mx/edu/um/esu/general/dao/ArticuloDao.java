@@ -88,6 +88,8 @@ public class ArticuloDao {
         nuevo.setNombre(articulo.getNombre());
         nuevo.setUbicaciones(articulo.getUbicaciones());
         nuevo.setFechaModificacion(new Date());
+        nuevo.setAutor(articulo.getAutor());
+        nuevo.setEditor(articulo.getEditor());
         mongoTemplate.save(nuevo);
         return articulo;
     }

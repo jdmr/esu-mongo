@@ -92,6 +92,32 @@
                     </div>
                 </div>
                 <div class="row-fluid">
+                    <div class="span6">
+                        <s:bind path="articulo.autor">
+                            <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
+                                <label for="autor">
+                                    <s:message code="autor.label" />
+                                    <span class="required-indicator">*</span>
+                                </label>
+                                <form:select items="${autores}" path="autor.username" itemLabel="nombreCompleto" itemValue="username" />
+                                <form:errors path="autor" cssClass="alert alert-error" />
+                            </div>
+                        </s:bind>
+                    </div>
+                    <div class="span6">
+                        <s:bind path="articulo.editor">
+                            <div class="control-group <c:if test='${not empty status.errorMessage}'>error</c:if>">
+                                <label for="editor">
+                                    <s:message code="editor.label" />
+                                    <span class="required-indicator">*</span>
+                                </label>
+                                <form:select items="${editores}" path="editor.username" itemLabel="nombreCompleto" itemValue="username" />
+                                <form:errors path="editor" cssClass="alert alert-error" />
+                            </div> 
+                        </s:bind>
+                    </div>
+                </div>
+                <div class="row-fluid">
                     <div class="span12">
                         <s:bind path="articulo.contenido">
                             <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">

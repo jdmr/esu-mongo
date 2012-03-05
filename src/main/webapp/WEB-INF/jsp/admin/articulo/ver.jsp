@@ -45,6 +45,13 @@
                     <h3>${articulo.nombre}</h3>
                 </div>
                 <div class="span6">
+                    <h4><s:message code="estatus.label" /></h4>
+                    <h3>${articulo.estatus}</h3>
+                </div>
+            </div>
+            
+            <div class="row-fluid" style="padding-bottom: 10px;">
+                <div class="span12">
                     <h4><s:message code="descripcion.label" /></h4>
                     <h3>${articulo.descripcion}</h3>
                 </div>
@@ -56,8 +63,8 @@
                     <h3><fmt:formatDate value="${articulo.fechaPublicacion}" pattern="yyyy/MM/dd" /></h3>
                 </div>
                 <div class="span6">
-                    <h4><s:message code="estatus.label" /></h4>
-                    <h3>${articulo.estatus}</h3>
+                    <h4><s:message code="creador.label" /></h4>
+                    <h3>${articulo.creador}</h3>
                 </div>
             </div>
 

@@ -25,7 +25,6 @@ package mx.edu.um.esu.general.model;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,7 +37,6 @@ import org.springframework.security.core.GrantedAuthority;
 public class Rol implements Serializable, GrantedAuthority {
 
     @Id
-    @NotNull
     private String authority;
 
     public Rol() {

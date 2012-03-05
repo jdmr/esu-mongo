@@ -203,6 +203,10 @@ public class Usuario implements Serializable, UserDetails {
         return enabled;
     }
 
+    public String getNombreCompleto() {
+        return apellido + ", " + nombre;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -227,6 +231,6 @@ public class Usuario implements Serializable, UserDetails {
 
     @Override
     public String toString() {
-        return apellido + ", "+ nombre;
+        return apellido + ", " + nombre;
     }
 }

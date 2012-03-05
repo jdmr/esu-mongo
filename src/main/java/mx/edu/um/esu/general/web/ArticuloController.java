@@ -29,10 +29,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import mx.edu.um.esu.general.dao.ArticuloDao;
-import mx.edu.um.esu.general.dao.CarpetaDao;
-import mx.edu.um.esu.general.dao.EstatusDao;
-import mx.edu.um.esu.general.dao.EtiquetaDao;
+import mx.edu.um.esu.general.dao.*;
 import mx.edu.um.esu.general.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +61,8 @@ public class ArticuloController {
     private CarpetaDao carpetaDao;
     @Autowired
     private EtiquetaDao etiquetaDao;
+    @Autowired
+    private UsuarioDao usuarioDao;
 
     @RequestMapping
     public String lista(HttpServletRequest request, HttpServletResponse response,
@@ -95,6 +94,12 @@ public class ArticuloController {
         modelo.addAttribute("articulo", articulo);
         List<Estatus> estados = estatusDao.lista();
         modelo.addAttribute("estados", estados);
+        
+        List<Usuario> autores = usuarioDao.autores();
+        modelo.addAttribute("autores", autores);
+        List<Usuario> editores = usuarioDao.editores();
+        modelo.addAttribute("editores", editores);
+        
         return "admin/articulo/nuevo";
     }
 
@@ -108,18 +113,29 @@ public class ArticuloController {
             log.debug("Hubo algun error en la forma, regresando");
             List<Estatus> estados = estatusDao.lista();
             modelo.addAttribute("estados", estados);
+        
+            List<Usuario> autores = usuarioDao.autores();
+            modelo.addAttribute("autores", autores);
+            List<Usuario> editores = usuarioDao.editores();
+            modelo.addAttribute("editores", editores);
+
             return "admin/articulo/nuevo";
         }
 
         try {
             Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            articulo.setAutor(usuario);
-            articulo.setEditor(usuario);
+            articulo.setCreador(usuario);
             articulo = articuloDao.crea(articulo);
         } catch (Exception e) {
             log.error("No se pudo crear al articulo", e);
             List<Estatus> estados = estatusDao.lista();
             modelo.addAttribute("estados", estados);
+        
+            List<Usuario> autores = usuarioDao.autores();
+            modelo.addAttribute("autores", autores);
+            List<Usuario> editores = usuarioDao.editores();
+            modelo.addAttribute("editores", editores);
+
             modelo.addAttribute("message", "articulo.no.creado.message");
             modelo.addAttribute("messageStyle", "alert-error");
             modelo.addAttribute("messageAttrs", new String[]{articulo.getNombre()});
@@ -139,6 +155,12 @@ public class ArticuloController {
         modelo.addAttribute("articulo", articulo);
         List<Estatus> estados = estatusDao.lista();
         modelo.addAttribute("estados", estados);
+        
+        List<Usuario> autores = usuarioDao.autores();
+        modelo.addAttribute("autores", autores);
+        List<Usuario> editores = usuarioDao.editores();
+        modelo.addAttribute("editores", editores);
+        
         return "admin/articulo/edita";
     }
 
@@ -150,6 +172,12 @@ public class ArticuloController {
             log.error("Hubo algun error en la forma, regresando");
             List<Estatus> estados = estatusDao.lista();
             modelo.addAttribute("estados", estados);
+        
+            List<Usuario> autores = usuarioDao.autores();
+            modelo.addAttribute("autores", autores);
+            List<Usuario> editores = usuarioDao.editores();
+            modelo.addAttribute("editores", editores);
+
             return "admin/articulo/edita";
         }
 
@@ -159,6 +187,12 @@ public class ArticuloController {
             log.error("No se pudo actualizar al articulo", e);
             List<Estatus> estados = estatusDao.lista();
             modelo.addAttribute("estados", estados);
+        
+            List<Usuario> autores = usuarioDao.autores();
+            modelo.addAttribute("autores", autores);
+            List<Usuario> editores = usuarioDao.editores();
+            modelo.addAttribute("editores", editores);
+        
             modelo.addAttribute("message", "articulo.no.actualizado.message");
             modelo.addAttribute("messageStyle", "alert-error");
             modelo.addAttribute("messageAttrs", new String[]{articulo.getNombre()});

@@ -23,8 +23,10 @@
  */
 package mx.edu.um.esu.general.dao;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import mx.edu.um.esu.general.Constantes;
 import mx.edu.um.esu.general.model.Rol;
 import mx.edu.um.esu.general.model.Usuario;
 import org.slf4j.Logger;
@@ -52,7 +54,7 @@ public class UsuarioDao {
     public UsuarioDao() {
         log.info("Se ha creado una nueva instancia de UsuarioDao");
     }
-    
+
     public void reiniciaColeccion() {
         if (mongoTemplate.collectionExists(Usuario.class)) {
             mongoTemplate.dropCollection(Usuario.class);
@@ -61,7 +63,7 @@ public class UsuarioDao {
 
     public List<Usuario> lista() {
         log.debug("Buscando lista de usuarios ");
-        
+
         List<Usuario> usuarios = mongoTemplate.findAll(Usuario.class);
 
         return usuarios;
@@ -100,13 +102,13 @@ public class UsuarioDao {
         if (!nuevoUsuario.getPassword().equals(usuario.getPassword())) {
             usuario.setPassword(passwordEncoder.encodePassword(usuario.getPassword(), usuario.getUsername()));
         }
-        
+
         if (usuario.getRoles() != null) {
             usuario.getRoles().clear();
         } else {
             usuario.setRoles(new HashSet<Rol>());
         }
-        
+
         for (String nombre : nombreDeRoles) {
             Query query = new Query(Criteria.where("authority").is(nombre));
             Rol rol = mongoTemplate.findOne(query, Rol.class);
@@ -120,5 +122,25 @@ public class UsuarioDao {
         Query query = new Query(Criteria.where("username").is(username));
         mongoTemplate.remove(query, Usuario.class);
         return username;
+    }
+
+    public List<Usuario> autores() {
+        log.debug("Buscando autores");
+        List<String> roles = new ArrayList<>();
+        roles.add(Constantes.ROL_ADMIN);
+        roles.add(Constantes.ROL_EDITOR);
+        roles.add(Constantes.ROL_AUTOR);
+        Query query = new Query(Criteria.where("roles.$id").in(roles));
+        List<Usuario> usuarios = mongoTemplate.find(query, Usuario.class);
+        return usuarios;
+    }
+
+    public List<Usuario> editores() {
+        List<String> roles = new ArrayList<>();
+        roles.add(Constantes.ROL_ADMIN);
+        roles.add(Constantes.ROL_EDITOR);
+        Query query = new Query(Criteria.where("roles.$id").in(roles));
+        List<Usuario> usuarios = mongoTemplate.find(query, Usuario.class);
+        return usuarios;
     }
 }

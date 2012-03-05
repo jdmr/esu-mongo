@@ -77,6 +77,15 @@ public class InicializaController {
         Usuario usuario = new Usuario(username, password, "Usuario", "Administrador");
         usuarioDao.crea(usuario, new String[]{Constantes.ROL_ADMIN});
 
+        Usuario usuario2 = new Usuario("editor", "editor", "Usuario2", "Editor");
+        usuarioDao.crea(usuario2, new String[]{Constantes.ROL_EDITOR});
+
+        Usuario usuario3 = new Usuario("autor", "autor", "Usuario3", "Autor");
+        usuarioDao.crea(usuario3, new String[]{Constantes.ROL_AUTOR});
+        
+        Usuario usuario4 = new Usuario("usuario", "usuario", "Usuario4", "Normal");
+        usuarioDao.crea(usuario4, new String[]{Constantes.ROL_USUARIO});
+
         return "redirect:/";
     }
 }
