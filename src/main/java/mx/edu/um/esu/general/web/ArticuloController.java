@@ -23,18 +23,17 @@
  */
 package mx.edu.um.esu.general.web;
 
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import mx.edu.um.esu.general.dao.ArticuloDao;
+import mx.edu.um.esu.general.dao.CarpetaDao;
 import mx.edu.um.esu.general.dao.EstatusDao;
-import mx.edu.um.esu.general.dao.UsuarioDao;
-import mx.edu.um.esu.general.model.Articulo;
-import mx.edu.um.esu.general.model.Estatus;
-import mx.edu.um.esu.general.model.Usuario;
+import mx.edu.um.esu.general.dao.EtiquetaDao;
+import mx.edu.um.esu.general.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +61,16 @@ public class ArticuloController {
     @Autowired
     private EstatusDao estatusDao;
     @Autowired
-    private UsuarioDao usuarioDao;
+    private CarpetaDao carpetaDao;
+    @Autowired
+    private EtiquetaDao etiquetaDao;
 
     @RequestMapping
     public String lista(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String filtro,
             Model modelo) {
         log.debug("Mostrando lista de articulos");
-        
+
         List<Articulo> articulos = articuloDao.lista();
         modelo.addAttribute("articulos", articulos);
 
@@ -184,5 +185,27 @@ public class ArticuloController {
         }
 
         return "redirect:/admin/articulo";
+    }
+
+    @RequestMapping(value = "/carpetas", params = "term", produces = "application/json")
+    public @ResponseBody
+    List<String> carpetas(HttpServletRequest request, @RequestParam("term") String filtro) {
+        List<Carpeta> lista = carpetaDao.listarPorFiltro(filtro);
+        List<String> resultado = new ArrayList<>();
+        for (Carpeta carpeta : lista) {
+            resultado.add(carpeta.getNombre());
+        }
+        return resultado;
+    }
+
+    @RequestMapping(value = "/etiquetas", params = "term", produces = "application/json")
+    public @ResponseBody
+    List<String> etiquetas(HttpServletRequest request, @RequestParam("term") String filtro) {
+        List<Etiqueta> lista = etiquetaDao.listarPorFiltro(filtro);
+        List<String> resultado = new ArrayList<>();
+        for (Etiqueta etiqueta : lista) {
+            resultado.add(etiqueta.getNombre());
+        }
+        return resultado;
     }
 }

@@ -137,8 +137,16 @@
             <script src="<c:url value='/js/tagit.js' />"></script>
             <script>
                 $(document).ready(function() {
-                    $('#ubicacionesTags').tagit({select:true});
-                    $('#etiquetasTags').tagit({select:true});
+                    $('#ubicacionesTags').tagit({
+                        select:true
+                        , triggerKeys : ['enter', 'comma']
+                        , tagSource:'<c:url value="/admin/articulo/carpetas"/>'
+                    });
+                    $('#etiquetasTags').tagit({
+                        select:true
+                        , triggerKeys : ['enter', 'comma']
+                        , tagSource:'<c:url value="/admin/articulo/etiquetas"/>'
+                    });
                     
                     $('input#nombre').focus();
                 });

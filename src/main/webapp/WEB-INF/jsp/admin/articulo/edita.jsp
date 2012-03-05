@@ -142,10 +142,14 @@
                 $(document).ready(function() {
                     $('#ubicacionesTags').tagit({
                         select:true
+                        , triggerKeys : ['enter', 'comma']
+                        , tagSource:'<c:url value="/admin/articulo/carpetas"/>'
                         , initialTags : [<c:forEach items="${articulo.ubicaciones}" var="carpeta">'${carpeta.nombre}',</c:forEach>]
                     });
                     $('#etiquetasTags').tagit({
                         select:true
+                        , triggerKeys : ['enter', 'comma']
+                        , tagSource:'<c:url value="/admin/articulo/etiquetas"/>'
                         , initialTags : [<c:forEach items="${articulo.etiquetas}" var="etiqueta">'${etiqueta.nombre}',</c:forEach>]
                     });
                     

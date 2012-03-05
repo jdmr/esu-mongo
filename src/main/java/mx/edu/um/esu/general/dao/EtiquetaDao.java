@@ -23,11 +23,14 @@
  */
 package mx.edu.um.esu.general.dao;
 
+import java.util.List;
 import mx.edu.um.esu.general.model.Etiqueta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -45,5 +48,12 @@ public class EtiquetaDao {
         log.debug("Creando etiqueta {}", etiqueta);
         mongoTemplate.insert(etiqueta);
         return etiqueta;
+    }
+
+    public List<Etiqueta> listarPorFiltro(String filtro) {
+        filtro = "^" + filtro;
+        Query query = new Query(Criteria.where("nombre").regex(filtro));
+        log.debug("Buscando por filtro {}", filtro);
+        return mongoTemplate.find(query, Etiqueta.class);
     }
 }
