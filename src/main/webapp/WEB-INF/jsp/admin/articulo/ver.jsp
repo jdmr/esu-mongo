@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
@@ -52,7 +53,7 @@
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span6">
                     <h4><s:message code="fechaPublicacion.label" /></h4>
-                    <h3>${articulo.fechaPublicacion}</h3>
+                    <h3><fmt:formatDate value="${articulo.fechaPublicacion}" pattern="yyyy/MM/dd" /></h3>
                 </div>
                 <div class="span6">
                     <h4><s:message code="estatus.label" /></h4>
@@ -83,6 +84,17 @@
                 <div class="span6">
                     <h4><s:message code="editor.label" /></h4>
                     <h3>${articulo.editor}</h3>
+                </div>
+            </div>
+
+            <div class="row-fluid" style="padding-bottom: 10px;">
+                <div class="span6">
+                    <h4><s:message code="fechaCreacion.label" /></h4>
+                    <h3>${articulo.fechaCreacion}</h3>
+                </div>
+                <div class="span6">
+                    <h4><s:message code="fechaModificacion.label" /></h4>
+                    <h3>${articulo.fechaModificacion}</h3>
                 </div>
             </div>
 

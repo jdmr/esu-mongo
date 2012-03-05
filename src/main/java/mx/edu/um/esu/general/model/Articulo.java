@@ -68,6 +68,13 @@ public class Articulo {
     private Usuario editor;
     @DBRef
     private List<Comentario> comentarios = new ArrayList<>();
+    @Field("fechac")
+    private Date fechaCreacion;
+    @Field("fecham")
+    private Date fechaModificacion;
+    @Indexed
+    @DBRef
+    private Usuario creador;
 
     public Articulo() {
     }
@@ -232,6 +239,48 @@ public class Articulo {
      */
     public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
+    }
+
+    /**
+     * @return the fechaCreacion
+     */
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    /**
+     * @param fechaCreacion the fechaCreacion to set
+     */
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    /**
+     * @return the fechaModificacion
+     */
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    /**
+     * @param fechaModificacion the fechaModificacion to set
+     */
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    /**
+     * @return the creador
+     */
+    public Usuario getCreador() {
+        return creador;
+    }
+
+    /**
+     * @param creador the creador to set
+     */
+    public void setCreador(Usuario creador) {
+        this.creador = creador;
     }
 
     @Override

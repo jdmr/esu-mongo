@@ -72,12 +72,23 @@ public class ArticuloDao {
             etiquetaDao.crea(etiqueta);
         }
         articulo.setId(UUID.randomUUID().toString());
+        Date fecha = new Date();
+        articulo.setFechaCreacion(fecha);
+        articulo.setFechaModificacion(fecha);
         mongoTemplate.insert(articulo);
         return articulo;
     }
 
     public Articulo actualiza(Articulo articulo) {
-        mongoTemplate.save(articulo);
+        Articulo nuevo = obtiene(articulo.getId());
+        nuevo.setContenido(articulo.getContenido());
+        nuevo.setDescripcion(articulo.getDescripcion());
+        nuevo.setEstatus(articulo.getEstatus());
+        nuevo.setEtiquetas(articulo.getEtiquetas());
+        nuevo.setNombre(articulo.getNombre());
+        nuevo.setUbicaciones(articulo.getUbicaciones());
+        nuevo.setFechaModificacion(new Date());
+        mongoTemplate.save(nuevo);
         return articulo;
     }
 

@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
@@ -43,7 +44,7 @@
                 </s:bind>
             </c:if>
             
-            <table id="lista" class="table">
+            <table id="lista" class="table table-striped">
                 <thead>
                     <tr>
                         <th><s:message code="nombre.label" /></th>
@@ -61,7 +62,7 @@
                         <tr>
                             <td><a href="<c:url value='/admin/articulo/ver/${articulo.id}' />">${articulo.nombre}</a></td>
                             <td>${articulo.descripcion}</td>
-                            <td>${articulo.fechaPublicacion}</td>
+                            <td><fmt:formatDate value="${articulo.fechaPublicacion}" pattern="yyyy/MM/dd" /></td>
                             <td>${articulo.autor}</td>
                             <td>${articulo.editor}</td>
                             <td>${articulo.estatus}</td>
