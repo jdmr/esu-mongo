@@ -5,24 +5,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><s:message code="articulo.list.label" /></title>
+        <title><s:message code="usuario.list.label" /></title>
     </head>
     <body>
         <nav>
             <ul class="nav">
                 <li><a href="<c:url value='/inicio' />"><s:message code="inicio.label" /></a></li>
                 <li><a href="<s:url value='/admin'/>" ><s:message code="admin.label" /></a></li>
-                <li class="active"><a href="<c:url value='/admin/articulo' />"><s:message code="articulo.list.label" /></a></li>
-                <li><a href="<c:url value='/admin/usuario' />"><s:message code="usuario.list.label" /></a></li>
+                <li><a href="<c:url value='/admin/articulo' />"><s:message code="articulo.list.label" /></a></li>
+                <li class="active"><a href="<c:url value='/admin/usuario' />"><s:message code="usuario.list.label" /></a></li>
             </ul>
         </nav>
 
-        <h1><s:message code="articulo.list.label" /></h1>
+        <h1><s:message code="usuario.list.label" /></h1>
         <hr/>
 
-        <form name="filtraArticulos" class="form-search" method="post" action="<c:url value='/admin/articulo' />">
+        <form name="filtraUsuarios" class="form-search" method="post" action="<c:url value='/admin/usuario' />">
             <p class="well">
-                <a class="btn btn-primary" href="<s:url value='/admin/articulo/nuevo'/>"><i class="icon-file icon-white"></i> <s:message code='articulo.nuevo.label' /></a>
+                <a class="btn btn-primary" href="<s:url value='/admin/usuario/nuevo'/>"><i class="icon-user icon-white"></i> <s:message code='usuario.nuevo.label' /></a>
                 <input name="filtro" type="text" class="input-medium search-query" value="${param.filtro}">
                 <button type="submit" class="btn"><s:message code="buscar.label" /></button>
             </p>
@@ -33,7 +33,7 @@
                 </div>
             </c:if>
             <c:if test="${usuario != null}">
-                <s:bind path="articulo.*">
+                <s:bind path="usuario.*">
                     <c:if test="${not empty status.errorMessages}">
                     <div class="alert alert-block alert-error fade in" role="status">
                         <a class="close" data-dismiss="alert">×</a>
@@ -48,33 +48,21 @@
             <table id="lista" class="table table-striped">
                 <thead>
                     <tr>
+                        <th><s:message code="username.label" /></th>
                         <th><s:message code="nombre.label" /></th>
-                        <th><s:message code="descripcion.label" /></th>
-                        <th><s:message code="fechaPublicacion.label" /></th>
-                        <th><s:message code="autor.label" /></th>
-                        <th><s:message code="editor.label" /></th>
-                        <th><s:message code="estatus.label" /></th>
-                        <th><s:message code="ubicaciones.label" /></th>
-                        <th><s:message code="etiquetas.label" /></th>
+                        <th><s:message code="apellido.label" /></th>
+                        <th><s:message code="rol.list.label" /></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${articulos}" var="articulo" varStatus="status">
+                    <c:forEach items="${usuarios}" var="usuario" varStatus="status">
                         <tr>
-                            <td><a href="<c:url value='/admin/articulo/ver/${articulo.id}' />">${articulo.nombre}</a></td>
-                            <td>${articulo.descripcion}</td>
-                            <td><fmt:formatDate value="${articulo.fechaPublicacion}" pattern="yyyy/MM/dd" /></td>
-                            <td>${articulo.autor}</td>
-                            <td>${articulo.editor}</td>
-                            <td>${articulo.estatus}</td>
+                            <td><a href="<c:url value='/admin/usuario/ver/${usuario.username}' />">${usuario.username}</a></td>
+                            <td>${usuario.nombre}</td>
+                            <td>${usuario.apellido}</td>
                             <td>
-                                <c:forEach items="${articulo.ubicaciones}" var="carpeta">
-                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${carpeta.nombre}</label>
-                                </c:forEach>
-                            </td>
-                            <td>
-                                <c:forEach items="${articulo.etiquetas}" var="etiqueta">
-                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${etiqueta.nombre}</label>
+                                <c:forEach items="${usuario.roles}" var="rol">
+                                    <label class="label label-info" style="width:100px;"><i class="icon-user icon-white"></i> <s:message code="${rol.authority}" /></label>
                                 </c:forEach>
                             </td>
                         </tr>

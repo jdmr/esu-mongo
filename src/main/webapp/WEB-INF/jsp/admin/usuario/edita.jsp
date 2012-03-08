@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><s:message code="articulo.nuevo.label" /></title>
+        <title><s:message code="articulo.edita.label" /></title>
         <link rel="stylesheet" href="<c:url value='/css/tagit-simple-blue.css' />" type="text/css">
     </head>
     <body>
@@ -21,14 +21,13 @@
                 <li><a href="<c:url value='/inicio' />"><s:message code="inicio.label" /></a></li>
                 <li><a href="<s:url value='/admin'/>" ><s:message code="admin.label" /></a></li>
                 <li class="active"><a href="<c:url value='/admin/articulo' />"><s:message code="articulo.list.label" /></a></li>
-                <li><a href="<c:url value='/admin/usuario' />"><s:message code="usuario.list.label" /></a></li>
             </ul>
         </nav>
 
-        <h1><s:message code="articulo.nuevo.label" /></h1>
+        <h1><s:message code="articulo.edita.label" /></h1>
         <hr/>
-        <c:url var="creaArticulo" value="/admin/articulo/crea" />
-        <form:form commandName="articulo" action="${creaArticulo}" method="post">
+        <c:url var="actualizaUrl" value="/admin/articulo/actualiza" />
+        <form:form commandName="articulo" action="${actualizaUrl}" method="post">
             <form:errors path="*">
                 <div class="alert alert-block alert-error fade in" role="status">
                     <a class="close" data-dismiss="alert">×</a>
@@ -37,6 +36,8 @@
                     </c:forEach>
                 </div>
             </form:errors>
+            
+            <form:hidden path="id" />
 
             <fieldset>
                 <div class="row-fluid">
@@ -125,7 +126,7 @@
                                     <s:message code="contenido.label" />
                                     <span class="required-indicator">*</span>
                                 </label>
-                                <form:textarea path="contenido" class="span12" />
+                                <form:textarea path="contenido" required="true" class="span12" />
                                 <form:errors path="contenido" cssClass="alert alert-error" />
                             </div>
                         </s:bind>
@@ -158,7 +159,7 @@
             </fieldset>
 
             <p class="well" style="margin-top: 10px;">
-                <button type="submit" name="crea" class="btn btn-primary btn-large" id="crea" ><i class="icon-ok icon-white"></i>&nbsp;<s:message code='crear.button'/></button>
+                <button type="submit" name="actualizarBtn" class="btn btn-primary btn-large" id="actualizar" ><i class="icon-ok icon-white"></i>&nbsp;<s:message code='actualizar.button'/></button>
                 <a class="btn btn-large" href="<s:url value='/admin/articulo'/>"><i class="icon-remove"></i> <s:message code='cancelar.button' /></a>
             </p>
         </form:form>
@@ -170,11 +171,13 @@
                         select:true
                         , triggerKeys : ['enter', 'comma']
                         , tagSource:'<c:url value="/admin/articulo/carpetas"/>'
+                        , initialTags : [<c:forEach items="${articulo.ubicaciones}" var="carpeta">'${carpeta.nombre}',</c:forEach>]
                     });
                     $('#etiquetasTags').tagit({
                         select:true
                         , triggerKeys : ['enter', 'comma']
                         , tagSource:'<c:url value="/admin/articulo/etiquetas"/>'
+                        , initialTags : [<c:forEach items="${articulo.etiquetas}" var="etiqueta">'${etiqueta.nombre}',</c:forEach>]
                     });
                     
                     $('input#nombre').focus();
