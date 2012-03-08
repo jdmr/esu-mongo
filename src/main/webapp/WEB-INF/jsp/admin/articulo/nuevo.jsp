@@ -8,6 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib uri="http://ckeditor.com" prefix="ckeditor" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,7 +26,8 @@
 
         <h1><s:message code="articulo.nuevo.label" /></h1>
         <hr/>
-        <form:form commandName="articulo" action="crea" method="post">
+        <c:url var="creaArticulo" value="/admin/articulo/crea" />
+        <form:form commandName="articulo" action="${creaArticulo}" method="post">
             <form:errors path="*">
                 <div class="alert alert-block alert-error fade in" role="status">
                     <a class="close" data-dismiss="alert">×</a>
@@ -122,7 +124,7 @@
                                     <s:message code="contenido.label" />
                                     <span class="required-indicator">*</span>
                                 </label>
-                                <form:textarea path="contenido" required="true" class="span12" />
+                                <form:textarea path="contenido" class="span12" />
                                 <form:errors path="contenido" cssClass="alert alert-error" />
                             </div>
                         </s:bind>
@@ -177,6 +179,8 @@
                     $('input#nombre').focus();
                 });
             </script>                    
+            <c:url var="ckeditorBase" value="/ckeditor/" />
+            <ckeditor:replace  replace="contenido" basePath="${ckeditorBase}" />
         </content>
     </body>
 </html>

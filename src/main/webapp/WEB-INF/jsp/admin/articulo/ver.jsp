@@ -28,6 +28,7 @@
         <p class="well">
             <a class="btn btn-primary" href="<s:url value='/admin/articulo'/>"><i class="icon-list icon-white"></i> <s:message code='articulo.list.label' /></a>
             <a class="btn btn-primary" href="<s:url value='/admin/articulo/nuevo'/>"><i class="icon-plus icon-white"></i> <s:message code='articulo.nuevo.label' /></a>
+            <a href="<c:url value='/admin/articulo/edita/${articulo.id}' />" class="btn btn-primary"><i class="icon-edit icon-white"></i> <s:message code="editar.button" /></a>
         </p>
         <c:if test="${not empty message}">
             <div class="alert alert-block <c:choose><c:when test='${not empty messageStyle}'>${messageStyle}</c:when><c:otherwise>alert-success</c:otherwise></c:choose> fade in" role="status">

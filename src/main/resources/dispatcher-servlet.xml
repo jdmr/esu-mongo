@@ -22,6 +22,7 @@
     <mvc:resources mapping="/images/**" location="/images/" />
     <mvc:resources mapping="/img/**" location="/img/" />
     <mvc:resources mapping="/js/**" location="/js/" />
+    <mvc:resources mapping="/ckeditor/**" location="/ckeditor/" />
     
     <!-- Default View Resolver -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 

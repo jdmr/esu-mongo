@@ -8,6 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib uri="http://ckeditor.com" prefix="ckeditor" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -182,6 +183,8 @@
                     $('input#nombre').focus();
                 });
             </script>                    
+            <c:url var="ckeditorBase" value="/ckeditor/" />
+            <ckeditor:replace  replace="contenido" basePath="${ckeditorBase}" />
         </content>
     </body>
 </html>
