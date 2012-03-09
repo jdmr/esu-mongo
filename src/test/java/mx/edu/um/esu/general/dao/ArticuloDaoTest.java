@@ -80,7 +80,7 @@ public class ArticuloDaoTest {
         mongoTemplate.insert(estatus);
         Rol rol = new Rol(Constantes.ROL_ADMIN);
         mongoTemplate.insert(rol);
-        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST", "test@test.com");
         autor.addRol(rol);
         mongoTemplate.insert(autor);
         for (int i = 1; i <= 20; i++) {
@@ -108,7 +108,7 @@ public class ArticuloDaoTest {
         mongoTemplate.insert(estatus);
         Rol rol = new Rol(Constantes.ROL_ADMIN);
         mongoTemplate.insert(rol);
-        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST", "test@test.com");
         autor.addRol(rol);
         mongoTemplate.insert(autor);
         Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
@@ -124,7 +124,7 @@ public class ArticuloDaoTest {
         mongoTemplate.insert(estatus);
         Rol rol = new Rol(Constantes.ROL_ADMIN);
         mongoTemplate.insert(rol);
-        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST", "test@test.com");
         autor.addRol(rol);
         mongoTemplate.insert(autor);
         Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
@@ -144,7 +144,7 @@ public class ArticuloDaoTest {
         mongoTemplate.insert(estatus);
         Rol rol = new Rol(Constantes.ROL_ADMIN);
         mongoTemplate.insert(rol);
-        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST", "test@test.com");
         autor.addRol(rol);
         mongoTemplate.insert(autor);
         Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);
@@ -174,7 +174,7 @@ public class ArticuloDaoTest {
         mongoTemplate.insert(estatus);
         Rol rol = new Rol(Constantes.ROL_ADMIN);
         mongoTemplate.insert(rol);
-        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST");
+        Usuario autor = new Usuario("TEST", "TEST", "TEST", "TEST", "test@test.com");
         autor.addRol(rol);
         mongoTemplate.insert(autor);
         Articulo articulo = new Articulo("TEST1", "TEST1", "TEST1", estatus, autor);

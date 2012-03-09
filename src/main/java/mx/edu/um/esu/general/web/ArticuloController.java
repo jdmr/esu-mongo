@@ -88,7 +88,7 @@ public class ArticuloController {
 
     @RequestMapping("/nuevo")
     public String nuevo(Model modelo) {
-        log.debug("Nuevo usuario");
+        log.debug("Nuevo articulo");
         Articulo articulo = new Articulo();
         articulo.setFechaPublicacion(new Date());
         modelo.addAttribute("articulo", articulo);

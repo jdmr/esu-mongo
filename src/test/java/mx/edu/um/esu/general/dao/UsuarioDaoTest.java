@@ -73,7 +73,7 @@ public class UsuarioDaoTest {
         }
 
         for (int i = 1; i <= 20; i++) {
-            Usuario usuario = new Usuario("TEST" + i, "TEST" + i, "TEST" + i, "TEST" + i);
+            Usuario usuario = new Usuario("TEST" + i, "TEST" + i, "TEST" + i, "TEST" + i, "test"+i+"@test.com");
             instance.crea(usuario, new String[]{"ROLE_ADMIN"});
         }
 
@@ -94,7 +94,7 @@ public class UsuarioDaoTest {
             mongoTemplate.insert(rol);
         }
 
-        Usuario usuario = new Usuario("test.01@test.com", "test", "test.01", "test.01");
+        Usuario usuario = new Usuario("test.01@test.com", "test", "test.01", "test.01", "test01@test.com");
         instance.crea(usuario, new String[]{"ROLE_ADMIN"});
 
         Usuario prueba = instance.obtiene(usuario.getUsername());
@@ -116,7 +116,7 @@ public class UsuarioDaoTest {
             mongoTemplate.insert(rol);
         }
 
-        Usuario usuario = new Usuario("test.01@test.com", "test", "test.01", "test.01");
+        Usuario usuario = new Usuario("test.01@test.com", "test", "test.01", "test.01", "test01@test.com");
         instance.crea(usuario, new String[]{"ROLE_ADMIN"});
 
         instance.elimina(usuario.getUsername());

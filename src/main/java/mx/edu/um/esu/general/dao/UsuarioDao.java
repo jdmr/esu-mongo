@@ -24,6 +24,7 @@
 package mx.edu.um.esu.general.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import mx.edu.um.esu.general.Constantes;
@@ -73,6 +74,12 @@ public class UsuarioDao {
         Usuario usuario = mongoTemplate.findById(id, Usuario.class);
         return usuario;
     }
+    
+    public Usuario obtienePorCorreo(String correo) {
+        Query query = new Query(Criteria.where("correo").is(correo));
+        Usuario usuario = mongoTemplate.findOne(query, Usuario.class);
+        return usuario;
+    }
 
     public Usuario obtienePorOpenId(String openId) {
         Query query = new Query(Criteria.where("openId").is(openId));
@@ -93,6 +100,7 @@ public class UsuarioDao {
             Rol rol = mongoTemplate.findOne(query, Rol.class);
             usuario.addRol(rol);
         }
+        usuario.setFechaRegistro(new Date());
         mongoTemplate.insert(usuario);
         return usuario;
     }

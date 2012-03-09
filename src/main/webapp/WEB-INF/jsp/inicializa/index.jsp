@@ -18,12 +18,24 @@
         <form action="<c:url value='/inicializa' />" method="post">
             <fieldset>
                 <div class="control-group">
-                    <label for='username'><s:message code="login.username" /></label>
+                    <label for='username'><s:message code="username.label" /></label>
                     <input id="username" name="username" type="text" value=""/>
                 </div>
                 <div class="control-group">
-                    <label for='password'><s:message code="login.password" /></label>
+                    <label for='password'><s:message code="password.label" /></label>
                     <input id="password" name="password" type="password" value=""/>
+                </div>
+                <div class="control-group">
+                    <label for='nombre'><s:message code="nombre.label" /></label>
+                    <input id="nombre" name="nombre" type="text" value=""/>
+                </div>
+                <div class="control-group">
+                    <label for='apellido'><s:message code="apellido.label" /></label>
+                    <input id="apellido" name="apellido" type="text" value=""/>
+                </div>
+                <div class="control-group">
+                    <label for='correo'><s:message code="correo.label" /></label>
+                    <input id="correo" name="correo" type="email" value=""/>
                 </div>
                 <div class="control-group">
                     <input type="submit" value="<s:message code='inicializa.title' />" class="btn btn-large btn-primary" style="width:170px;"/>

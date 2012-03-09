@@ -51,6 +51,7 @@
                         <th><s:message code="username.label" /></th>
                         <th><s:message code="nombre.label" /></th>
                         <th><s:message code="apellido.label" /></th>
+                        <th><s:message code="correo.label" /></th>
                         <th><s:message code="rol.list.label" /></th>
                     </tr>
                 </thead>
@@ -60,6 +61,7 @@
                             <td><a href="<c:url value='/admin/usuario/ver/${usuario.username}' />">${usuario.username}</a></td>
                             <td>${usuario.nombre}</td>
                             <td>${usuario.apellido}</td>
+                            <td>${usuario.correo}</td>
                             <td>
                                 <c:forEach items="${usuario.roles}" var="rol">
                                     <label class="label label-info" style="width:100px;"><i class="icon-user icon-white"></i> <s:message code="${rol.authority}" /></label>

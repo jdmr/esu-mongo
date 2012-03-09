@@ -23,6 +23,7 @@
  */
 package mx.edu.um.esu.general.dao;
 
+import java.util.List;
 import mx.edu.um.esu.general.model.Rol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,5 +58,10 @@ public class RolDao {
         log.debug("Creando {}", rol);
         mongoTemplate.insert(rol);
         return rol;
+    }
+    
+    public List<Rol> lista() {
+        List<Rol> roles = mongoTemplate.findAll(Rol.class);
+        return roles;
     }
 }

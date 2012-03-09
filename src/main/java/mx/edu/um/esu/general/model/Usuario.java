@@ -28,6 +28,7 @@ import java.util.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,10 +42,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class Usuario implements Serializable, UserDetails {
 
     @Id
-    @Email
     @NotEmpty
     private String username;
     private String password;
+    @Indexed
     private String openId;
     private Boolean enabled = true;
     private Boolean accountExpired = false;
@@ -56,15 +57,21 @@ public class Usuario implements Serializable, UserDetails {
     private String apellido;
     @DBRef
     private Set<Rol> roles = new HashSet<>();
+    private Date fechaRegistro;
+    @Email
+    @NotEmpty
+    @Indexed
+    private String correo;
 
     public Usuario() {
     }
 
-    public Usuario(String username, String password, String nombre, String apellido) {
+    public Usuario(String username, String password, String nombre, String apellido, String correo) {
         this.username = username;
         this.password = password;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.correo = correo;
     }
 
     /**
@@ -207,6 +214,36 @@ public class Usuario implements Serializable, UserDetails {
         return apellido + ", " + nombre;
     }
 
+    /**
+     * @return the fechaRegistro
+     */
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    /**
+     * @param fechaRegistro the fechaRegistro to set
+     */
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    /**
+     * Obtiene correo de usuario
+     * @return correo El correo electronico del usuario
+     */
+    public String getCorreo() {
+        return correo;
+    }
+    
+    /**
+     * Asigna correo del usuario
+     * @param correo El correo electronico del usuario
+     */
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
