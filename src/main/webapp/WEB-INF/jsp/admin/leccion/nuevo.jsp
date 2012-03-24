@@ -12,18 +12,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><s:message code="articulo.edita.label" /></title>
+        <title><s:message code="leccion.nuevo.label" /></title>
         <link rel="stylesheet" href="<c:url value='/css/tagit-simple-blue.css' />" type="text/css">
     </head>
     <body>
         <jsp:include page="../menu.jsp" >
-            <jsp:param name="menu" value="articulo" />
+            <jsp:param name="menu" value="leccion" />
         </jsp:include>
 
-        <h1><s:message code="articulo.edita.label" /></h1>
+        <h1><s:message code="leccion.nuevo.label" /></h1>
         <hr/>
-        <c:url var="actualizaUrl" value="/admin/articulo/actualiza" />
-        <form:form commandName="articulo" action="${actualizaUrl}" method="post">
+        <c:url var="creaLeccion" value="/admin/leccion/crea" />
+        <form:form commandName="leccion" action="${creaLeccion}" method="post">
             <form:errors path="*">
                 <div class="alert alert-block alert-error fade in" role="status">
                     <a class="close" data-dismiss="alert">×</a>
@@ -32,13 +32,11 @@
                     </c:forEach>
                 </div>
             </form:errors>
-            
-            <form:hidden path="id" />
 
             <fieldset>
                 <div class="row-fluid">
                     <div class="span6">
-                        <s:bind path="articulo.nombre">
+                        <s:bind path="leccion.nombre">
                             <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
                                 <label for="nombre">
                                     <s:message code="nombre.label" />
@@ -50,7 +48,7 @@
                         </s:bind>
                     </div>
                     <div class="span6">
-                        <s:bind path="articulo.descripcion">
+                        <s:bind path="leccion.descripcion">
                             <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
                                 <label for="descripcion">
                                     <s:message code="descripcion.label" />
@@ -64,7 +62,7 @@
                 </div>
                 <div class="row-fluid">
                     <div class="span6">
-                        <s:bind path="articulo.fechaPublicacion">
+                        <s:bind path="leccion.fechaPublicacion">
                             <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
                                 <label for="fechaPublicacion">
                                     <s:message code="fechaPublicacion.label" />
@@ -76,7 +74,7 @@
                         </s:bind>
                     </div>
                     <div class="span6">
-                        <s:bind path="articulo.estatus">
+                        <s:bind path="leccion.estatus">
                             <div class="control-group <c:if test='${not empty status.errorMessage}'>error</c:if>">
                                 <label for="estatus">
                                     <s:message code="estatus.label" />
@@ -90,7 +88,7 @@
                 </div>
                 <div class="row-fluid">
                     <div class="span6">
-                        <s:bind path="articulo.autor">
+                        <s:bind path="leccion.autor">
                             <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
                                 <label for="autor">
                                     <s:message code="autor.label" />
@@ -102,7 +100,7 @@
                         </s:bind>
                     </div>
                     <div class="span6">
-                        <s:bind path="articulo.editor">
+                        <s:bind path="leccion.editor">
                             <div class="control-group <c:if test='${not empty status.errorMessage}'>error</c:if>">
                                 <label for="editor">
                                     <s:message code="editor.label" />
@@ -116,13 +114,13 @@
                 </div>
                 <div class="row-fluid">
                     <div class="span12">
-                        <s:bind path="articulo.contenido">
+                        <s:bind path="leccion.contenido">
                             <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
                                 <label for="contenido">
                                     <s:message code="contenido.label" />
                                     <span class="required-indicator">*</span>
                                 </label>
-                                <form:textarea path="contenido" required="true" class="span12" />
+                                <form:textarea path="contenido" class="span12" />
                                 <form:errors path="contenido" cssClass="alert alert-error" />
                             </div>
                         </s:bind>
@@ -130,7 +128,7 @@
                 </div>
                 <div class="row-fluid">
                     <div class="span6">
-                        <s:bind path="articulo.ubicaciones">
+                        <s:bind path="leccion.ubicaciones">
                             <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
                                 <label for="ubicaciones">
                                     <s:message code="ubicaciones.label" />
@@ -141,7 +139,7 @@
                         </s:bind>
                     </div>
                     <div class="span6">
-                        <s:bind path="articulo.etiquetas">
+                        <s:bind path="leccion.etiquetas">
                             <div class="control-group <c:if test='${not empty status.errorMessages}'>error</c:if>">
                                 <label for="etiquetas">
                                     <s:message code="etiquetas.label" />
@@ -155,8 +153,8 @@
             </fieldset>
 
             <p class="well" style="margin-top: 10px;">
-                <button type="submit" name="actualizarBtn" class="btn btn-primary btn-large" id="actualizar" ><i class="icon-ok icon-white"></i>&nbsp;<s:message code='actualizar.button'/></button>
-                <a class="btn btn-large" href="<s:url value='/admin/articulo'/>"><i class="icon-remove"></i> <s:message code='cancelar.button' /></a>
+                <button type="submit" name="crea" class="btn btn-primary btn-large" id="crea" ><i class="icon-ok icon-white"></i>&nbsp;<s:message code='crear.button'/></button>
+                <a class="btn btn-large" href="<s:url value='/admin/leccion'/>"><i class="icon-remove"></i> <s:message code='cancelar.button' /></a>
             </p>
         </form:form>
         <content>
@@ -166,14 +164,12 @@
                     $('#ubicacionesTags').tagit({
                         select:true
                         , triggerKeys : ['enter', 'comma']
-                        , tagSource:'<c:url value="/admin/articulo/carpetas"/>'
-                        , initialTags : [<c:forEach items="${articulo.ubicaciones}" var="carpeta">'${carpeta.nombre}',</c:forEach>]
+                        , tagSource:'<c:url value="/admin/leccion/carpetas"/>'
                     });
                     $('#etiquetasTags').tagit({
                         select:true
                         , triggerKeys : ['enter', 'comma']
-                        , tagSource:'<c:url value="/admin/articulo/etiquetas"/>'
-                        , initialTags : [<c:forEach items="${articulo.etiquetas}" var="etiqueta">'${etiqueta.nombre}',</c:forEach>]
+                        , tagSource:'<c:url value="/admin/leccion/etiquetas"/>'
                     });
                     
                     $('input#nombre').focus();

@@ -26,21 +26,6 @@ highlightTableRows("lista");
 
 function buscaPagina(paginaId) {
     $('input#pagina').val(paginaId);
-    $('input#tipo').val('');
-    $('input#correo').val('');
-    document.forms["filtraLista"].submit();
-}
-
-function imprime(tipo) {
-    $('input#tipo').val(tipo);
-    $('input#correo').val('');
-    document.forms["filtraLista"].submit();
-}
-
-function enviaCorreo(tipo) {
-    $('#enviaCorreoBtn').button('loading');
-    $('input#tipo').val('');
-    $('input#correo').val(tipo);
     document.forms["filtraLista"].submit();
 }
 
@@ -51,7 +36,5 @@ function ordena(campo) {
         $('input#sort').val('asc');
     }
     $('input#order').val(campo);
-    $('input#tipo').val('');
-    $('input#correo').val('');
     document.forms["filtraLista"].submit();
 }

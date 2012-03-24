@@ -23,10 +23,8 @@
  */
 package mx.edu.um.esu.general.dao;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import com.mongodb.DBObject;
+import java.util.*;
 import mx.edu.um.esu.general.Constantes;
 import mx.edu.um.esu.general.model.Rol;
 import mx.edu.um.esu.general.model.Usuario;
@@ -70,11 +68,54 @@ public class UsuarioDao {
         return usuarios;
     }
 
+    public Map<String, Object> lista(Map<String, Object> params) {
+        int max;
+        int offset = 0;
+        if (!params.containsKey("max")) {
+            max = 10;
+            params.put("max", max);
+        } else {
+            max = (Integer) params.get("max");
+        }
+
+        if (params.containsKey("pagina")) {
+            Integer pagina = (Integer) params.get("pagina");
+            offset = (pagina - 1) * (Integer) params.get("max");
+            params.put("offset", offset);
+        }
+
+        if (!params.containsKey("offset")) {
+            params.put("offset", 0);
+            offset = 0;
+        }
+        Query query = new Query();
+        if (params.containsKey("filtro")) {
+            String filtro = (String)params.get("filtro");
+            
+            Criteria criteria = Criteria.where("nombre").regex(filtro, "i");
+//            criteria.and("apellido").regex(filtro, "i");
+//            criteria.orOperator(Criteria.where("apellido").regex(filtro,"i"));
+//            query.addCriteria(criteria);
+            params.put("cantidad", mongoTemplate.count(query, Usuario.class));
+            query.skip(offset);
+            query.limit(max);
+            List<Usuario> usuarios = mongoTemplate.find(query, Usuario.class);
+            params.put("usuarios", usuarios);
+        } else {
+            params.put("cantidad", mongoTemplate.count(null, Usuario.class));
+            query.skip(offset);
+            query.limit(max);
+            List<Usuario> usuarios = mongoTemplate.find(query, Usuario.class);
+            params.put("usuarios", usuarios);
+        }
+        return params;
+    }
+
     public Usuario obtiene(String id) {
         Usuario usuario = mongoTemplate.findById(id, Usuario.class);
         return usuario;
     }
-    
+
     public Usuario obtienePorCorreo(String correo) {
         Query query = new Query(Criteria.where("correo").is(correo));
         Usuario usuario = mongoTemplate.findOne(query, Usuario.class);

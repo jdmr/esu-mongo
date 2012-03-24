@@ -16,7 +16,7 @@
     </head>
     <body>
         <jsp:include page="../menu.jsp" >
-            <jsp:param name="menu" value="articulo" />
+            <jsp:param name="menu" value="leccion" />
         </jsp:include>
 
         <h1><s:message code="articulo.ver.label" /></h1>

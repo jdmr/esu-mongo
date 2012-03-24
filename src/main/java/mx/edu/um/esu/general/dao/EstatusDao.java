@@ -48,6 +48,12 @@ public class EstatusDao {
         return estados;
     }
 
+    public void reiniciaColeccion() {
+        if (mongoTemplate.collectionExists(Estatus.class)) {
+            mongoTemplate.dropCollection(Estatus.class);
+        }
+    }
+
     public Estatus crea(Estatus estatus) {
         log.debug("Creando estatus {}", estatus);
         mongoTemplate.insert(estatus);

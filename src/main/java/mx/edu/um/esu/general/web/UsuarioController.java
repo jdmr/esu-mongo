@@ -23,7 +23,10 @@
  */
 package mx.edu.um.esu.general.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
@@ -32,6 +35,7 @@ import mx.edu.um.esu.general.dao.RolDao;
 import mx.edu.um.esu.general.dao.UsuarioDao;
 import mx.edu.um.esu.general.model.Rol;
 import mx.edu.um.esu.general.model.Usuario;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,15 +64,28 @@ public class UsuarioController {
     @RequestMapping
     public String lista(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String filtro,
+            @RequestParam(required = false) Integer pagina,
             Model modelo) {
         log.debug("Mostrando lista de usuarios");
 
-        List<Usuario> usuarios = usuarioDao.lista();
-        modelo.addAttribute("usuarios", usuarios);
+        Map<String, Object> params = new HashMap<>();
+        if (pagina != null) {
+            params.put("pagina", pagina);
+        }
+        if (StringUtils.isNotBlank(filtro)) {
+            params.put("filtro", filtro);
+        }
+        params = usuarioDao.lista(params);
+
+        modelo.addAttribute("usuarios", params.get("usuarios"));
+        log.debug("Usuarios: {}", params.get("usuarios"));
+        log.debug("cantidad: {}", params.get("cantidad"));
+        
+        this.pagina(params, modelo, "usuarios", pagina);
 
         return "admin/usuario/lista";
     }
-    
+
     @RequestMapping("/nuevo")
     public String nuevo(Model modelo) {
         log.debug("Nuevo usuario");
@@ -76,7 +93,7 @@ public class UsuarioController {
         modelo.addAttribute("usuario", usuario);
         List<Rol> roles = rolDao.lista();
         modelo.addAttribute("roles", roles);
-        
+
         return "admin/usuario/nuevo";
     }
 
@@ -121,7 +138,7 @@ public class UsuarioController {
         Usuario usuario = usuarioDao.obtiene(username);
         log.debug("Encontre a {}", usuario);
         modelo.addAttribute("usuario", usuario);
-        
+
         List<Rol> roles = rolDao.lista();
         modelo.addAttribute("roles", roles);
 
@@ -134,7 +151,7 @@ public class UsuarioController {
         try {
             usuarioDao.elimina(username);
             redirectAttributes.addFlashAttribute("message", "usuario.eliminado.message");
-            redirectAttributes.addFlashAttribute("messageAttrs", new String[] {usuario.getUsername()});
+            redirectAttributes.addFlashAttribute("messageAttrs", new String[]{usuario.getUsername()});
         } catch (Exception e) {
             log.error("No se pudo eliminar el usuario " + username, e);
             bindingResult.addError(new ObjectError("usuario", new String[]{"usuario.no.eliminado.message"}, null, null));
@@ -143,7 +160,7 @@ public class UsuarioController {
 
         return "redirect:/admin/usuario";
     }
-    
+
     @RequestMapping("/edita/{username}")
     public String edita(@PathVariable String username, Model modelo) {
         log.debug("Edita usuario {}", username);
@@ -171,7 +188,7 @@ public class UsuarioController {
             usuario = usuarioDao.actualiza(usuario, roles);
         } catch (Exception e) {
             log.error("No se pudo crear al usuario", e);
-            
+
             List<Rol> roles = rolDao.lista();
             modelo.addAttribute("roles", roles);
             return "admin/usuario/edita";
@@ -183,4 +200,32 @@ public class UsuarioController {
         return "redirect:/admin/usuario/ver/" + usuario.getUsername();
     }
 
+    protected void pagina(Map<String, Object> params, Model modelo, String lista, Integer pagina) {
+        if (pagina != null) {
+            params.put("pagina", pagina);
+            modelo.addAttribute("pagina", pagina);
+        } else {
+            pagina = 1;
+            modelo.addAttribute("pagina", pagina);
+        }
+        // inicia paginado
+        Long cantidad = (Long) params.get("cantidad");
+        Integer max = (Integer) params.get("max");
+        Long cantidadDePaginas = cantidad / max;
+        List<Long> paginas = new ArrayList<>();
+        long i = 1;
+        do {
+            paginas.add(i);
+            if (i == 10) {
+                break;
+            }
+        } while (i++ < cantidadDePaginas + 1);
+        List<Usuario> usuarios = (List<Usuario>) params.get(lista);
+        Integer primero = ((pagina - 1) * max) + 1;
+        Integer ultimo = primero + (usuarios.size() - 1);
+        String[] paginacion = new String[]{primero.toString(), ultimo.toString(), cantidad.toString()};
+        modelo.addAttribute("paginacion", paginacion);
+        modelo.addAttribute("paginas", paginas);
+        // termina paginado
+    }
 }

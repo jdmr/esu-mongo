@@ -44,6 +44,12 @@ public class EtiquetaDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    public void reiniciaColeccion() {
+        if (mongoTemplate.collectionExists(Etiqueta.class)) {
+            mongoTemplate.dropCollection(Etiqueta.class);
+        }
+    }
+
     public Etiqueta crea(Etiqueta etiqueta) {
         log.debug("Creando etiqueta {}", etiqueta);
         mongoTemplate.insert(etiqueta);

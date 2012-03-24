@@ -44,12 +44,18 @@ public class CarpetaDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    public void reiniciaColeccion() {
+        if (mongoTemplate.collectionExists(Carpeta.class)) {
+            mongoTemplate.dropCollection(Carpeta.class);
+        }
+    }
+
     public Carpeta crea(Carpeta carpeta) {
         log.debug("Creando carpeta {}", carpeta);
         mongoTemplate.insert(carpeta);
         return carpeta;
     }
-    
+
     public List<Carpeta> listarPorFiltro(String filtro) {
         filtro = "^" + filtro;
         Query query = new Query(Criteria.where("nombre").regex(filtro));

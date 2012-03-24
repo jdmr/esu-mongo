@@ -5,20 +5,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><s:message code="usuario.list.label" /></title>
+        <title><s:message code="leccion.list.label" /></title>
     </head>
     <body>
         <jsp:include page="../menu.jsp" >
-            <jsp:param name="menu" value="usuario" />
+            <jsp:param name="menu" value="leccion" />
         </jsp:include>
 
-        <h1><s:message code="usuario.list.label" /></h1>
+        <h1><s:message code="leccion.list.label" /></h1>
         <hr/>
 
-        <form name="filtraLista" class="form-search" method="post" action="<c:url value='/admin/usuario' />">
-            <input type="hidden" name="pagina" id="pagina" value="${pagina}" />
+        <form name="filtraLecciones" class="form-search" method="post" action="<c:url value='/admin/leccion' />">
             <p class="well">
-                <a class="btn btn-primary" href="<s:url value='/admin/usuario/nuevo'/>"><i class="icon-user icon-white"></i> <s:message code='usuario.nuevo.label' /></a>
+                <a class="btn btn-primary" href="<s:url value='/admin/leccion/nuevo'/>"><i class="icon-file icon-white"></i> <s:message code='leccion.nuevo.label' /></a>
                 <input name="filtro" type="text" class="input-medium search-query" value="${param.filtro}">
                 <button type="submit" class="btn"><s:message code="buscar.label" /></button>
             </p>
@@ -29,7 +28,7 @@
                 </div>
             </c:if>
             <c:if test="${usuario != null}">
-                <s:bind path="usuario.*">
+                <s:bind path="leccion.*">
                     <c:if test="${not empty status.errorMessages}">
                     <div class="alert alert-block alert-error fade in" role="status">
                         <a class="close" data-dismiss="alert">×</a>
@@ -44,43 +43,39 @@
             <table id="lista" class="table table-striped">
                 <thead>
                     <tr>
-                        <th><s:message code="username.label" /></th>
                         <th><s:message code="nombre.label" /></th>
-                        <th><s:message code="apellido.label" /></th>
-                        <th><s:message code="correo.label" /></th>
-                        <th><s:message code="rol.list.label" /></th>
+                        <th><s:message code="descripcion.label" /></th>
+                        <th><s:message code="fechaPublicacion.label" /></th>
+                        <th><s:message code="autor.label" /></th>
+                        <th><s:message code="editor.label" /></th>
+                        <th><s:message code="estatus.label" /></th>
+                        <th><s:message code="ubicaciones.label" /></th>
+                        <th><s:message code="etiquetas.label" /></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${usuarios}" var="usuario" varStatus="status">
+                    <c:forEach items="${lecciones}" var="leccion" varStatus="status">
                         <tr>
-                            <td><a href="<c:url value='/admin/usuario/ver/${usuario.username}' />">${usuario.username}</a></td>
-                            <td>${usuario.nombre}</td>
-                            <td>${usuario.apellido}</td>
-                            <td>${usuario.correo}</td>
+                            <td><a href="<c:url value='/admin/leccion/ver/${leccion.id}' />">${leccion.nombre}</a></td>
+                            <td>${leccion.descripcion}</td>
+                            <td><fmt:formatDate value="${leccion.fechaPublicacion}" pattern="yyyy/MM/dd" /></td>
+                            <td>${leccion.autor}</td>
+                            <td>${leccion.editor}</td>
+                            <td>${leccion.estatus}</td>
                             <td>
-                                <c:forEach items="${usuario.roles}" var="rol">
-                                    <label class="label label-info" style="width:100px;"><i class="icon-user icon-white"></i> <s:message code="${rol.authority}" /></label>
+                                <c:forEach items="${leccion.ubicaciones}" var="carpeta">
+                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${carpeta.nombre}</label>
+                                </c:forEach>
+                            </td>
+                            <td>
+                                <c:forEach items="${leccion.etiquetas}" var="etiqueta">
+                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${etiqueta.nombre}</label>
                                 </c:forEach>
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="pagination">
-                        <ul>
-                            <li class="disabled"><a href="#"><s:message code="mensaje.paginacion" arguments="${paginacion}" /></a></li>
-                            <c:forEach items="${paginas}" var="paginaId">
-                                <li <c:if test="${pagina == paginaId}" >class="active"</c:if>>
-                                    <a href="javascript:buscaPagina(${paginaId});" >${paginaId}</a>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </div>
-                </div>
-            </div>
         </form>        
         <content>
             <script src="<c:url value='/js/lista.js' />"></script>

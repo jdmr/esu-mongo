@@ -15,14 +15,9 @@
         <link rel="stylesheet" href="<c:url value='/css/tagit-simple-blue.css' />" type="text/css">
     </head>
     <body>
-        <nav>
-            <ul class="nav">
-                <li><a href="<c:url value='/inicio' />"><s:message code="inicio.label" /></a></li>
-                <li><a href="<s:url value='/admin'/>" ><s:message code="admin.label" /></a></li>
-                <li><a href="<c:url value='/admin/articulo' />"><s:message code="articulo.list.label" /></a></li>
-                <li class="active"><a href="<c:url value='/admin/usuario' />"><s:message code="usuario.list.label" /></a></li>
-            </ul>
-        </nav>
+        <jsp:include page="../menu.jsp" >
+            <jsp:param name="menu" value="usuario" />
+        </jsp:include>
 
         <h1><s:message code="usuario.edita.label" /></h1>
         <hr/>
