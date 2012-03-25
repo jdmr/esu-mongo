@@ -23,7 +23,6 @@
  */
 package mx.edu.um.esu.general.dao;
 
-import com.mongodb.DBObject;
 import java.util.*;
 import mx.edu.um.esu.general.Constantes;
 import mx.edu.um.esu.general.model.Rol;
@@ -90,24 +89,23 @@ public class UsuarioDao {
         }
         Query query = new Query();
         if (params.containsKey("filtro")) {
-            String filtro = (String)params.get("filtro");
-            
-            Criteria criteria = Criteria.where("nombre").regex(filtro, "i");
-//            criteria.and("apellido").regex(filtro, "i");
-//            criteria.orOperator(Criteria.where("apellido").regex(filtro,"i"));
-//            query.addCriteria(criteria);
+            String filtro = (String) params.get("filtro");
+
+            Criteria criteria = new Criteria();
+            criteria.orOperator(Criteria.where("nombre").regex(filtro, "i")
+                    , Criteria.where("apellido").regex(filtro, "i")
+                    , Criteria.where("correo").regex(filtro, "i")
+                    , Criteria.where("_id").regex(filtro, "i")
+                    );
+            query.addCriteria(criteria);
             params.put("cantidad", mongoTemplate.count(query, Usuario.class));
-            query.skip(offset);
-            query.limit(max);
-            List<Usuario> usuarios = mongoTemplate.find(query, Usuario.class);
-            params.put("usuarios", usuarios);
         } else {
             params.put("cantidad", mongoTemplate.count(null, Usuario.class));
-            query.skip(offset);
-            query.limit(max);
-            List<Usuario> usuarios = mongoTemplate.find(query, Usuario.class);
-            params.put("usuarios", usuarios);
         }
+        query.skip(offset);
+        query.limit(max);
+        List<Usuario> usuarios = mongoTemplate.find(query, Usuario.class);
+        params.put("usuarios", usuarios);
         return params;
     }
 

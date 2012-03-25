@@ -104,7 +104,7 @@
 
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <h4><s:message code="contenido.label" /></h4>
-                <h3>${articulo.contenido}</h3>
+                <div>${articulo.contenido}</div>
             </div>
 
             <p class="well">

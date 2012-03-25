@@ -25,10 +25,12 @@ package mx.edu.um.esu.general.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import mx.edu.um.esu.general.model.Carpeta;
 import mx.edu.um.esu.general.model.Etiqueta;
 import mx.edu.um.esu.general.model.Leccion;
+import mx.edu.um.esu.general.model.Usuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,47 @@ public class LeccionDao {
         log.debug("Lista de lecciones");
         List<Leccion> lecciones = mongoTemplate.findAll(Leccion.class);
         return lecciones;
+    }
+
+    public Map<String, Object> lista(Map<String, Object> params) {
+        int max;
+        int offset = 0;
+        if (!params.containsKey("max")) {
+            max = 10;
+            params.put("max", max);
+        } else {
+            max = (Integer) params.get("max");
+        }
+
+        if (params.containsKey("pagina")) {
+            Integer pagina = (Integer) params.get("pagina");
+            offset = (pagina - 1) * (Integer) params.get("max");
+            params.put("offset", offset);
+        }
+
+        if (!params.containsKey("offset")) {
+            params.put("offset", 0);
+            offset = 0;
+        }
+        Query query = new Query();
+        if (params.containsKey("filtro")) {
+            String filtro = (String) params.get("filtro");
+
+            Criteria criteria = new Criteria();
+            criteria.orOperator(Criteria.where("nombre").regex(filtro, "i")
+                    , Criteria.where("descripcion").regex(filtro, "i")
+                    , Criteria.where("contenido").regex(filtro, "i")
+                    );
+            query.addCriteria(criteria);
+            params.put("cantidad", mongoTemplate.count(query, Usuario.class));
+        } else {
+            params.put("cantidad", mongoTemplate.count(null, Usuario.class));
+        }
+        query.skip(offset);
+        query.limit(max);
+        List<Leccion> lecciones = mongoTemplate.find(query, Leccion.class);
+        params.put("lecciones", lecciones);
+        return params;
     }
 
     public void reiniciaColeccion() {

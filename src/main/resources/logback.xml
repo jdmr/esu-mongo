@@ -31,6 +31,7 @@
   <logger name="org.spingframework" level="DEBUG"/>
   <logger name="org.hibernate.sql" level="TRACE"/>
   <logger name="org.hibernate.type" level="TRACE"/>
+  <logger name="org.springframework.data.mongodb" level="TRACE"/>
   <!--
   -->
   <root level="INFO">

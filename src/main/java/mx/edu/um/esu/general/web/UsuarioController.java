@@ -78,8 +78,6 @@ public class UsuarioController {
         params = usuarioDao.lista(params);
 
         modelo.addAttribute("usuarios", params.get("usuarios"));
-        log.debug("Usuarios: {}", params.get("usuarios"));
-        log.debug("cantidad: {}", params.get("cantidad"));
         
         this.pagina(params, modelo, "usuarios", pagina);
 

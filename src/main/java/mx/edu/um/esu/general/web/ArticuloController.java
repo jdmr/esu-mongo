@@ -23,14 +23,13 @@
  */
 package mx.edu.um.esu.general.web;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import mx.edu.um.esu.general.dao.*;
 import mx.edu.um.esu.general.model.*;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,11 +66,21 @@ public class ArticuloController {
     @RequestMapping
     public String lista(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String filtro,
+            @RequestParam(required = false) Integer pagina,
             Model modelo) {
         log.debug("Mostrando lista de articulos");
+        Map<String, Object> params = new HashMap<>();
+        if (pagina != null) {
+            params.put("pagina", pagina);
+        }
+        if (StringUtils.isNotBlank(filtro)) {
+            params.put("filtro", filtro);
+        }
 
-        List<Articulo> articulos = articuloDao.lista();
-        modelo.addAttribute("articulos", articulos);
+        params = articuloDao.lista(params);
+        modelo.addAttribute("articulos", params.get("articulos"));
+        
+        this.pagina(params, modelo, "articulos", pagina);
 
         return "admin/articulo/lista";
     }
@@ -241,5 +250,34 @@ public class ArticuloController {
             resultado.add(etiqueta.getNombre());
         }
         return resultado;
+    }
+    
+    protected void pagina(Map<String, Object> params, Model modelo, String lista, Integer pagina) {
+        if (pagina != null) {
+            params.put("pagina", pagina);
+            modelo.addAttribute("pagina", pagina);
+        } else {
+            pagina = 1;
+            modelo.addAttribute("pagina", pagina);
+        }
+        // inicia paginado
+        Long cantidad = (Long) params.get("cantidad");
+        Integer max = (Integer) params.get("max");
+        Long cantidadDePaginas = cantidad / max;
+        List<Long> paginas = new ArrayList<>();
+        long i = 1;
+        do {
+            paginas.add(i);
+            if (i == 10) {
+                break;
+            }
+        } while (i++ < cantidadDePaginas + 1);
+        List<Usuario> usuarios = (List<Usuario>) params.get(lista);
+        Integer primero = ((pagina - 1) * max) + 1;
+        Integer ultimo = primero + (usuarios.size() - 1);
+        String[] paginacion = new String[]{primero.toString(), ultimo.toString(), cantidad.toString()};
+        modelo.addAttribute("paginacion", paginacion);
+        modelo.addAttribute("paginas", paginas);
+        // termina paginado
     }
 }

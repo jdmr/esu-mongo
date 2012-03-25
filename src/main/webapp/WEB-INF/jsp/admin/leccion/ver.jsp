@@ -12,19 +12,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><s:message code="articulo.ver.label" /></title>
+        <title><s:message code="leccion.ver.label" /></title>
     </head>
     <body>
         <jsp:include page="../menu.jsp" >
             <jsp:param name="menu" value="leccion" />
         </jsp:include>
 
-        <h1><s:message code="articulo.ver.label" /></h1>
+        <h1><s:message code="leccion.ver.label" /></h1>
 
         <p class="well">
-            <a class="btn btn-primary" href="<s:url value='/admin/articulo'/>"><i class="icon-list icon-white"></i> <s:message code='articulo.list.label' /></a>
-            <a class="btn btn-primary" href="<s:url value='/admin/articulo/nuevo'/>"><i class="icon-plus icon-white"></i> <s:message code='articulo.nuevo.label' /></a>
-            <a href="<c:url value='/admin/articulo/edita/${articulo.id}' />" class="btn btn-primary"><i class="icon-edit icon-white"></i> <s:message code="editar.button" /></a>
+            <a class="btn btn-primary" href="<s:url value='/admin/leccion'/>"><i class="icon-list icon-white"></i> <s:message code='leccion.list.label' /></a>
+            <a class="btn btn-primary" href="<s:url value='/admin/leccion/nuevo'/>"><i class="icon-plus icon-white"></i> <s:message code='leccion.nuevo.label' /></a>
+            <a href="<c:url value='/admin/leccion/edita/${leccion.id}' />" class="btn btn-primary"><i class="icon-edit icon-white"></i> <s:message code="editar.button" /></a>
         </p>
         <c:if test="${not empty message}">
             <div class="alert alert-block <c:choose><c:when test='${not empty messageStyle}'>${messageStyle}</c:when><c:otherwise>alert-success</c:otherwise></c:choose> fade in" role="status">
@@ -33,48 +33,48 @@
             </div>
         </c:if>
 
-        <c:url var="eliminaUrl" value="/admin/articulo/elimina" />
-        <form:form commandName="articulo" action="${eliminaUrl}" >
+        <c:url var="eliminaUrl" value="/admin/leccion/elimina" />
+        <form:form commandName="leccion" action="${eliminaUrl}" >
             <form:errors path="*" cssClass="alert alert-error" element="ul" />
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span6">
                     <h4><s:message code="nombre.label" /></h4>
-                    <h3>${articulo.nombre}</h3>
+                    <h3>${leccion.nombre}</h3>
                 </div>
                 <div class="span6">
                     <h4><s:message code="estatus.label" /></h4>
-                    <h3>${articulo.estatus}</h3>
+                    <h3>${leccion.estatus}</h3>
                 </div>
             </div>
             
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span12">
                     <h4><s:message code="descripcion.label" /></h4>
-                    <h3>${articulo.descripcion}</h3>
+                    <h3>${leccion.descripcion}</h3>
                 </div>
             </div>
 
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span6">
                     <h4><s:message code="fechaPublicacion.label" /></h4>
-                    <h3><fmt:formatDate value="${articulo.fechaPublicacion}" pattern="yyyy/MM/dd" /></h3>
+                    <h3><fmt:formatDate value="${leccion.fechaPublicacion}" pattern="yyyy/MM/dd" /></h3>
                 </div>
                 <div class="span6">
                     <h4><s:message code="creador.label" /></h4>
-                    <h3>${articulo.creador}</h3>
+                    <h3>${leccion.creador}</h3>
                 </div>
             </div>
 
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span6">
                     <h4><s:message code="ubicaciones.label" /></h4>
-                    <c:forEach items="${articulo.ubicaciones}" var="carpeta">
+                    <c:forEach items="${leccion.ubicaciones}" var="carpeta">
                         <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${carpeta.nombre}</label>
                     </c:forEach>
                 </div>
                 <div class="span6">
                     <h4><s:message code="etiquetas.label" /></h4>
-                    <c:forEach items="${articulo.etiquetas}" var="etiqueta">
+                    <c:forEach items="${leccion.etiquetas}" var="etiqueta">
                         <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${etiqueta.nombre}</label>
                     </c:forEach>
                 </div>
@@ -83,32 +83,32 @@
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span6">
                     <h4><s:message code="autor.label" /></h4>
-                    <h3>${articulo.autor}</h3>
+                    <h3>${leccion.autor}</h3>
                 </div>
                 <div class="span6">
                     <h4><s:message code="editor.label" /></h4>
-                    <h3>${articulo.editor}</h3>
+                    <h3>${leccion.editor}</h3>
                 </div>
             </div>
 
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <div class="span6">
                     <h4><s:message code="fechaCreacion.label" /></h4>
-                    <h3>${articulo.fechaCreacion}</h3>
+                    <h3>${leccion.fechaCreacion}</h3>
                 </div>
                 <div class="span6">
                     <h4><s:message code="fechaModificacion.label" /></h4>
-                    <h3>${articulo.fechaModificacion}</h3>
+                    <h3>${leccion.fechaModificacion}</h3>
                 </div>
             </div>
 
             <div class="row-fluid" style="padding-bottom: 10px;">
                 <h4><s:message code="contenido.label" /></h4>
-                <h3>${articulo.contenido}</h3>
+                <div>${leccion.contenido}</div>
             </div>
 
             <p class="well">
-                <a href="<c:url value='/admin/articulo/edita/${articulo.id}' />" class="btn btn-primary"><i class="icon-edit icon-white"></i> <s:message code="editar.button" /></a>
+                <a href="<c:url value='/admin/leccion/edita/${leccion.id}' />" class="btn btn-primary"><i class="icon-edit icon-white"></i> <s:message code="editar.button" /></a>
                 <form:hidden path="id" />
                 <button type="submit" name="elimina" class="btn btn-danger" onclick="return confirm('<s:message code="confirma.elimina.message" />');" ><i class="icon-remove icon-white"></i>&nbsp;<s:message code='eliminar.button'/></button>
             </p>

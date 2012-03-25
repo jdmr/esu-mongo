@@ -15,7 +15,8 @@
         <h1><s:message code="leccion.list.label" /></h1>
         <hr/>
 
-        <form name="filtraLecciones" class="form-search" method="post" action="<c:url value='/admin/leccion' />">
+        <form name="filtraLista" class="form-search" method="post" action="<c:url value='/admin/leccion' />">
+            <input type="hidden" name="pagina" id="pagina" value="${pagina}" />
             <p class="well">
                 <a class="btn btn-primary" href="<s:url value='/admin/leccion/nuevo'/>"><i class="icon-file icon-white"></i> <s:message code='leccion.nuevo.label' /></a>
                 <input name="filtro" type="text" class="input-medium search-query" value="${param.filtro}">
@@ -76,6 +77,20 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="pagination">
+                        <ul>
+                            <li class="disabled"><a href="#"><s:message code="mensaje.paginacion" arguments="${paginacion}" /></a></li>
+                            <c:forEach items="${paginas}" var="paginaId">
+                                <li <c:if test="${pagina == paginaId}" >class="active"</c:if>>
+                                    <a href="javascript:buscaPagina(${paginaId});" >${paginaId}</a>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </form>        
         <content>
             <script src="<c:url value='/js/lista.js' />"></script>

@@ -24,11 +24,11 @@
 package mx.edu.um.esu.general.web;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import mx.edu.um.esu.general.Constantes;
 import mx.edu.um.esu.general.dao.*;
-import mx.edu.um.esu.general.model.Estatus;
-import mx.edu.um.esu.general.model.Rol;
-import mx.edu.um.esu.general.model.Usuario;
+import mx.edu.um.esu.general.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,16 +97,18 @@ public class InicializaController {
         Estatus pendiente = new Estatus(Constantes.PENDIENTE);
         estatusDao.crea(pendiente);
         Estatus publicado = new Estatus(Constantes.PUBLICADO);
-        estatusDao.crea(publicado);
+        publicado = estatusDao.crea(publicado);
 
         log.debug("Inicializando usuarios");
         usuarioDao.reiniciaColeccion();
-        Usuario usuario = new Usuario(username, password, nombre, apellido, correo);
-        usuarioDao.crea(usuario, new String[]{Constantes.ROL_ADMIN});
+        Usuario admin = new Usuario(username, password, nombre, apellido, correo);
+        usuarioDao.crea(admin, new String[]{Constantes.ROL_ADMIN});
 
         Connection conn = null;
         Statement stmt = null;
+        Statement stmt2 = null;
         ResultSet rs = null;
+        ResultSet rs2 = null;
         try {
             Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection("jdbc:postgresql:old_portal", "tomcat", "tomcat00");
@@ -114,7 +116,7 @@ public class InicializaController {
             rs = stmt.executeQuery("select screenname, emailaddress, firstname, lastname, createdate, password_ from user_, users_usergroups where user_.userid = users_usergroups.userid and users_usergroups.usergroupid = 27943");
             while (rs.next()) {
                 correo = rs.getString("emailaddress");
-                usuario = usuarioDao.obtienePorCorreo(correo);
+                Usuario usuario = usuarioDao.obtienePorCorreo(correo);
                 if (usuario == null) {
                     username = rs.getString("screenname");
                     password = rs.getString("password_");
@@ -128,7 +130,7 @@ public class InicializaController {
             rs = stmt.executeQuery("select screenname, emailaddress, firstname, lastname, createdate, password_ from user_ where companyid = 15686");
             while (rs.next()) {
                 correo = rs.getString("emailaddress");
-                usuario = usuarioDao.obtienePorCorreo(correo);
+                Usuario usuario = usuarioDao.obtienePorCorreo(correo);
                 if (usuario == null) {
                     username = rs.getString("screenname");
                     password = rs.getString("password_");
@@ -138,6 +140,65 @@ public class InicializaController {
                     usuarioDao.crea(usuario, new String[] {Constantes.ROL_USUARIO});
                 }
             }
+            
+            stmt2 = conn.createStatement();
+            rs = stmt.executeQuery("select * from assetentry a, assetentries_assettags b, assettag c where a.entryid = b.entryid and b.tagid = c.tagid and c.name = '2012' and classnameid = 10084");
+            while (rs.next()) {
+                String titulo = rs.getString("title");
+                log.debug("Titulo: {}", rs.getString("title"));
+                rs2 = stmt2.executeQuery("select a.description, a.content, a.createdate, b.modifieddate, b.screenname from journalarticle a, user_ b where a.userid = b.userid and a.resourceprimkey = "+rs.getLong("classpk"));
+                String descripcion = null;
+                String contenido = null;
+                String u = null;
+                Date fechaCreacion = null;
+                Date fechaModificacion = null;
+                if (rs2.next()) {
+                    descripcion = rs2.getString("description");
+                    contenido = rs2.getString("content");
+                    int p1 = contenido.indexOf("<![CDATA[");
+                    int p2 = contenido.lastIndexOf("]]>");
+                    contenido = contenido.substring(p1+9,p2);
+                    u = rs2.getString("screenname");
+                    fechaCreacion = rs2.getDate("createdate");
+                    fechaModificacion = rs2.getDate("modifieddate");
+                }
+                rs2 = stmt2.executeQuery("select a.name from assettag a, assetentries_assettags b where a.tagid = b.tagid and b.entryid = "+rs.getLong("entryid"));
+                List<Carpeta> tags = new ArrayList<>();
+                while(rs2.next()) {
+                    tags.add(new Carpeta(rs2.getString("name")));
+                }
+                log.debug("TAGS: {}", tags);
+                Usuario usuario = usuarioDao.obtiene(u);
+                if (tags.contains(new Carpeta("dialoga")) || tags.contains(new Carpeta("comunica"))) {
+                    Articulo articulo = new Articulo();
+                    articulo.setAutor(usuario);
+                    articulo.setContenido(contenido);
+                    articulo.setCreador(admin);
+                    articulo.setDescripcion(descripcion);
+                    articulo.setEditor(admin);
+                    articulo.setFechaCreacion(fechaCreacion);
+                    articulo.setFechaModificacion(fechaModificacion);
+                    articulo.setFechaPublicacion(fechaCreacion);
+                    articulo.setNombre(titulo);
+                    articulo.setUbicaciones(tags);
+                    articulo.setEstatus(publicado);
+                    articuloDao.crea(articulo);
+                } else {
+                    Leccion leccion = new Leccion();
+                    leccion.setAutor(usuario);
+                    leccion.setContenido(contenido);
+                    leccion.setCreador(admin);
+                    leccion.setDescripcion(descripcion);
+                    leccion.setEditor(admin);
+                    leccion.setFechaCreacion(fechaCreacion);
+                    leccion.setFechaModificacion(fechaModificacion);
+                    leccion.setFechaPublicacion(fechaCreacion);
+                    leccion.setNombre(titulo);
+                    leccion.setUbicaciones(tags);
+                    leccion.setEstatus(publicado);
+                    leccionDao.crea(leccion);
+                }
+            }
         } catch (ClassNotFoundException | SQLException e) {
             log.error("No se pudo obtener la lista de usuarios", e);
         } finally {
@@ -145,8 +206,14 @@ public class InicializaController {
                 if (rs != null) {
                     rs.close();
                 }
+                if (rs2 != null) {
+                    rs2.close();
+                }
                 if (stmt != null) {
                     stmt.close();
+                }
+                if (stmt2 != null) {
+                    stmt2.close();
                 }
                 if (conn != null) {
                     conn.close();
