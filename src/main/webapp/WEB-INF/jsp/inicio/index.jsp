@@ -32,14 +32,18 @@
             <div class="row">
                 <div class="span6">
                     <c:forEach items="${articulosDialoga}" var="articulo">
-                        <h1><a href="<c:url value='/dialoga/ver${articulo.url}' />">${articulo.nombre}</a></h1>
-                        <div>${articulo.descripcion}</div>
+                        <div style="margin-top: 20px;">
+                            <h1><a href="<c:url value='/dialoga/ver${articulo.url}' />">${articulo.nombre}</a></h1>
+                            <div>${articulo.descripcion}</div>
+                        </div>
                     </c:forEach>
                 </div>
                 <div class="span6">
                     <c:forEach items="${articulosComunica}" var="articulo">
-                        <h1><a href="<c:url value='/comunica/ver${articulo.url}' />">${articulo.nombre}</a></h1>
-                        <div>${articulo.descripcion}</div>
+                        <div style="margin-top: 20px;">
+                            <h1><a href="<c:url value='/comunica/ver${articulo.url}' />">${articulo.nombre}</a></h1>
+                            <div>${articulo.descripcion}</div>
+                        </div>
                     </c:forEach>
                 </div>
             </div>

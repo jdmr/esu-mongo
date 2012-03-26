@@ -53,9 +53,11 @@ public class Leccion {
     @Field("fechap")
     private Date fechaPublicacion;
     @Indexed
-    private List<String> ubicaciones = new ArrayList<>();
+    @DBRef
+    private List<Carpeta> ubicaciones = new ArrayList<>();
     @Indexed
-    private List<String> etiquetas = new ArrayList<>();
+    @DBRef
+    private List<Etiqueta> etiquetas = new ArrayList<>();
     @Indexed
     @DBRef
     private Estatus estatus;
@@ -161,28 +163,28 @@ public class Leccion {
     /**
      * @return the ubicaciones
      */
-    public List<String> getUbicaciones() {
+    public List<Carpeta> getUbicaciones() {
         return ubicaciones;
     }
 
     /**
      * @param ubicaciones the ubicaciones to set
      */
-    public void setUbicaciones(List<String> ubicaciones) {
+    public void setUbicaciones(List<Carpeta> ubicaciones) {
         this.ubicaciones = ubicaciones;
     }
 
     /**
      * @return the etiquetas
      */
-    public List<String> getEtiquetas() {
+    public List<Etiqueta> getEtiquetas() {
         return etiquetas;
     }
 
     /**
      * @param etiquetas the etiquetas to set
      */
-    public void setEtiquetas(List<String> etiquetas) {
+    public void setEtiquetas(List<Etiqueta> etiquetas) {
         this.etiquetas = etiquetas;
     }
 

@@ -163,13 +163,13 @@ public class InicializaController {
                     fechaModificacion = rs2.getDate("modifieddate");
                 }
                 rs2 = stmt2.executeQuery("select a.name from assettag a, assetentries_assettags b where a.tagid = b.tagid and b.entryid = "+rs.getLong("entryid"));
-                List<String> tags = new ArrayList<>();
+                List<Carpeta> tags = new ArrayList<>();
                 while(rs2.next()) {
-                    tags.add(rs2.getString("name"));
+                    tags.add(new Carpeta(rs2.getString("name")));
                 }
                 log.debug("TAGS: {}", tags);
                 Usuario usuario = usuarioDao.obtiene(u);
-                if (tags.contains("dialoga") || tags.contains("comunica")) {
+                if (tags.contains(new Carpeta("dialoga")) || tags.contains(new Carpeta("comunica"))) {
                     Articulo articulo = new Articulo();
                     articulo.setAutor(usuario);
                     articulo.setContenido(contenido);

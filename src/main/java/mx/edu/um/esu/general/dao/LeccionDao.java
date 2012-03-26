@@ -109,11 +109,13 @@ public class LeccionDao {
     }
 
     public Leccion crea(Leccion leccion) {
-        for (String carpeta : leccion.getUbicaciones()) {
-            carpetaDao.crea(new Carpeta(carpeta));
+        for (Carpeta carpeta : leccion.getUbicaciones()) {
+            carpeta.setNombre(carpeta.getNombre().toLowerCase());
+            carpetaDao.crea(carpeta);
         }
-        for (String etiqueta : leccion.getEtiquetas()) {
-            etiquetaDao.crea(new Etiqueta(etiqueta));
+        for (Etiqueta etiqueta : leccion.getEtiquetas()) {
+            etiqueta.setNombre(etiqueta.getNombre().toLowerCase());
+            etiquetaDao.crea(etiqueta);
         }
         leccion.setId(UUID.randomUUID().toString());
         Date fecha = new Date();
@@ -149,7 +151,7 @@ public class LeccionDao {
     }
     
     public Leccion buscaPorCarpetas(List<String> carpetas) throws LeccionNoEncontradaException {
-        Query query = new Query(Criteria.where("ubicaciones").all(carpetas));
+        Query query = new Query(Criteria.where("ubicaciones.$id").all(carpetas));
         List<Leccion> lecciones = mongoTemplate.find(query, Leccion.class);
         if (lecciones != null) {
             return lecciones.get(0);

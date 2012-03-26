@@ -28,6 +28,7 @@ import java.util.List;
 import mx.edu.um.esu.general.dao.ArticuloDao;
 import mx.edu.um.esu.general.dao.LeccionDao;
 import mx.edu.um.esu.general.model.Articulo;
+import mx.edu.um.esu.general.model.Carpeta;
 import mx.edu.um.esu.general.model.Leccion;
 import mx.edu.um.esu.general.utils.ArticuloNoEncontradoException;
 import mx.edu.um.esu.general.utils.LeccionNoEncontradaException;
@@ -89,8 +90,8 @@ public class InicioController {
                 sb.append("/").append(trimestre);
                 sb.append("/").append(leccion);
                 sb.append("/").append("dialoga");
-                for(String label : articulo.getUbicaciones()) {
-                    if (label.startsWith("tema")) {
+                for(Carpeta label : articulo.getUbicaciones()) {
+                    if (label.getNombre().startsWith("tema")) {
                         sb.append("/").append(label);
                         break;
                     }
@@ -112,8 +113,8 @@ public class InicioController {
                 sb.append("/").append(trimestre);
                 sb.append("/").append(leccion);
                 sb.append("/").append("comunica");
-                for(String label : articulo.getUbicaciones()) {
-                    if (label.startsWith("tema")) {
+                for(Carpeta label : articulo.getUbicaciones()) {
+                    if (label.getNombre().startsWith("tema")) {
                         sb.append("/").append(label);
                         break;
                     }

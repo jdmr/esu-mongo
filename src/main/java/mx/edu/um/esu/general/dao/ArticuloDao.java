@@ -106,11 +106,13 @@ public class ArticuloDao {
     }
 
     public Articulo crea(Articulo articulo) {
-        for (String carpeta : articulo.getUbicaciones()) {
-            carpetaDao.crea(new Carpeta(carpeta));
+        for (Carpeta carpeta : articulo.getUbicaciones()) {
+            carpeta.setNombre(carpeta.getNombre().toLowerCase());
+            carpetaDao.crea(carpeta);
         }
-        for (String etiqueta : articulo.getEtiquetas()) {
-            etiquetaDao.crea(new Etiqueta(etiqueta));
+        for (Etiqueta etiqueta : articulo.getEtiquetas()) {
+            etiqueta.setNombre(etiqueta.getNombre().toLowerCase());
+            etiquetaDao.crea(etiqueta);
         }
         articulo.setId(UUID.randomUUID().toString());
         Date fecha = new Date();
@@ -146,7 +148,7 @@ public class ArticuloDao {
     }
 
     public List<Articulo> buscaPorCarpetas(List<String> carpetas) throws ArticuloNoEncontradoException {
-        Query query = new Query(Criteria.where("ubicaciones").all(carpetas));
+        Query query = new Query(Criteria.where("ubicaciones.$id").all(carpetas));
         List<Articulo> articulos = mongoTemplate.find(query, Articulo.class);
         if (articulos != null) {
             return articulos;
