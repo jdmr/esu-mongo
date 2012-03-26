@@ -21,45 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mx.edu.um.esu.general.dao;
-
-import java.util.List;
-import mx.edu.um.esu.general.model.Etiqueta;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Repository;
+package mx.edu.um.esu.general.utils;
 
 /**
  *
  * @author J. David Mendoza <jdmendoza@um.edu.mx>
  */
-@Repository
-public class EtiquetaDao {
+public class LeccionNoEncontradaException extends Exception {
 
-    private static final Logger log = LoggerFactory.getLogger(EtiquetaDao.class);
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-    public void reiniciaColeccion() {
-        if (mongoTemplate.collectionExists(Etiqueta.class)) {
-            mongoTemplate.dropCollection(Etiqueta.class);
-        }
+    public LeccionNoEncontradaException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public Etiqueta crea(Etiqueta etiqueta) {
-        log.debug("Creando etiqueta {}", etiqueta);
-        mongoTemplate.insert(etiqueta);
-        return etiqueta;
+    public LeccionNoEncontradaException(String message) {
+        super(message);
     }
 
-    public List<Etiqueta> listarPorFiltro(String filtro) {
-        filtro = "^" + filtro;
-        Query query = new Query(Criteria.where("nombre").regex(filtro, "i"));
-        log.debug("Buscando por filtro {}", filtro);
-        return mongoTemplate.find(query, Etiqueta.class);
+    public LeccionNoEncontradaException() {
     }
 }

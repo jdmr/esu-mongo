@@ -27,10 +27,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import mx.edu.um.esu.general.model.Articulo;
-import mx.edu.um.esu.general.model.Carpeta;
-import mx.edu.um.esu.general.model.Etiqueta;
-import mx.edu.um.esu.general.model.Usuario;
+import mx.edu.um.esu.general.model.*;
+import mx.edu.um.esu.general.utils.ArticuloNoEncontradoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,11 +106,11 @@ public class ArticuloDao {
     }
 
     public Articulo crea(Articulo articulo) {
-        for (Carpeta carpeta : articulo.getUbicaciones()) {
-            carpetaDao.crea(carpeta);
+        for (String carpeta : articulo.getUbicaciones()) {
+            carpetaDao.crea(new Carpeta(carpeta));
         }
-        for (Etiqueta etiqueta : articulo.getEtiquetas()) {
-            etiquetaDao.crea(etiqueta);
+        for (String etiqueta : articulo.getEtiquetas()) {
+            etiquetaDao.crea(new Etiqueta(etiqueta));
         }
         articulo.setId(UUID.randomUUID().toString());
         Date fecha = new Date();
@@ -145,5 +143,15 @@ public class ArticuloDao {
     public void elimina(String id) {
         Query query = new Query(Criteria.where("id").is(id));
         mongoTemplate.remove(query, Articulo.class);
+    }
+
+    public List<Articulo> buscaPorCarpetas(List<String> carpetas) throws ArticuloNoEncontradoException {
+        Query query = new Query(Criteria.where("ubicaciones").all(carpetas));
+        List<Articulo> articulos = mongoTemplate.find(query, Articulo.class);
+        if (articulos != null) {
+            return articulos;
+        } else {
+            throw new ArticuloNoEncontradoException("No se encontraron articulos con carpetas "+carpetas);
+        }
     }
 }

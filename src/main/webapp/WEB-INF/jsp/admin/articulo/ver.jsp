@@ -69,13 +69,13 @@
                 <div class="span6">
                     <h4><s:message code="ubicaciones.label" /></h4>
                     <c:forEach items="${articulo.ubicaciones}" var="carpeta">
-                        <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${carpeta.nombre}</label>
+                        <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${carpeta}</label>
                     </c:forEach>
                 </div>
                 <div class="span6">
                     <h4><s:message code="etiquetas.label" /></h4>
                     <c:forEach items="${articulo.etiquetas}" var="etiqueta">
-                        <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${etiqueta.nombre}</label>
+                        <label class="label label-info"><i class="icon-tag icon-white"></i>&nbsp;${etiqueta}</label>
                     </c:forEach>
                 </div>
             </div>

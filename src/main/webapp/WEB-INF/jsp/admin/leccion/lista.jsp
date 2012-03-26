@@ -65,19 +65,19 @@
                             <td>${leccion.estatus}</td>
                             <td>
                                 <c:forEach items="${leccion.ubicaciones}" var="carpeta">
-                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${carpeta.nombre}</label>
+                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${carpeta}</label>
                                 </c:forEach>
                             </td>
                             <td>
                                 <c:forEach items="${leccion.etiquetas}" var="etiqueta">
-                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${etiqueta.nombre}</label>
+                                    <label class="label label-info"><i class="icon-tag icon-white"></i> ${etiqueta}</label>
                                 </c:forEach>
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
-            <div class="row-fluid">
+            <div class="row">
                 <div class="span12">
                     <div class="pagination">
                         <ul>

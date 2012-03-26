@@ -24,10 +24,24 @@
         <div class="row">
             <div class="span8"><img src="<c:url value='/images/home.jpg' />" /></div>
             <div class="span4">
-                <h1><a href='<c:url value="/estudia" />'>Daniel 2 y la Providencia Divina en la historia</a></h1>
+                <h1><a href='<c:url value="/estudia" />'>${leccion.nombre}</a></h1>
                 <h3>Martes 28/02/2012</h3>
-                <p>Pero los humanos tenemos libertad de elección. Dios nos hizo así. Como tenemos la capacidad de amar, necesitábamos la libertad de elegir, porque el amor forzado no es amor. Pero el poder de Dios es tan grande que, aun con la libertad humana de elegir, él sabe el perfectamente el futuro, más allá de las elecciones libres que hagamos.</p>
+                <p>${leccion.descripcion}</p>
             </div>
         </div>
+            <div class="row">
+                <div class="span6">
+                    <c:forEach items="${articulosDialoga}" var="articulo">
+                        <h1><a href="<c:url value='/dialoga/ver${articulo.url}' />">${articulo.nombre}</a></h1>
+                        <div>${articulo.descripcion}</div>
+                    </c:forEach>
+                </div>
+                <div class="span6">
+                    <c:forEach items="${articulosComunica}" var="articulo">
+                        <h1><a href="<c:url value='/comunica/ver${articulo.url}' />">${articulo.nombre}</a></h1>
+                        <div>${articulo.descripcion}</div>
+                    </c:forEach>
+                </div>
+            </div>
     </body>
 </html>

@@ -165,11 +165,13 @@
                         select:true
                         , triggerKeys : ['enter', 'comma']
                         , tagSource:'<c:url value="/admin/leccion/carpetas"/>'
+                        , initialTags : [<c:forEach items="${leccion.ubicaciones}" var="carpeta">'${carpeta}',</c:forEach>]
                     });
                     $('#etiquetasTags').tagit({
                         select:true
                         , triggerKeys : ['enter', 'comma']
                         , tagSource:'<c:url value="/admin/leccion/etiquetas"/>'
+                        , initialTags : [<c:forEach items="${leccion.etiquetas}" var="etiqueta">'${etiqueta}',</c:forEach>]
                     });
                     
                     $('input#nombre').focus();

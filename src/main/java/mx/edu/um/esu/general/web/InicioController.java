@@ -23,9 +23,20 @@
  */
 package mx.edu.um.esu.general.web;
 
+import java.util.ArrayList;
+import java.util.List;
+import mx.edu.um.esu.general.dao.ArticuloDao;
+import mx.edu.um.esu.general.dao.LeccionDao;
+import mx.edu.um.esu.general.model.Articulo;
+import mx.edu.um.esu.general.model.Leccion;
+import mx.edu.um.esu.general.utils.ArticuloNoEncontradoException;
+import mx.edu.um.esu.general.utils.LeccionNoEncontradaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -36,10 +47,83 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class InicioController {
 
     private static final Logger log = LoggerFactory.getLogger(InicioController.class);
-
+    @Autowired
+    private LeccionDao leccionDao;
+    @Autowired
+    private ArticuloDao articuloDao;
+    
     @RequestMapping({"/", "/inicio"})
     public String inicio() {
         log.debug("Cargando pagina de inicio");
+        StringBuilder sb = new StringBuilder();
+        sb.append("redirect:/inicio/2012/t1/l12/sabado");
+        return sb.toString();
+    }
+
+    @RequestMapping({"/{anio}/{trimestre}/{leccion}/{dia}", "/inicio/{anio}/{trimestre}/{leccion}/{dia}"})
+    public String dia(@PathVariable String anio, @PathVariable String trimestre, @PathVariable String leccion, @PathVariable String dia, Model modelo) {
+        log.debug("Cargando pagina de inicio");
+        log.debug("TAGS: {} {} {} {}", new String[]{anio, trimestre, leccion, dia});
+        List<String> ubicaciones = new ArrayList<>();
+        ubicaciones.add(anio);
+        ubicaciones.add(trimestre);
+        ubicaciones.add(leccion);
+        ubicaciones.add(dia);
+        Leccion l;
+        try {
+            l = leccionDao.buscaPorCarpetas(ubicaciones);
+            log.debug("Leccion {}", l);
+            modelo.addAttribute("leccion", l);
+        } catch (LeccionNoEncontradaException e) {
+            log.error("No se encontro la leccion", e);
+        }
+        
+        List<Articulo> articulos;
+        try {
+            ubicaciones.set(3, "dialoga");
+            articulos = articuloDao.buscaPorCarpetas(ubicaciones);
+            log.debug("Dialoga {}", articulos);
+            for(Articulo articulo : articulos) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("/").append(anio);
+                sb.append("/").append(trimestre);
+                sb.append("/").append(leccion);
+                sb.append("/").append("dialoga");
+                for(String label : articulo.getUbicaciones()) {
+                    if (label.startsWith("tema")) {
+                        sb.append("/").append(label);
+                        break;
+                    }
+                }
+                articulo.setUrl(sb.toString());
+            }
+            modelo.addAttribute("articulosDialoga", articulos);
+        } catch(ArticuloNoEncontradoException e) {
+            log.error("No se encontro ningun articulo", e);
+        }
+        
+        try {
+            ubicaciones.set(3, "comunica");
+            articulos = articuloDao.buscaPorCarpetas(ubicaciones);
+            log.debug("Comunica {}", articulos);
+            for(Articulo articulo : articulos) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("/").append(anio);
+                sb.append("/").append(trimestre);
+                sb.append("/").append(leccion);
+                sb.append("/").append("comunica");
+                for(String label : articulo.getUbicaciones()) {
+                    if (label.startsWith("tema")) {
+                        sb.append("/").append(label);
+                        break;
+                    }
+                }
+                articulo.setUrl(sb.toString());
+            }
+            modelo.addAttribute("articulosComunica", articulos);
+        } catch(ArticuloNoEncontradoException e) {
+            log.error("No se encontro ningun articulo", e);
+        }
         return "inicio/index";
     }
 }

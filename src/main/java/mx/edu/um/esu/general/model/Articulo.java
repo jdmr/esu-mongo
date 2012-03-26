@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -52,11 +53,9 @@ public class Articulo {
     @Field("fechap")
     private Date fechaPublicacion;
     @Indexed
-    @DBRef
-    private List<Carpeta> ubicaciones = new ArrayList<>();
+    private List<String> ubicaciones = new ArrayList<>();
     @Indexed
-    @DBRef
-    private List<Etiqueta> etiquetas = new ArrayList<>();
+    private List<String> etiquetas = new ArrayList<>();
     @Indexed
     @DBRef
     private Estatus estatus;
@@ -75,6 +74,8 @@ public class Articulo {
     @Indexed
     @DBRef
     private Usuario creador;
+    @Transient
+    private String url;
 
     public Articulo() {
     }
@@ -160,28 +161,28 @@ public class Articulo {
     /**
      * @return the ubicaciones
      */
-    public List<Carpeta> getUbicaciones() {
+    public List<String> getUbicaciones() {
         return ubicaciones;
     }
 
     /**
      * @param ubicaciones the ubicaciones to set
      */
-    public void setUbicaciones(List<Carpeta> ubicaciones) {
+    public void setUbicaciones(List<String> ubicaciones) {
         this.ubicaciones = ubicaciones;
     }
 
     /**
      * @return the etiquetas
      */
-    public List<Etiqueta> getEtiquetas() {
+    public List<String> getEtiquetas() {
         return etiquetas;
     }
 
     /**
      * @param etiquetas the etiquetas to set
      */
-    public void setEtiquetas(List<Etiqueta> etiquetas) {
+    public void setEtiquetas(List<String> etiquetas) {
         this.etiquetas = etiquetas;
     }
 
@@ -281,6 +282,20 @@ public class Articulo {
      */
     public void setCreador(Usuario creador) {
         this.creador = creador;
+    }
+
+    /**
+     * @return the url
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * @param url the url to set
+     */
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override

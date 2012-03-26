@@ -58,8 +58,12 @@ public class CarpetaDao {
 
     public List<Carpeta> listarPorFiltro(String filtro) {
         filtro = "^" + filtro;
-        Query query = new Query(Criteria.where("nombre").regex(filtro));
+        Query query = new Query(Criteria.where("nombre").regex(filtro, "i"));
         log.debug("Buscando por filtro {}", filtro);
         return mongoTemplate.find(query, Carpeta.class);
+    }
+    
+    public Carpeta obtiene(String nombre) {
+        return mongoTemplate.findById(nombre, Carpeta.class);
     }
 }

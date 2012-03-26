@@ -163,13 +163,13 @@ public class InicializaController {
                     fechaModificacion = rs2.getDate("modifieddate");
                 }
                 rs2 = stmt2.executeQuery("select a.name from assettag a, assetentries_assettags b where a.tagid = b.tagid and b.entryid = "+rs.getLong("entryid"));
-                List<Carpeta> tags = new ArrayList<>();
+                List<String> tags = new ArrayList<>();
                 while(rs2.next()) {
-                    tags.add(new Carpeta(rs2.getString("name")));
+                    tags.add(rs2.getString("name"));
                 }
                 log.debug("TAGS: {}", tags);
                 Usuario usuario = usuarioDao.obtiene(u);
-                if (tags.contains(new Carpeta("dialoga")) || tags.contains(new Carpeta("comunica"))) {
+                if (tags.contains("dialoga") || tags.contains("comunica")) {
                     Articulo articulo = new Articulo();
                     articulo.setAutor(usuario);
                     articulo.setContenido(contenido);
@@ -222,15 +222,6 @@ public class InicializaController {
                 log.error("No se pudieron cerrar las conexiones", e);
             }
         }
-
-//        Usuario usuario2 = new Usuario("editor", "editor", "Usuario2", "Editor", "test1@test.com");
-//        usuarioDao.crea(usuario2, new String[]{Constantes.ROL_EDITOR});
-//
-//        Usuario usuario3 = new Usuario("autor", "autor", "Usuario3", "Autor", "test2@test.com");
-//        usuarioDao.crea(usuario3, new String[]{Constantes.ROL_AUTOR});
-//
-//        Usuario usuario4 = new Usuario("usuario", "usuario", "Usuario4", "Normal", "test3@test.com");
-//        usuarioDao.crea(usuario4, new String[]{Constantes.ROL_USUARIO});
 
         log.debug("Aplicacion inicializada");
 

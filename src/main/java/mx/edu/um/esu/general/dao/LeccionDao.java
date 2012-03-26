@@ -31,6 +31,7 @@ import mx.edu.um.esu.general.model.Carpeta;
 import mx.edu.um.esu.general.model.Etiqueta;
 import mx.edu.um.esu.general.model.Leccion;
 import mx.edu.um.esu.general.model.Usuario;
+import mx.edu.um.esu.general.utils.LeccionNoEncontradaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,11 +109,11 @@ public class LeccionDao {
     }
 
     public Leccion crea(Leccion leccion) {
-        for (Carpeta carpeta : leccion.getUbicaciones()) {
-            carpetaDao.crea(carpeta);
+        for (String carpeta : leccion.getUbicaciones()) {
+            carpetaDao.crea(new Carpeta(carpeta));
         }
-        for (Etiqueta etiqueta : leccion.getEtiquetas()) {
-            etiquetaDao.crea(etiqueta);
+        for (String etiqueta : leccion.getEtiquetas()) {
+            etiquetaDao.crea(new Etiqueta(etiqueta));
         }
         leccion.setId(UUID.randomUUID().toString());
         Date fecha = new Date();
@@ -145,5 +146,15 @@ public class LeccionDao {
     public void elimina(String id) {
         Query query = new Query(Criteria.where("id").is(id));
         mongoTemplate.remove(query, Leccion.class);
+    }
+    
+    public Leccion buscaPorCarpetas(List<String> carpetas) throws LeccionNoEncontradaException {
+        Query query = new Query(Criteria.where("ubicaciones").all(carpetas));
+        List<Leccion> lecciones = mongoTemplate.find(query, Leccion.class);
+        if (lecciones != null) {
+            return lecciones.get(0);
+        } else {
+            throw new LeccionNoEncontradaException("No se encontro la leccion "+carpetas);
+        }
     }
 }

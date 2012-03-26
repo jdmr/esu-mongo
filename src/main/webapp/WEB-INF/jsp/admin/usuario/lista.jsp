@@ -67,7 +67,7 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <div class="row-fluid">
+            <div class="row">
                 <div class="span12">
                     <div class="pagination">
                         <ul>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </div>
-        </form>        
+        </form>
         <content>
             <script src="<c:url value='/js/lista.js' />"></script>
         </content>
