@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -52,7 +53,11 @@ public class CarpetaDao {
 
     public Carpeta crea(Carpeta carpeta) {
         log.debug("Creando carpeta {}", carpeta);
-        mongoTemplate.insert(carpeta);
+        Update u = new Update();
+        u.set("nombre", carpeta.getNombre().toLowerCase());
+        u.inc("asignaciones", 1);
+        mongoTemplate.upsert(new Query(Criteria.where("nombre").is(carpeta.getNombre().toLowerCase())), u, Carpeta.class);
+//        mongoTemplate.insert(carpeta);
         return carpeta;
     }
 

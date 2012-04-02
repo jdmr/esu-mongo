@@ -78,6 +78,8 @@ public class Articulo {
     private Usuario creador;
     @Transient
     private String url;
+    @Indexed
+    private Integer vistas = 0;
 
     public Articulo() {
     }
@@ -298,6 +300,20 @@ public class Articulo {
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * @return the vistas
+     */
+    public Integer getVistas() {
+        return vistas;
+    }
+
+    /**
+     * @param vistas the vistas to set
+     */
+    public void setVistas(Integer vistas) {
+        this.vistas = vistas;
     }
 
     @Override

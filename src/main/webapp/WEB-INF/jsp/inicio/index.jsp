@@ -25,27 +25,36 @@
             <div class="span8"><img src="<c:url value='/images/home.jpg' />" /></div>
             <div class="span4">
                 <h1><a href='<c:url value="/estudia" />'>${leccion.nombre}</a></h1>
-                <h3>Martes 28/02/2012</h3>
-                <p>${leccion.descripcion}</p>
+                <h4>Martes 28/02/2012</h4>
+                <div>${leccion.descripcion}&nbsp;<a href="#"><s:message code="leer.mas" /></a></div>
             </div>
         </div>
-            <div class="row">
-                <div class="span6">
-                    <c:forEach items="${articulosDialoga}" var="articulo">
-                        <div style="margin-top: 20px;">
-                            <h1><a href="<c:url value='/dialoga/ver${articulo.url}' />">${articulo.nombre}</a></h1>
-                            <div>${articulo.descripcion}</div>
-                        </div>
-                    </c:forEach>
-                </div>
-                <div class="span6">
-                    <c:forEach items="${articulosComunica}" var="articulo">
-                        <div style="margin-top: 20px;">
-                            <h1><a href="<c:url value='/comunica/ver${articulo.url}' />">${articulo.nombre}</a></h1>
-                            <div>${articulo.descripcion}</div>
-                        </div>
-                    </c:forEach>
-                </div>
+        <div class="row">
+            <div class="span6">
+                <c:forEach items="${articulosDialoga}" var="articulo">
+                    <div style="margin-top: 20px;">
+                        <h1><a href="<c:url value='/dialoga/ver${articulo.url}' />">${articulo.nombre}</a></h1>
+                        <h4>Por ${articulo.autor.nombreCompleto}</h4>
+                        <div>${articulo.descripcion}&nbsp;<a href="#"><s:message code="leer.mas" /></a></div>
+                    </div>
+                </c:forEach>
             </div>
+            <div class="span6">
+                <c:forEach items="${articulosComunica}" var="articulo">
+                    <div style="margin-top: 20px;">
+                        <h1><a href="<c:url value='/comunica/ver${articulo.url}' />">${articulo.nombre}</a></h1>
+                        <h4>Por ${articulo.autor.nombreCompleto}</h4>
+                        <div>${articulo.descripcion}&nbsp;<a href="#"><s:message code="leer.mas" /></a></div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    <content>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('input#loginUsername').focus();
+            });
+        </script>
+    </content>
     </body>
 </html>

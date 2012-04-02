@@ -29,51 +29,76 @@
         <link rel="stylesheet" href="<c:url value='/css/bootstrap-responsive.min.css' />" type="text/css">
         <link rel="stylesheet" href="<c:url value='/css/custom-theme/jquery-ui-1.8.17.custom.css' />" type="text/css">
         <link rel="stylesheet" href="<c:url value='/css/app.css' />" type="text/css">
-        <sitemesh:write property='head'/>
-    </head>
-    <body>
-        <div class="container">
-            <header>
-                <div class="row">
-                    <div class="span8">
-                        <a href="<c:url value='/inicio' />"><img src="<c:url value='/images/logo.jpg'/>" /></a>
-                    </div>
-                    <div class="span4">
-                        <p class="pull-right" style="margin-top: 50px;"><a href="<c:url value='/login'/>">Acceder</a></p>
+    <sitemesh:write property='head'/>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="row">
+                <div class="span6">
+                    <a href="<c:url value='/inicio' />"><img src="<c:url value='/images/logo.jpg'/>" /></a>
+                </div>
+                <div class="span6 pull-right" style="text-align: right;">
+                    <form action="<c:url value='/j_spring_openid_security_check'/>" id="googleOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
+                        <input id="openid_identifier" name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
+                        <input type="image" src="<c:url value="/images/google.png" />" border="0" name="googleSignInBtn" id="googleSignInBtn" style="height: 26px; vertical-align: top;">
+                    </form>
+                    <form action="<c:url value='/signin/facebook'/>" id="facebookOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
+                        <input type="hidden" name="scope" value="email,publish_stream,offline_access" />
+                        <input type="image" src="<c:url value="/images/facebook.png" />" border="0" name="facebookSignInBtn" id="facebookSignInBtn" style="height: 26px; vertical-align: top;">
+                    </form>
+                    <form action="<c:url value='/j_spring_openid_security_check'/>" id="twitterOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
+                        <input id="openid_identifier" name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
+                        <input type="image" src="<c:url value="/images/twitter.png" />" border="0" name="twitterSignInBtn" id="twitterSignInBtn" style="height: 26px; vertical-align: top; padding-right: 5px;">
+                    </form>
+                    <form action='<c:url value="/entrar" />' method='POST' id='loginForm' class="pull-right form-inline" style="display: inline;">
+                        <input type="text" class="input-small" placeholder="<s:message code='correo.label'/>" name="j_username" id="loginUsername" />
+                        <input type="password" class="input-small" placeholder="<s:message code='password.label' />" name="j_password" id="loginPassword" />
+                        <label class="checkbox">
+                            <input type="checkbox" name='_spring_security_remember_me' id='loginRememberMe' /> <s:message code="recuerdame.label" />
+                        </label>
+                        <button type="submit" class="btn"><s:message code="login.entrar" /></button> 
+                    </form>
+                </div>
+            </div>
+        </header>
+        <nav class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="i-bar"></span>
+                        <span class="i-bar"></span>
+                        <span class="i-bar"></span>
+                    </a>
+                    <div class="nav-collapse">
+                        <sitemesh:write property="nav"/>
                     </div>
                 </div>
-            </header>
-            <nav class="navbar">
-                <div class="navbar-inner">
-                    <div class="container">
-                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                            <span class="i-bar"></span>
-                            <span class="i-bar"></span>
-                            <span class="i-bar"></span>
-                        </a>
-                        <div class="nav-collapse">
-                            <sitemesh:write property="nav"/>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <sitemesh:write property='body'/>
-            <footer>
-                <hr />
-                <p class="pull-right">&copy; <s:message code="proyecto.copyright.year.label" /> Powered by <a href="http://www.um.edu.mx"><s:message code="proyecto.empresa.label" /></a></p>
-            </footer>
-        </div>
+            </div>
+        </nav>
+        <sitemesh:write property='body'/>
+        <footer>
+            <hr />
+            <p class="pull-right">&copy; <s:message code="proyecto.copyright.year.label" /> Powered by <a href="http://www.um.edu.mx"><s:message code="proyecto.empresa.label" /></a></p>
+        </footer>
+    </div>
 
-        <!-- JavaScript at the bottom for fast page loading -->
+    <!-- JavaScript at the bottom for fast page loading -->
 
-        <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="<c:url value='/js/jquery-1.7.1.min.js'/>"><\/script>')</script>
+    <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="<c:url value='/js/jquery-1.7.1.min.js'/>"><\/script>')</script>
 
-        <!-- end scripts -->        
-        <script src="<c:url value='/js/jquery-ui-1.8.17.custom.min.js' />"></script>
-        <script src="<c:url value='/js/bootstrap.min.js' />"></script>
-        <script src="<c:url value='/js/app.js' />"></script>
-        <sitemesh:write property="content"/>
-    </body>
+    <!-- end scripts -->        
+    <script src="<c:url value='/js/jquery-ui-1.8.17.custom.min.js' />"></script>
+    <script src="<c:url value='/js/bootstrap.min.js' />"></script>
+    <script src="<c:url value='/js/app.js' />"></script>
+    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4d8a78014d97ad87"></script>
+    <script type="text/javascript">
+        $("#googleSignInBtn").popover({placement:'bottom', title:'Entrar con Google', content:'¿Tienes cuenta en Google? Entra con Google.'})
+        $("#facebookSignInBtn").popover({placement:'bottom', title:'Entrar con Facebook', content:'¿Tienes cuenta en Facebook? Entra con Facebook.'})
+        $("#twitterSignInBtn").popover({placement:'bottom', title:'Entrar con Twitter', content:'¿Tienes cuenta en Twitter? Entra con Twitter.'})
+    </script>
+    <sitemesh:write property="content"/>
+</body>
 </html>

@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -52,7 +53,11 @@ public class EtiquetaDao {
 
     public Etiqueta crea(Etiqueta etiqueta) {
         log.debug("Creando etiqueta {}", etiqueta);
-        mongoTemplate.insert(etiqueta);
+        Update u = new Update();
+        u.set("nombre", etiqueta.getNombre().toLowerCase());
+        u.inc("asignaciones", 1);
+        mongoTemplate.upsert(new Query(Criteria.where("nombre").is(etiqueta.getNombre().toLowerCase())), u, Etiqueta.class);
+//        mongoTemplate.insert(etiqueta);
         return etiqueta;
     }
 

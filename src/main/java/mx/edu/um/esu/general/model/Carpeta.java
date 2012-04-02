@@ -36,6 +36,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Carpeta implements Serializable {
     @Id
     private String nombre;
+    private Integer asignaciones = 0;
 
     public Carpeta() {
     }
@@ -56,6 +57,20 @@ public class Carpeta implements Serializable {
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    /**
+     * @return the asignaciones
+     */
+    public Integer getAsignaciones() {
+        return asignaciones;
+    }
+
+    /**
+     * @param asignaciones the asignaciones to set
+     */
+    public void setAsignaciones(Integer asignaciones) {
+        this.asignaciones = asignaciones;
     }
 
     @Override

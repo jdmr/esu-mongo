@@ -6,3 +6,27 @@
         Adecuaciones sobre bootstrap
 */
 
+body { 
+    font:1em/1.625em "lucida grande","lucida sans unicode", sans-serif;  
+    font-size-adjust:none;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+}
+
+h1,h2{ font-weight:normal; }
+h3,h4,h5,h6 { font-weight: normal; }
+
+h1 { font-size: 2em; margin-bottom: 0.5em; }
+h2 { font-size: 1.75em;  margin-bottom: 0.5em; }
+h3 { font-size: 1.5em;  margin-bottom: 0.5em; }
+h4 { font-size: 1.25em;  margin-bottom: 0.5em; }
+h5,h6 { font-size: 1.1em;  margin-bottom: 0.5em; }
+
+p {
+    font:1em/1.625em "lucida grande","lucida sans unicode", sans-serif;  
+    font-size-adjust:none;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+}

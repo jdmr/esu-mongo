@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -104,8 +105,12 @@ public class ArticuloDao {
             mongoTemplate.dropCollection(Articulo.class);
         }
     }
-
+    
     public Articulo crea(Articulo articulo) {
+        return this.crea(articulo, Boolean.FALSE);
+    }
+
+    public Articulo crea(Articulo articulo, Boolean esMigracion) {
         for (Carpeta carpeta : articulo.getUbicaciones()) {
             carpeta.setNombre(carpeta.getNombre().toLowerCase());
             carpetaDao.crea(carpeta);
@@ -115,10 +120,16 @@ public class ArticuloDao {
             etiquetaDao.crea(etiqueta);
         }
         articulo.setId(UUID.randomUUID().toString());
-        Date fecha = new Date();
-        articulo.setFechaCreacion(fecha);
-        articulo.setFechaModificacion(fecha);
+        if (!esMigracion) {
+            Date fecha = new Date();
+            articulo.setFechaCreacion(fecha);
+            articulo.setFechaModificacion(fecha);
+        }
         mongoTemplate.insert(articulo);
+        Usuario usuario = articulo.getAutor();
+        Update u = new Update();
+        u.inc("publicaciones", 1);
+        mongoTemplate.findAndModify(new Query(Criteria.where("username").is(usuario.getUsername())), u, Usuario.class);
         return articulo;
     }
 
@@ -155,5 +166,16 @@ public class ArticuloDao {
         } else {
             throw new ArticuloNoEncontradoException("No se encontraron articulos con carpetas "+carpetas);
         }
+    }
+    
+    public Articulo ver(List<String> carpetas) throws ArticuloNoEncontradoException {
+        Query query = new Query(Criteria.where("ubicaciones.$id").all(carpetas));
+        Update u = new Update();
+        u.inc("vistas", 1);
+        Articulo articulo = mongoTemplate.findAndModify(query,u, Articulo.class);
+        if (articulo == null) {
+            throw new ArticuloNoEncontradoException("No se encontro el articulo "+carpetas);
+        }
+        return articulo;
     }
 }

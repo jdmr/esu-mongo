@@ -182,7 +182,7 @@ public class InicializaController {
                     articulo.setNombre(titulo);
                     articulo.setUbicaciones(tags);
                     articulo.setEstatus(publicado);
-                    articuloDao.crea(articulo);
+                    articuloDao.crea(articulo, true);
                 } else {
                     Leccion leccion = new Leccion();
                     leccion.setAutor(usuario);
@@ -196,7 +196,7 @@ public class InicializaController {
                     leccion.setNombre(titulo);
                     leccion.setUbicaciones(tags);
                     leccion.setEstatus(publicado);
-                    leccionDao.crea(leccion);
+                    leccionDao.crea(leccion, true);
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {

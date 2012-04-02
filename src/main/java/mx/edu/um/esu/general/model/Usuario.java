@@ -62,6 +62,8 @@ public class Usuario implements Serializable, UserDetails {
     @NotEmpty
     @Indexed
     private String correo;
+    private Integer publicaciones = 0;
+    private Integer comentarios = 0;
 
     public Usuario() {
     }
@@ -72,6 +74,10 @@ public class Usuario implements Serializable, UserDetails {
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
+    }
+    
+    public Usuario(String username) {
+        this.username = username;
     }
 
     /**
@@ -211,7 +217,7 @@ public class Usuario implements Serializable, UserDetails {
     }
 
     public String getNombreCompleto() {
-        return apellido + ", " + nombre;
+        return nombre + " " + apellido;
     }
 
     /**
@@ -242,6 +248,34 @@ public class Usuario implements Serializable, UserDetails {
      */
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    /**
+     * @return the publicaciones
+     */
+    public Integer getPublicaciones() {
+        return publicaciones;
+    }
+
+    /**
+     * @param publicaciones the publicaciones to set
+     */
+    public void setPublicaciones(Integer publicaciones) {
+        this.publicaciones = publicaciones;
+    }
+
+    /**
+     * @return the comentarios
+     */
+    public Integer getComentarios() {
+        return comentarios;
+    }
+
+    /**
+     * @param comentarios the comentarios to set
+     */
+    public void setComentarios(Integer comentarios) {
+        this.comentarios = comentarios;
     }
     
     @Override

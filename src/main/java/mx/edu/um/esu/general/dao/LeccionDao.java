@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -107,8 +108,12 @@ public class LeccionDao {
             mongoTemplate.dropCollection(Leccion.class);
         }
     }
-
+    
     public Leccion crea(Leccion leccion) {
+        return this.crea(leccion, Boolean.FALSE);
+    }
+
+    public Leccion crea(Leccion leccion, Boolean esMigracion) {
         for (Carpeta carpeta : leccion.getUbicaciones()) {
             carpeta.setNombre(carpeta.getNombre().toLowerCase());
             carpetaDao.crea(carpeta);
@@ -118,9 +123,11 @@ public class LeccionDao {
             etiquetaDao.crea(etiqueta);
         }
         leccion.setId(UUID.randomUUID().toString());
-        Date fecha = new Date();
-        leccion.setFechaCreacion(fecha);
-        leccion.setFechaModificacion(fecha);
+        if (!esMigracion) {
+            Date fecha = new Date();
+            leccion.setFechaCreacion(fecha);
+            leccion.setFechaModificacion(fecha);
+        }
         mongoTemplate.insert(leccion);
         return leccion;
     }
@@ -158,5 +165,16 @@ public class LeccionDao {
         } else {
             throw new LeccionNoEncontradaException("No se encontro la leccion "+carpetas);
         }
+    }
+    
+    public Leccion ver(List<String> carpetas) throws LeccionNoEncontradaException {
+        Query query = new Query(Criteria.where("ubicaciones.$id").all(carpetas));
+        Update u = new Update();
+        u.inc("vistas", 1);
+        Leccion leccion = mongoTemplate.findAndModify(query,u, Leccion.class);
+        if (leccion == null) {
+            throw new LeccionNoEncontradaException("No se encontro la leccion "+carpetas);
+        }
+        return leccion;
     }
 }

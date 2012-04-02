@@ -47,4 +47,13 @@
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
     </bean>
     
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="url" value="jdbc:postgresql:esu" />
+        <property name="username" value="tomcat" />
+        <property name="password" value="tomcat00" />
+        <property name="initialSize" value="5" />
+        <property name="maxActive" value="10" />
+    </bean>
+    
 </beans>
