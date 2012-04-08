@@ -11,9 +11,11 @@
     </global-method-security>
     
     <http pattern="/css/**" security="none"/>
+    <http pattern="/img/**" security="none"/>
     <http pattern="/images/**" security="none"/>
     <http pattern="/js/**" security="none"/>
     <http pattern="/login*" security="none"/>
+    <http pattern="/font/**" security="none"/>
     
     <http auto-config="true" access-decision-manager-ref="webAccessDecisionManager" use-expressions="true">
         <intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN')" />

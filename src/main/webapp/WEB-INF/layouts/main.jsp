@@ -27,6 +27,7 @@
         <link rel="apple-touch-icon" sizes="114x114" href="<c:url value='/images/apple-touch-icon-retina.png' />">
         <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css' />" type="text/css">
         <link rel="stylesheet" href="<c:url value='/css/bootstrap-responsive.min.css' />" type="text/css">
+        <link rel="stylesheet" href="<c:url value='/css/font-awesome.css' />" type="text/css">
         <link rel="stylesheet" href="<c:url value='/css/custom-theme/jquery-ui-1.8.17.custom.css' />" type="text/css">
         <link rel="stylesheet" href="<c:url value='/css/app.css' />" type="text/css">
     <sitemesh:write property='head'/>
@@ -39,26 +40,31 @@
                     <a href="<c:url value='/inicio' />"><img src="<c:url value='/images/logo.jpg'/>" /></a>
                 </div>
                 <div class="span6 pull-right" style="text-align: right;">
-                    <form action="<c:url value='/j_spring_openid_security_check'/>" id="googleOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
-                        <input id="openid_identifier" name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
-                        <input type="image" src="<c:url value="/images/google.png" />" border="0" name="googleSignInBtn" id="googleSignInBtn" style="height: 26px; vertical-align: top;">
-                    </form>
-                    <form action="<c:url value='/signin/facebook'/>" id="facebookOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
-                        <input type="hidden" name="scope" value="email,publish_stream,offline_access" />
-                        <input type="image" src="<c:url value="/images/facebook.png" />" border="0" name="facebookSignInBtn" id="facebookSignInBtn" style="height: 26px; vertical-align: top;">
-                    </form>
-                    <form action="<c:url value='/j_spring_openid_security_check'/>" id="twitterOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
-                        <input id="openid_identifier" name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
-                        <input type="image" src="<c:url value="/images/twitter.png" />" border="0" name="twitterSignInBtn" id="twitterSignInBtn" style="height: 26px; vertical-align: top; padding-right: 5px;">
-                    </form>
-                    <form action='<c:url value="/entrar" />' method='POST' id='loginForm' class="pull-right form-inline" style="display: inline;">
-                        <input type="text" class="input-small" placeholder="<s:message code='correo.label'/>" name="j_username" id="loginUsername" />
-                        <input type="password" class="input-small" placeholder="<s:message code='password.label' />" name="j_password" id="loginPassword" />
-                        <label class="checkbox">
-                            <input type="checkbox" name='_spring_security_remember_me' id='loginRememberMe' /> <s:message code="recuerdame.label" />
-                        </label>
-                        <button type="submit" class="btn"><s:message code="login.entrar" /></button> 
-                    </form>
+                    <sec:authorize access="isAnonymous()">
+                        <form action="<c:url value='/j_spring_openid_security_check'/>" id="googleOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
+                            <input id="openid_identifier" name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
+                            <input type="image" src="<c:url value="/images/google.png" />" border="0" name="googleSignInBtn" id="googleSignInBtn" style="height: 26px; vertical-align: top;">
+                        </form>
+                        <form action="<c:url value='/signin/facebook'/>" id="facebookOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
+                            <input type="hidden" name="scope" value="email,publish_stream,offline_access" />
+                            <input type="image" src="<c:url value="/images/facebook.png" />" border="0" name="facebookSignInBtn" id="facebookSignInBtn" style="height: 26px; vertical-align: top;">
+                        </form>
+                        <form action="<c:url value='/j_spring_openid_security_check'/>" id="twitterOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
+                            <input id="openid_identifier" name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
+                            <input type="image" src="<c:url value="/images/twitter.png" />" border="0" name="twitterSignInBtn" id="twitterSignInBtn" style="height: 26px; vertical-align: top; padding-right: 5px;">
+                        </form>
+                        <form action='<c:url value="/entrar" />' method='POST' id='loginForm' class="pull-right form-inline" style="display: inline;">
+                            <input type="text" class="input-small" placeholder="<s:message code='correo.label'/>" name="j_username" id="loginUsername" />
+                            <input type="password" class="input-small" placeholder="<s:message code='password.label' />" name="j_password" id="loginPassword" />
+                            <label class="checkbox">
+                                <input type="checkbox" name='_spring_security_remember_me' id='loginRememberMe' /> <s:message code="recuerdame.label" />
+                            </label>
+                                <button type="submit" class="btn"><s:message code="login.entrar" /><i class="icon-signin" style="margin-left: 3px;"></i></button> 
+                        </form>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <p><sec:authentication property="principal.nombreCompleto" /><a href="<c:url value='/salir' />" style="margin-left: 10px;"><s:message code="salir.label" /><i class="icon-signout" style="margin-left: 3px;"></i></a></p>
+                    </sec:authorize>
                 </div>
             </div>
         </header>
@@ -78,8 +84,25 @@
         </nav>
         <sitemesh:write property='body'/>
         <footer>
-            <hr />
-            <p class="pull-right">&copy; <s:message code="proyecto.copyright.year.label" /> Powered by <a href="http://www.um.edu.mx"><s:message code="proyecto.empresa.label" /></a></p>
+            <div class="row" style="margin: 20px 0px 0 0px; padding-top: 5px; background-color: #2C2C2C; color: #999;" >
+                <div class="span4">
+                    <p><s:message code="mapa.del.sitio.label" /></p>
+                    <p><a href="<c:url value='/inicio'/>"><s:message code="inicio.label" /></a></p>
+                    <p><a href="<c:url value='/estudia'/>"><s:message code="estudia.label" /></a></p>
+                    <p><a href="<c:url value='/profundiza'/>"><s:message code="profundiza.label" /></a></p>
+                    <p><a href="<c:url value='/comparte'/>"><s:message code="comparte.label" /></a></p>
+                    <p><a href="<c:url value='/foros'/>"><s:message code="foros.label" /></a></p>
+                    <p><a href="<c:url value='/conocenos'/>"><s:message code="conocenos.label" /></a></p>
+                </div>
+                <div class="span2">
+                    <p><s:message code="siguenos.en.label" /></p>
+                    <p><a href="http://twitter.com/esuniversitaria"><i class="icon-facebook-sign icon-white" style="margin-right: 5px;"></i>facebook</a></p>
+                    <p><a href="http://twitter.com/esuniversitaria"><i class="icon-twitter-sign icon-white" style="margin-right: 5px;"></i>twitter</a></p>
+                </div>
+                <div>
+                    <p class="pull-right">&copy; <s:message code="proyecto.copyright.year.label" /> Powered by <a href="http://www.um.edu.mx"><s:message code="proyecto.empresa.label" /></a> </p>
+                </div>
+            </div>
         </footer>
     </div>
 
