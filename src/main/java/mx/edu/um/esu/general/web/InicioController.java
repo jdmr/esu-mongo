@@ -61,7 +61,7 @@ public class InicioController {
         return sb.toString();
     }
 
-    @RequestMapping({"/{anio}/{trimestre}/{leccion}/{dia}", "/inicio/{anio}/{trimestre}/{leccion}/{dia}"})
+    @RequestMapping({"/inicio/{anio}/{trimestre}/{leccion}/{dia}"})
     public String dia(@PathVariable String anio, @PathVariable String trimestre, @PathVariable String leccion, @PathVariable String dia, Model modelo) {
         log.debug("Cargando pagina de inicio");
         log.debug("TAGS: {} {} {} {}", new String[]{anio, trimestre, leccion, dia});
