@@ -63,7 +63,7 @@
                         </form>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
-                        <p><sec:authentication property="principal.nombreCompleto" /><a href="<c:url value='/salir' />" style="margin-left: 10px;"><s:message code="salir.label" /><i class="icon-signout" style="margin-left: 3px;"></i></a></p>
+                        <p><sec:authentication property="principal.username" /><a href="<c:url value='/salir' />" style="margin-left: 10px;"><s:message code="salir.label" /><i class="icon-signout" style="margin-left: 3px;"></i></a></p>
                     </sec:authorize>
                 </div>
             </div>
@@ -72,9 +72,9 @@
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="i-bar"></span>
-                        <span class="i-bar"></span>
-                        <span class="i-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
                     </a>
                     <div class="nav-collapse">
                         <sitemesh:write property="nav"/>

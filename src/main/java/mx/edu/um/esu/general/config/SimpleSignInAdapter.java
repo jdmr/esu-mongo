@@ -15,28 +15,64 @@
  */
 package mx.edu.um.esu.general.config;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import mx.edu.um.esu.general.model.Usuario;
+import javax.servlet.http.HttpSession;
+import mx.edu.um.esu.general.utils.SignInUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.web.context.request.NativeWebRequest;
 
 /**
  * Signs the user in by setting the currentUser property on the {@link SecurityContext}.
- * Remembers the sign-in after the current request completes by storing the user's id in a cookie.
- * This is cookie is read in {@link UserInterceptor#preHandle(HttpServletRequest, HttpServletResponse, Object)} on subsequent requests.
+ * Remembers the sign-in after the current request completes by storing the
+ * user's id in a cookie. This is cookie is read in {@link UserInterceptor#preHandle(HttpServletRequest, HttpServletResponse, Object)}
+ * on subsequent requests.
+ *
  * @author Keith Donald
  * @see UserInterceptor
  */
 public final class SimpleSignInAdapter implements SignInAdapter {
 
-	private final UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
-	
-	public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
-		SecurityContext.setCurrentUser(new Usuario(userId));
-		userCookieGenerator.addCookie(userId, request.getNativeResponse(HttpServletResponse.class));
-		return null;
-	}
+    private static final Logger log = LoggerFactory.getLogger(SimpleSignInAdapter.class);
+    private final UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
+    private final RequestCache requestCache;
 
+    @Inject
+    public SimpleSignInAdapter(RequestCache requestCache) {
+        this.requestCache = requestCache;
+    }
+
+    @Override
+    public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
+        log.debug("Firmando a {}", localUserId);
+        SignInUtils.signin(localUserId);
+        userCookieGenerator.addCookie(localUserId, request.getNativeResponse(HttpServletResponse.class));
+        return extractOriginalUrl(request);
+    }
+
+    private String extractOriginalUrl(NativeWebRequest request) {
+        HttpServletRequest nativeReq = request.getNativeRequest(HttpServletRequest.class);
+        HttpServletResponse nativeRes = request.getNativeResponse(HttpServletResponse.class);
+        SavedRequest saved = requestCache.getRequest(nativeReq, nativeRes);
+        if (saved == null) {
+            return null;
+        }
+        requestCache.removeRequest(nativeReq, nativeRes);
+        removeAutheticationAttributes(nativeReq.getSession(false));
+        return saved.getRedirectUrl();
+    }
+
+    private void removeAutheticationAttributes(HttpSession session) {
+        if (session == null) {
+            return;
+        }
+        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+    }
 }

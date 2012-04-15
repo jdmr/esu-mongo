@@ -89,7 +89,6 @@ public class InicioController {
                 sb.append("/").append(anio);
                 sb.append("/").append(trimestre);
                 sb.append("/").append(leccion);
-                sb.append("/").append("dialoga");
                 for(Carpeta label : articulo.getUbicaciones()) {
                     if (label.getNombre().startsWith("tema")) {
                         sb.append("/").append(label);
@@ -112,7 +111,6 @@ public class InicioController {
                 sb.append("/").append(anio);
                 sb.append("/").append(trimestre);
                 sb.append("/").append(leccion);
-                sb.append("/").append("comunica");
                 for(Carpeta label : articulo.getUbicaciones()) {
                     if (label.getNombre().startsWith("tema")) {
                         sb.append("/").append(label);

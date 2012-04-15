@@ -23,16 +23,16 @@
  */
 package mx.edu.um.esu.general.config;
 
-import javax.inject.Inject;
 import javax.sql.DataSource;
 import mx.edu.um.esu.general.model.Usuario;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.social.connect.ConnectionFactory;
-import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.social.connect.*;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ProviderSignInController;
@@ -47,9 +47,10 @@ import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 @PropertySource("classpath:ambiente/esu.properties")
 public class SocialConfig {
 
-    @Inject
+    private static final Logger log = LoggerFactory.getLogger(SocialConfig.class);
+    @Autowired
     private Environment environment;
-    @Inject
+    @Autowired
     private DataSource dataSource;
 
     /**
@@ -87,6 +88,7 @@ public class SocialConfig {
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     public ConnectionRepository connectionRepository() {
         Usuario user = SecurityContext.getCurrentUser();
+        log.debug("Obteniendo usuario {}", user);
         return usersConnectionRepository().createConnectionRepository(user.getUsername());
     }
 
@@ -107,8 +109,8 @@ public class SocialConfig {
      * provider accounts.
      */
     @Bean
-    public ProviderSignInController providerSignInController() {
+    public ProviderSignInController providerSignInController(RequestCache requestCache) {
         return new ProviderSignInController(connectionFactoryLocator(), usersConnectionRepository(),
-                new SimpleSignInAdapter());
+                new SimpleSignInAdapter(requestCache));
     }
 }
