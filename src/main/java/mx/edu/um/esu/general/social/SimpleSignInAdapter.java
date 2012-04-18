@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import mx.edu.um.esu.general.dao.UsuarioDao;
 import mx.edu.um.esu.general.utils.SignInUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,16 +44,18 @@ public final class SimpleSignInAdapter implements SignInAdapter {
     private static final Logger log = LoggerFactory.getLogger(SimpleSignInAdapter.class);
     private final UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
     private final RequestCache requestCache;
+    private UsuarioDao usuarioDao;
 
     @Inject
-    public SimpleSignInAdapter(RequestCache requestCache) {
+    public SimpleSignInAdapter(RequestCache requestCache, UsuarioDao usuarioDao) {
         this.requestCache = requestCache;
+        this.usuarioDao = usuarioDao;
     }
 
     @Override
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
         log.debug("Firmando a {}", localUserId);
-        SignInUtils.signin(localUserId);
+        SignInUtils.signin(localUserId, usuarioDao);
         userCookieGenerator.addCookie(localUserId, request.getNativeResponse(HttpServletResponse.class));
         return extractOriginalUrl(request);
     }

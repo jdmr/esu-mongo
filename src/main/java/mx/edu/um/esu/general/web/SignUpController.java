@@ -26,6 +26,7 @@ package mx.edu.um.esu.general.web;
 import javax.validation.Valid;
 import mx.edu.um.esu.general.dao.UsuarioDao;
 import mx.edu.um.esu.general.model.Usuario;
+import mx.edu.um.esu.general.utils.SignInUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,9 +83,7 @@ public class SignUpController {
 
         usuario = usuarioDao.crea(usuario, new String[]{"ROLE_USUARIO"});
         if (usuario != null) {
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(usuario, usuario.getPassword(), usuario.getAuthorities());
-            auth.setDetails(usuario);
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            SignInUtils.signin(usuario.getUsername(), usuarioDao);
             ProviderSignInUtils.handlePostSignUp(usuario.getUsername(), request);
             return "redirect:/";
         }

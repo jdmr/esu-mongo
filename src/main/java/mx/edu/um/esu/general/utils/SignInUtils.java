@@ -23,6 +23,8 @@
  */
 package mx.edu.um.esu.general.utils;
 
+import mx.edu.um.esu.general.dao.UsuarioDao;
+import mx.edu.um.esu.general.model.Usuario;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -35,7 +37,10 @@ public class SignInUtils {
     /**
      * Programmatically signs in the user with the given the user ID.
      */
-    public static void signin(String userId) {
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userId, null, null));
+    public static void signin(String userId, UsuarioDao usuarioDao) {
+        Usuario usuario = usuarioDao.obtiene(userId);
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(usuario, usuario.getPassword(), usuario.getAuthorities());
+        auth.setDetails(usuario);
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }

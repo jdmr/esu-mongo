@@ -24,9 +24,9 @@
 package mx.edu.um.esu.general.config;
 
 import javax.sql.DataSource;
+import mx.edu.um.esu.general.dao.UsuarioDao;
 import mx.edu.um.esu.general.model.Usuario;
 import mx.edu.um.esu.general.social.SecurityContext;
-import mx.edu.um.esu.general.social.SimpleConnectionSignUp;
 import mx.edu.um.esu.general.social.SimpleSignInAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +41,9 @@ import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
+import org.springframework.social.twitter.api.Twitter;
+import org.springframework.social.twitter.api.impl.TwitterTemplate;
+import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 /**
  *
@@ -55,6 +58,8 @@ public class SocialConfig {
     private Environment environment;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private UsuarioDao usuarioDao;
 
     /**
      * When a new provider is added to the app, register its {@link ConnectionFactory}
@@ -68,6 +73,9 @@ public class SocialConfig {
         registry.addConnectionFactory(new FacebookConnectionFactory(
                 environment.getProperty("facebook.clientId"),
                 environment.getProperty("facebook.clientSecret")));
+        registry.addConnectionFactory(new TwitterConnectionFactory(
+                environment.getProperty("twitter.consumerKey"),
+                environment.getProperty("twitter.consumerSecret")));
         return registry;
     }
 
@@ -107,6 +115,13 @@ public class SocialConfig {
         return connectionRepository().getPrimaryConnection(Facebook.class).getApi();
     }
 
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public Twitter twitter() {
+        Connection<Twitter> twitter = connectionRepository().findPrimaryConnection(Twitter.class);
+        return twitter != null ? twitter.getApi() : new TwitterTemplate();
+    }
+
     /**
      * The Spring MVC Controller that allows users to sign-in with their
      * provider accounts.
@@ -114,7 +129,7 @@ public class SocialConfig {
     @Bean
     public ProviderSignInController providerSignInController(RequestCache requestCache) {
         ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator(), usersConnectionRepository(),
-                new SimpleSignInAdapter(requestCache));
+                new SimpleSignInAdapter(requestCache, usuarioDao));
 
         return controller;
     }

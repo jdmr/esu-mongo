@@ -47,11 +47,7 @@
                         </form>
                         <form action="<c:url value='/signin/facebook'/>" id="facebookOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
                             <input type="hidden" name="scope" value="email,publish_stream,offline_access" />
-                            <input type="image" src="<c:url value="/images/facebook.png" />" border="0" name="facebookSignInBtn" id="facebookSignInBtn" style="height: 26px; vertical-align: top;">
-                        </form>
-                        <form action="<c:url value='/j_spring_openid_security_check'/>" id="twitterOpenId" method="post" target="_top" class="form-inline" style="display: inline;" >
-                            <input id="openid_identifier" name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
-                            <input type="image" src="<c:url value="/images/twitter.png" />" border="0" name="twitterSignInBtn" id="twitterSignInBtn" style="height: 26px; vertical-align: top; padding-right: 5px;">
+                            <input type="image" src="<c:url value="/images/facebook.png" />" border="0" name="facebookSignInBtn" id="facebookSignInBtn" style="height: 26px; vertical-align: top; padding-right: 5px;">
                         </form>
                         <form action='<c:url value="/entrar" />' method='POST' id='loginForm' class="pull-right form-inline" style="display: inline;">
                             <input type="text" class="input-small" placeholder="<s:message code='correo.label'/>" name="j_username" id="loginUsername" />
