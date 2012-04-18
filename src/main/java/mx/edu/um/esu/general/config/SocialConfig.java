@@ -25,6 +25,9 @@ package mx.edu.um.esu.general.config;
 
 import javax.sql.DataSource;
 import mx.edu.um.esu.general.model.Usuario;
+import mx.edu.um.esu.general.social.SecurityContext;
+import mx.edu.um.esu.general.social.SimpleConnectionSignUp;
+import mx.edu.um.esu.general.social.SimpleSignInAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +79,7 @@ public class SocialConfig {
     public UsersConnectionRepository usersConnectionRepository() {
         JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
                 connectionFactoryLocator(), Encryptors.noOpText());
-        repository.setConnectionSignUp(new SimpleConnectionSignUp());
+//        repository.setConnectionSignUp(new SimpleConnectionSignUp(dataSource));
         return repository;
     }
 
@@ -110,7 +113,9 @@ public class SocialConfig {
      */
     @Bean
     public ProviderSignInController providerSignInController(RequestCache requestCache) {
-        return new ProviderSignInController(connectionFactoryLocator(), usersConnectionRepository(),
+        ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator(), usersConnectionRepository(),
                 new SimpleSignInAdapter(requestCache));
+
+        return controller;
     }
 }

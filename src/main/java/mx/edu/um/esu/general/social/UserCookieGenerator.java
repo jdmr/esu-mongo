@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.edu.um.esu.general.config;
+package mx.edu.um.esu.general.social;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
