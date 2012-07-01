@@ -33,18 +33,20 @@
             <div class="span6">
                 <c:forEach items="${articulosDialoga}" var="articulo">
                     <div style="margin-top: 20px;">
-                        <h1><a href="<c:url value='/dialoga/ver${articulo.url}' />">${articulo.nombre}</a></h1>
+                        <c:url var="articuloUrl" value='/dialoga/ver${articulo.url}' />
+                        <h1><a href="${articuloUrl}">${articulo.nombre}</a></h1>
                         <h4>Por ${articulo.autor.nombreCompleto}</h4>
-                        <div>${articulo.descripcion}&nbsp;<a href="#"><s:message code="leer.mas" /></a></div>
+                        <div>${articulo.descripcion}&nbsp;<a href="${articuloUrl}"><s:message code="leer.mas" /></a></div>
                     </div>
                 </c:forEach>
             </div>
             <div class="span6">
                 <c:forEach items="${articulosComunica}" var="articulo">
                     <div style="margin-top: 20px;">
-                        <h1><a href="<c:url value='/comunica/ver${articulo.url}' />">${articulo.nombre}</a></h1>
+                        <c:url var="articuloUrl" value='/comunica/ver${articulo.url}' />
+                        <h1><a href="${articuloUrl}">${articulo.nombre}</a></h1>
                         <h4>Por ${articulo.autor.nombreCompleto}</h4>
-                        <div>${articulo.descripcion}&nbsp;<a href="#"><s:message code="leer.mas" /></a></div>
+                        <div>${articulo.descripcion}&nbsp;<a href="${articuloUrl}"><s:message code="leer.mas" /></a></div>
                     </div>
                 </c:forEach>
             </div>
