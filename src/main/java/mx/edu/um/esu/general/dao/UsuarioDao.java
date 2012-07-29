@@ -98,9 +98,9 @@ public class UsuarioDao {
                     , Criteria.where("_id").regex(filtro, "i")
                     );
             query.addCriteria(criteria);
-            params.put("cantidad", mongoTemplate.count(query, Usuario.class));
+            params.put("cantidad", new Long(mongoTemplate.count(query, Usuario.class)).intValue());
         } else {
-            params.put("cantidad", mongoTemplate.count(null, Usuario.class));
+            params.put("cantidad", new Long(mongoTemplate.count(null, Usuario.class)).intValue());
         }
         query.skip(offset);
         query.limit(max);

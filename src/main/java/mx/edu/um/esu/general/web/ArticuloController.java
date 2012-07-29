@@ -30,8 +30,6 @@ import javax.validation.Valid;
 import mx.edu.um.esu.general.dao.*;
 import mx.edu.um.esu.general.model.*;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -49,9 +47,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 @RequestMapping("/admin/articulo")
-public class ArticuloController {
+public class ArticuloController extends BaseController {
 
-    private static final Logger log = LoggerFactory.getLogger(ArticuloController.class);
     @Autowired
     private ArticuloDao articuloDao;
     @Autowired
@@ -79,7 +76,7 @@ public class ArticuloController {
 
         params = articuloDao.lista(params);
         modelo.addAttribute("articulos", params.get("articulos"));
-        
+
         this.pagina(params, modelo, "articulos", pagina);
 
         return "admin/articulo/lista";
@@ -103,12 +100,12 @@ public class ArticuloController {
         modelo.addAttribute("articulo", articulo);
         List<Estatus> estados = estatusDao.lista();
         modelo.addAttribute("estados", estados);
-        
+
         List<Usuario> autores = usuarioDao.autores();
         modelo.addAttribute("autores", autores);
         List<Usuario> editores = usuarioDao.editores();
         modelo.addAttribute("editores", editores);
-        
+
         return "admin/articulo/nuevo";
     }
 
@@ -122,7 +119,7 @@ public class ArticuloController {
             log.debug("Hubo algun error en la forma, regresando");
             List<Estatus> estados = estatusDao.lista();
             modelo.addAttribute("estados", estados);
-        
+
             List<Usuario> autores = usuarioDao.autores();
             modelo.addAttribute("autores", autores);
             List<Usuario> editores = usuarioDao.editores();
@@ -139,7 +136,7 @@ public class ArticuloController {
             log.error("No se pudo crear al articulo", e);
             List<Estatus> estados = estatusDao.lista();
             modelo.addAttribute("estados", estados);
-        
+
             List<Usuario> autores = usuarioDao.autores();
             modelo.addAttribute("autores", autores);
             List<Usuario> editores = usuarioDao.editores();
@@ -164,12 +161,12 @@ public class ArticuloController {
         modelo.addAttribute("articulo", articulo);
         List<Estatus> estados = estatusDao.lista();
         modelo.addAttribute("estados", estados);
-        
+
         List<Usuario> autores = usuarioDao.autores();
         modelo.addAttribute("autores", autores);
         List<Usuario> editores = usuarioDao.editores();
         modelo.addAttribute("editores", editores);
-        
+
         return "admin/articulo/edita";
     }
 
@@ -181,7 +178,7 @@ public class ArticuloController {
             log.error("Hubo algun error en la forma, regresando");
             List<Estatus> estados = estatusDao.lista();
             modelo.addAttribute("estados", estados);
-        
+
             List<Usuario> autores = usuarioDao.autores();
             modelo.addAttribute("autores", autores);
             List<Usuario> editores = usuarioDao.editores();
@@ -196,12 +193,12 @@ public class ArticuloController {
             log.error("No se pudo actualizar al articulo", e);
             List<Estatus> estados = estatusDao.lista();
             modelo.addAttribute("estados", estados);
-        
+
             List<Usuario> autores = usuarioDao.autores();
             modelo.addAttribute("autores", autores);
             List<Usuario> editores = usuarioDao.editores();
             modelo.addAttribute("editores", editores);
-        
+
             modelo.addAttribute("message", "articulo.no.actualizado.message");
             modelo.addAttribute("messageStyle", "alert-error");
             modelo.addAttribute("messageAttrs", new String[]{articulo.getNombre()});
@@ -250,34 +247,5 @@ public class ArticuloController {
             resultado.add(etiqueta.getNombre());
         }
         return resultado;
-    }
-    
-    protected void pagina(Map<String, Object> params, Model modelo, String lista, Integer pagina) {
-        if (pagina != null) {
-            params.put("pagina", pagina);
-            modelo.addAttribute("pagina", pagina);
-        } else {
-            pagina = 1;
-            modelo.addAttribute("pagina", pagina);
-        }
-        // inicia paginado
-        Long cantidad = (Long) params.get("cantidad");
-        Integer max = (Integer) params.get("max");
-        Long cantidadDePaginas = cantidad / max;
-        List<Long> paginas = new ArrayList<>();
-        long i = 1;
-        do {
-            paginas.add(i);
-            if (i == 10) {
-                break;
-            }
-        } while (i++ < cantidadDePaginas + 1);
-        List<Usuario> usuarios = (List<Usuario>) params.get(lista);
-        Integer primero = ((pagina - 1) * max) + 1;
-        Integer ultimo = primero + (usuarios.size() - 1);
-        String[] paginacion = new String[]{primero.toString(), ultimo.toString(), cantidad.toString()};
-        modelo.addAttribute("paginacion", paginacion);
-        modelo.addAttribute("paginas", paginas);
-        // termina paginado
     }
 }

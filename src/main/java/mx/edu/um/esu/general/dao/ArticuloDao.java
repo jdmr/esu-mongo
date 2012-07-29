@@ -23,6 +23,7 @@
  */
 package mx.edu.um.esu.general.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -87,14 +88,11 @@ public class ArticuloDao {
             String filtro = (String) params.get("filtro");
 
             Criteria criteria = new Criteria();
-            criteria.orOperator(Criteria.where("nombre").regex(filtro, "i")
-                    , Criteria.where("descripcion").regex(filtro, "i")
-                    , Criteria.where("contenido").regex(filtro, "i")
-                    );
+            criteria.orOperator(Criteria.where("nombre").regex(filtro, "i"), Criteria.where("descripcion").regex(filtro, "i"), Criteria.where("contenido").regex(filtro, "i"));
             query.addCriteria(criteria);
-            params.put("cantidad", mongoTemplate.count(query, Usuario.class));
+            params.put("cantidad", new Long(mongoTemplate.count(query, Articulo.class)).intValue());
         } else {
-            params.put("cantidad", mongoTemplate.count(null, Usuario.class));
+            params.put("cantidad", new Long(mongoTemplate.count(null, Articulo.class)).intValue());
         }
         query.skip(offset);
         query.limit(max);
@@ -108,32 +106,36 @@ public class ArticuloDao {
             mongoTemplate.dropCollection(Articulo.class);
         }
     }
-    
+
     public Articulo crea(Articulo articulo) {
         return this.crea(articulo, Boolean.FALSE);
     }
 
     public Articulo crea(Articulo articulo, Boolean esMigracion) {
-        for (Carpeta carpeta : articulo.getUbicaciones()) {
-            carpeta.setNombre(carpeta.getNombre().toLowerCase());
-            carpetaDao.crea(carpeta);
+        if (articulo.getAutor() != null) {
+            for (Carpeta carpeta : articulo.getUbicaciones()) {
+                carpeta.setNombre(carpeta.getNombre().toLowerCase());
+                carpetaDao.crea(carpeta);
+            }
+            for (Etiqueta etiqueta : articulo.getEtiquetas()) {
+                etiqueta.setNombre(etiqueta.getNombre().toLowerCase());
+                etiquetaDao.crea(etiqueta);
+            }
+            articulo.setId(UUID.randomUUID().toString());
+            if (!esMigracion) {
+                Date fecha = new Date();
+                articulo.setFechaCreacion(fecha);
+                articulo.setFechaModificacion(fecha);
+            }
+            mongoTemplate.insert(articulo);
+            Usuario usuario = articulo.getAutor();
+            Update u = new Update();
+            u.inc("publicaciones", 1);
+            mongoTemplate.findAndModify(new Query(Criteria.where("username").is(usuario.getUsername())), u, Usuario.class);
+            return articulo;
+        } else {
+            return null;
         }
-        for (Etiqueta etiqueta : articulo.getEtiquetas()) {
-            etiqueta.setNombre(etiqueta.getNombre().toLowerCase());
-            etiquetaDao.crea(etiqueta);
-        }
-        articulo.setId(UUID.randomUUID().toString());
-        if (!esMigracion) {
-            Date fecha = new Date();
-            articulo.setFechaCreacion(fecha);
-            articulo.setFechaModificacion(fecha);
-        }
-        mongoTemplate.insert(articulo);
-        Usuario usuario = articulo.getAutor();
-        Update u = new Update();
-        u.inc("publicaciones", 1);
-        mongoTemplate.findAndModify(new Query(Criteria.where("username").is(usuario.getUsername())), u, Usuario.class);
-        return articulo;
     }
 
     public Articulo actualiza(Articulo articulo) {
@@ -167,17 +169,43 @@ public class ArticuloDao {
         if (articulos != null) {
             return articulos;
         } else {
-            throw new ArticuloNoEncontradoException("No se encontraron articulos con carpetas "+carpetas);
+            throw new ArticuloNoEncontradoException("No se encontraron articulos con carpetas " + carpetas);
         }
     }
-    
+
+    public Boolean existe(List<String> carpetas) {
+        boolean resultado = false;
+        Query query = new Query(Criteria.where("ubicaciones.$id").all(carpetas));
+        List<Articulo> articulos = mongoTemplate.find(query, Articulo.class);
+        if (articulos != null && articulos.size() > 0) {
+            resultado = true;
+        }
+        return resultado;
+    }
+
+    public Boolean existePorCarpetas(List<Carpeta> carpetas) {
+        boolean resultado = false;
+        List<String> etiquetas = new ArrayList<>();
+        for (Carpeta carpeta : carpetas) {
+            etiquetas.add(carpeta.getNombre());
+        }
+
+        Query query = new Query(Criteria.where("ubicaciones.$id").all(etiquetas));
+        List<Articulo> articulos = mongoTemplate.find(query, Articulo.class);
+        if (articulos != null && articulos.size() > 0) {
+            resultado = true;
+        }
+        log.debug("Se encontro el articulo: {}", resultado);
+        return resultado;
+    }
+
     public Articulo ver(List<String> carpetas) throws ArticuloNoEncontradoException {
         Query query = new Query(Criteria.where("ubicaciones.$id").all(carpetas));
         Update u = new Update();
         u.inc("vistas", 1);
-        Articulo articulo = mongoTemplate.findAndModify(query,u, Articulo.class);
+        Articulo articulo = mongoTemplate.findAndModify(query, u, Articulo.class);
         if (articulo == null) {
-            throw new ArticuloNoEncontradoException("No se encontro el articulo "+carpetas);
+            throw new ArticuloNoEncontradoException("No se encontro el articulo " + carpetas);
         }
         return articulo;
     }

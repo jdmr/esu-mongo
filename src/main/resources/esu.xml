@@ -22,6 +22,23 @@
         <property name="basename" value="messages"/>
     </bean>
     
+    <bean id="localeChangeInterceptor"
+      class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="lang" />
+    </bean>
+ 
+    <bean id="localeResolver"
+      class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="es"/>
+    </bean>
+ 
+    <bean id="handlerMapping"
+      class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="interceptors">
+            <ref bean="localeChangeInterceptor" />
+        </property>
+    </bean>
+    
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
         <property name="host" value="${mail.smtp.host}" />
         <property name="port" value="${mail.smtp.port}" />
@@ -43,7 +60,7 @@
     <mongo:db-factory host="localhost" port="27017" dbname="esu" />
  
     <bean id="mongoTemplate" 
-              class="org.springframework.data.mongodb.core.MongoTemplate">
+          class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
     </bean>
     

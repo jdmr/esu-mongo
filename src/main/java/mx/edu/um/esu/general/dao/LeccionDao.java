@@ -23,6 +23,7 @@
  */
 package mx.edu.um.esu.general.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,6 @@ import java.util.UUID;
 import mx.edu.um.esu.general.model.Carpeta;
 import mx.edu.um.esu.general.model.Etiqueta;
 import mx.edu.um.esu.general.model.Leccion;
-import mx.edu.um.esu.general.model.Usuario;
 import mx.edu.um.esu.general.utils.LeccionNoEncontradaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,9 +92,9 @@ public class LeccionDao {
                     , Criteria.where("contenido").regex(filtro, "i")
                     );
             query.addCriteria(criteria);
-            params.put("cantidad", mongoTemplate.count(query, Usuario.class));
+            params.put("cantidad", new Long(mongoTemplate.count(query, Leccion.class)).intValue());
         } else {
-            params.put("cantidad", mongoTemplate.count(null, Usuario.class));
+            params.put("cantidad", new Long(mongoTemplate.count(null, Leccion.class)).intValue());
         }
         query.skip(offset);
         query.limit(max);
@@ -177,4 +177,31 @@ public class LeccionDao {
         }
         return leccion;
     }
+    
+    public Boolean existe(List<String> carpetas) {
+        boolean resultado = false;
+        Query query = new Query(Criteria.where("ubicaciones.$id").all(carpetas));
+        List<Leccion> lecciones = mongoTemplate.find(query, Leccion.class);
+        if (lecciones != null && lecciones.size() > 0) {
+            resultado = true;
+        }
+        return resultado;
+    }
+    
+    public Boolean existePorCarpetas(List<Carpeta> carpetas) {
+        boolean resultado = false;
+        List<String> etiquetas = new ArrayList<>();
+        for(Carpeta carpeta : carpetas) {
+            etiquetas.add(carpeta.getNombre());
+        }
+        
+        Query query = new Query(Criteria.where("ubicaciones.$id").all(etiquetas));
+        List<Leccion> lecciones = mongoTemplate.find(query, Leccion.class);
+        if (lecciones != null && lecciones.size() > 0) {
+            resultado = true;
+        }
+        log.debug("Se encontro la leccion: {}", resultado);
+        return resultado;
+    }
+    
 }

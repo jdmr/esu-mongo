@@ -49,9 +49,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 @RequestMapping("/admin/leccion")
-public class LeccionController {
+public class LeccionController extends BaseController {
 
-    private static final Logger log = LoggerFactory.getLogger(LeccionController.class);
     @Autowired
     private LeccionDao leccionDao;
     @Autowired
@@ -252,32 +251,4 @@ public class LeccionController {
         return resultado;
     }
 
-    protected void pagina(Map<String, Object> params, Model modelo, String lista, Integer pagina) {
-        if (pagina != null) {
-            params.put("pagina", pagina);
-            modelo.addAttribute("pagina", pagina);
-        } else {
-            pagina = 1;
-            modelo.addAttribute("pagina", pagina);
-        }
-        // inicia paginado
-        Long cantidad = (Long) params.get("cantidad");
-        Integer max = (Integer) params.get("max");
-        Long cantidadDePaginas = cantidad / max;
-        List<Long> paginas = new ArrayList<>();
-        long i = 1;
-        do {
-            paginas.add(i);
-            if (i == 10) {
-                break;
-            }
-        } while (i++ < cantidadDePaginas + 1);
-        List<Usuario> usuarios = (List<Usuario>) params.get(lista);
-        Integer primero = ((pagina - 1) * max) + 1;
-        Integer ultimo = primero + (usuarios.size() - 1);
-        String[] paginacion = new String[]{primero.toString(), ultimo.toString(), cantidad.toString()};
-        modelo.addAttribute("paginacion", paginacion);
-        modelo.addAttribute("paginas", paginas);
-        // termina paginado
-    }
 }

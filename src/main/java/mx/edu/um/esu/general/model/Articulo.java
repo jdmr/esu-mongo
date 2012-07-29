@@ -67,8 +67,6 @@ public class Articulo {
     @Indexed
     @DBRef
     private Usuario editor;
-    @DBRef
-    private List<Comentario> comentarios = new ArrayList<>();
     @Field("fechac")
     private Date fechaCreacion;
     @Field("fecham")
@@ -230,20 +228,6 @@ public class Articulo {
      */
     public void setEditor(Usuario editor) {
         this.editor = editor;
-    }
-
-    /**
-     * @return the comentarios
-     */
-    public List<Comentario> getComentarios() {
-        return comentarios;
-    }
-
-    /**
-     * @param comentarios the comentarios to set
-     */
-    public void setComentarios(List<Comentario> comentarios) {
-        this.comentarios = comentarios;
     }
 
     /**

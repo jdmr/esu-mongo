@@ -63,7 +63,7 @@ public class Usuario implements Serializable, UserDetails {
     @Indexed
     private String correo;
     private Integer publicaciones = 0;
-    private Integer comentarios = 0;
+    private String lenguaje = "es";
 
     public Usuario() {
     }
@@ -264,20 +264,6 @@ public class Usuario implements Serializable, UserDetails {
         this.publicaciones = publicaciones;
     }
 
-    /**
-     * @return the comentarios
-     */
-    public Integer getComentarios() {
-        return comentarios;
-    }
-
-    /**
-     * @param comentarios the comentarios to set
-     */
-    public void setComentarios(Integer comentarios) {
-        this.comentarios = comentarios;
-    }
-    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
